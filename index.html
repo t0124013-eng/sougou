@@ -11,7 +11,7 @@
   color-scheme:light;
   --paper:#FFFFFF; --sheet:#F6F7FA; --ink:#161B2B; --muted:#4A5266; --line:#D5DAE4;
   --red:#D02B62; --red-soft:#FCE8EF;
-  --math:#2550B8; --koku:#B8322A; --eigo:#0B7480; --rika:#6B45B8; --shakai:#9A5F0C; --hoken:#C2306B;
+  --math:#2550B8; --koku:#B8322A; --eigo:#0B7480; --rika:#6B45B8; --shakai:#9A5F0C; --hoken:#C2306B; --butsuri:#3E6B17;
   --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
   --f-code:"M PLUS 1 Code","BIZ UDGothic","Consolas",monospace;
 }
@@ -60,6 +60,9 @@ a{color:inherit}
 @media (max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
 .lab{position:relative;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;padding:18px 18px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);text-decoration:none;color:var(--ink);transition:transform .18s,border-color .18s,box-shadow .18s;min-width:0;overflow:hidden}
+.lab.w2{grid-column:span 2}
+@media (min-width:961px){.lab.w3{grid-column:span 2}}
+@media (max-width:620px){.lab.w2{grid-column:auto}}
 .lab::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:var(--c)}
 .lab:hover,.lab:focus-visible{transform:translateY(-3px);border-color:var(--c);box-shadow:0 10px 24px -14px var(--c)}
 .lab-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -98,11 +101,11 @@ a{color:inherit}
 <main class="wrap">
   <section class="hero">
     <div>
-      <div class="eyebrow">数学・国語・英語・理科・社会・保健</div>
+      <div class="eyebrow">数学・国語・英語・理科（化学・物理）・社会・保健</div>
       <h1>動かして、<br><span>わかる。</span></h1>
-      <p class="lead">グラフを動かす、返り点の順に読む、雨温図をつくる、心肺蘇生のテンポを測る。読むだけではわかりにくいところを、押して・動かして確かめる6つのラボ。授業の予習・復習やテスト前に、自分のペースで使おう。</p>
+      <p class="lead">グラフを動かす、返り点の順に読む、斜面を傾ける、雨温図をつくる、心肺蘇生のテンポを測る。読むだけではわかりにくいところを、押して・動かして確かめる7つのラボ。授業の予習・復習やテスト前に、自分のペースで使おう。</p>
       <nav class="sheet" aria-label="教科を選ぶ">
-        <div class="sheet-h"><span>解答欄　教科を選んでマーク</span><span class="tnum">1〜6</span></div>
+        <div class="sheet-h"><span>解答欄　教科を選んでマーク</span><span class="tnum">1〜7</span></div>
         <div class="marks" id="marks"></div>
       </nav>
     </div>
@@ -136,6 +139,8 @@ const LABS = [
     units: ['文の構造', '時制', '助動詞・受動態', '準動詞', '関係詞・比較・仮定法'], try: 'S・V・O・C を当てる。時制をタイムラインで見る。語句を並べて英文をつくる。' },
   { key: 'rika', c: '--rika', kyoka: '理科', title: '化学基礎', sub: '高校1年「化学基礎」', dir: 'chem/', art: 'https://claude.ai/artifact/LJRSuiRpbf9jWkZ9H1NnrE', store: 'chem-lab-v1', q: 65, cards: 37, gl: 66,
     units: ['物質と原子', '化学結合', '物質量と反応式', '酸と塩基', '酸化還元'], try: '電子配置をのぞく。反応式の係数を合わせる。中和滴定の曲線を動かす。' },
+  { key: 'butsuri', c: '--butsuri', kyoka: '理科', title: '物理基礎', sub: '高校「物理基礎」', dir: 'butsuri/', art: 'https://claude.ai/artifact/PPzB7eHcb2FX24gzK1hw57', store: 'butsuri-lab-v1', q: 65, cards: 35, gl: 53,
+    units: ['運動の表し方', '力と運動', 'エネルギーと熱', '波', '電気'], try: 'v-t グラフの面積を見る。斜面を傾けてすべり出す角度を探す。弦と気柱の定常波をつくる。' },
   { key: 'shakai', c: '--shakai', kyoka: '社会', title: '地理総合', sub: '高校「地理総合」', dir: 'chiri/', art: 'https://claude.ai/artifact/Wxk85GHYCsAaZ3uwK2MG3V', store: 'chiri-lab-v1', q: 65, cards: 38, gl: 59,
     units: ['地図と時差', '地形', '気候', '生活文化と産業', '防災と地球的課題'], try: '時差を計算する。雨温図をつくって気候区分を判定する。人口ピラミッドの形を変える。' },
   { key: 'hoken', c: '--hoken', kyoka: '保健', title: '保健', sub: '高校「保健」', dir: 'hoken/', art: 'https://claude.ai/artifact/1KvaF5zdHuQw65S14tE7Db', store: 'hoken-lab-v1', q: 65, cards: 31, gl: 46,
@@ -147,6 +152,7 @@ const MOTIF = {
   eigo: `<svg class="motif" viewBox="0 0 112 66" aria-hidden="true">${['S', 'V', 'O', 'C'].map((k, i) => `<rect x="${4 + i * 27}" y="${18 + (i % 2) * 10}" width="22" height="22" rx="5" fill="${i === 1 ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"/><text x="${15 + i * 27}" y="${34 + (i % 2) * 10}" font-size="13" font-weight="700" text-anchor="middle" fill="${i === 1 ? '#fff' : 'currentColor'}" font-family="M PLUS 1 Code, monospace">${k}</text>`).join('')}</svg>`,
   rika: `<svg class="motif" viewBox="0 0 112 66" aria-hidden="true"><circle cx="56" cy="33" r="7" fill="var(--red)"/><circle cx="56" cy="33" r="17" fill="none" stroke="currentColor" opacity=".45"/><circle cx="56" cy="33" r="29" fill="none" stroke="currentColor" opacity=".45"/><g><circle cx="73" cy="33" r="4" fill="currentColor"/><circle cx="39" cy="33" r="4" fill="currentColor"/><animateTransform attributeName="transform" type="rotate" from="0 56 33" to="360 56 33" dur="5s" repeatCount="indefinite"/></g><g><circle cx="56" cy="4" r="4" fill="currentColor"/><animateTransform attributeName="transform" type="rotate" from="0 56 33" to="-360 56 33" dur="8s" repeatCount="indefinite"/></g></svg>`,
   shakai: `<svg class="motif" viewBox="0 0 112 66" aria-hidden="true"><circle cx="56" cy="33" r="28" fill="none" stroke="currentColor" stroke-width="2.5"/><ellipse cx="56" cy="33" rx="12" ry="28" fill="none" stroke="currentColor" opacity=".5"/><line x1="56" y1="5" x2="56" y2="61" stroke="currentColor" opacity=".5"/><line x1="28" y1="33" x2="84" y2="33" stroke="var(--red)" stroke-width="2"/><path d="M31 21 H81 M31 45 H81" stroke="currentColor" opacity=".5"/></svg>`,
+  butsuri: `<svg class="motif" viewBox="0 0 112 66" aria-hidden="true"><line x1="30" y1="4" x2="82" y2="4" stroke="currentColor" stroke-width="3"/><g><line x1="56" y1="4" x2="56" y2="50" stroke="currentColor" stroke-width="2"/><circle cx="56" cy="54" r="8" fill="var(--red)"/><animateTransform attributeName="transform" type="rotate" values="-28 56 4;28 56 4;-28 56 4" dur="2.4s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"/></g><path d="M24 48 A34 34 0 0 0 88 48" fill="none" stroke="currentColor" opacity=".35" stroke-dasharray="3 4"/></svg>`,
   hoken: `<svg class="motif" viewBox="0 0 112 66" aria-hidden="true"><polyline class="ecg" points="2,36 26,36 32,26 38,36 46,36 52,8 58,58 64,36 76,36 82,30 88,36 110,36" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="190" stroke-dashoffset="190"><animate attributeName="stroke-dashoffset" values="190;0;0" keyTimes="0;.6;1" dur="2.2s" repeatCount="indefinite"/></polyline><circle cx="96" cy="14" r="5" fill="var(--red)"/></svg>`,
 };
 const href = l => MODE === 'artifact' ? l.art : l.dir;
@@ -154,10 +160,10 @@ function progress(l) {
   try { const raw = localStorage.getItem(l.store); if (!raw) return null; const s = JSON.parse(raw); const n = Object.values(s.ans || {}).filter(v => v === true).length; return n ? Math.min(100, Math.floor(n / l.q * 100)) : null; } catch (e) { return null; }
 }
 const ext = MODE === 'artifact' ? ' target="_blank" rel="noopener"' : '';
-document.getElementById('marks').innerHTML = LABS.map((l, i) => `<a class="mark" style="--c:var(${l.c})" href="${href(l)}"${ext}><span class="ov">${i + 1}</span>${l.kyoka}</a>`).join('');
+document.getElementById('marks').innerHTML = LABS.map((l, i) => `<a class="mark" style="--c:var(${l.c})" href="${href(l)}"${ext}><span class="ov">${i + 1}</span>${l.key === 'rika' ? '化学' : l.key === 'butsuri' ? '物理' : l.kyoka}</a>`).join('');
 document.getElementById('grid').innerHTML = LABS.map((l, i) => {
   const p = progress(l);
-  return `<a class="lab" style="--c:var(${l.c})" href="${href(l)}"${ext} aria-label="${l.kyoka}：${l.title}を開く">
+  return `<a class="lab${l.key === 'math' ? ' w2' : l.key === 'shakai' ? ' w3' : ''}" style="--c:var(${l.c})" href="${href(l)}"${ext} aria-label="${l.kyoka}：${l.title}を開く">
     <div class="lab-top"><div><span class="kyoka"><span class="ov">${i + 1}</span>${l.kyoka}</span><h3>${l.title}</h3><div class="sub">${l.sub}</div></div>${MOTIF[l.key]}</div>
     <div class="units">${l.units.map(u => `<span>${u}</span>`).join('')}</div>
     <p class="try">${l.try}</p>

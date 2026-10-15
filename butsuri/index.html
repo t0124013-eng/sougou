@@ -1,0 +1,1709 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>物理基礎 ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+.ot-ans{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ot-w{appearance:none;border:1.5px solid var(--ink);background:var(--card);border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:1rem;font-family:var(--f-body)}
+.ot-w.on{background:var(--ink);color:var(--paper)}
+.ot-w:hover{filter:brightness(1.1)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pick-grid button{appearance:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;font-weight:700;line-height:1.4}
+.pick-grid button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pick-grid button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tl{display:grid;gap:0;position:relative;padding-left:18px;border-left:3px solid var(--line)}
+.tl-row{position:relative;padding:8px 0 8px 12px}
+.tl-row::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+.tl-era{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+.big-kana{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.3}
+.kanbun{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font-family:var(--f-display)}
+.kb-c{display:grid;justify-items:center;min-width:46px;padding:4px 2px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);position:relative}
+.kb-c .k{font-size:1.9rem;font-weight:700;line-height:1.1}
+.kb-c .mk{font-size:.85rem;color:var(--accent);font-weight:700;min-height:1.2em}
+.kb-c .ok{font-size:.75rem;color:var(--muted);min-height:1.2em}
+.kb-c .no{position:absolute;top:-10px;right:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.72rem;min-width:20px;height:20px;display:grid;place-items:center;font-family:var(--f-code)}
+.kb-c.cur{border-color:var(--accent);background:var(--marker)}
+.kb-c.done{border-color:var(--good);background:var(--good-soft)}
+.kb-c.oki{opacity:.55}
+.conj td,.conj th{text-align:center;white-space:nowrap}
+.conj td b{color:var(--accent)}
+</style>
+</head><body>
+<style>@media (max-width:540px){.top-in{gap:8px!important}.back-top .bt-t{display:none}.brand{min-width:0;overflow:hidden;white-space:nowrap;font-size:.95rem!important}.brand .dot{display:none!important}.xp{gap:5px!important}.xp-bar{width:28px!important}}@media (max-width:370px){.xp-rate{display:none!important}}</style>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="back-top" href="../" style="flex:none;display:inline-block;font-size:.8rem;font-weight:700;line-height:1;padding:7px 11px;border:1.5px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;white-space:nowrap;background:var(--paper)" aria-label="教科一覧（トップページ）にもどる">←&nbsp;<span class="bt-t">教科</span>一覧</a>
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>物理基礎 ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">…</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題はすべてこの教材のためのオリジナル問題です。範囲は高等学校学習指導要領（平成30年告示）の「物理基礎」にそろえています。</p><p>重力加速度の大きさは 9.8 m/s² とし、とくにことわりがない限り空気抵抗は考えません。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+const SITE = {
+  key: 'butsuri-lab-v1', subject: '物理基礎',
+  eyebrow: '高校「物理基礎」の実験室',
+  heroTitle: '動かしてわかる、<br><span class="hl">物理基礎</span>',
+  lead: 'v-t グラフの面積を見る、斜面の上で物体がすべり出す角度を探す、波の振動数を変える、回路の抵抗をつなぎかえる。公式を覚える前に、数値を動かして現象をつかむ教材。授業の予習・復習やテスト前に使おう。',
+  bubble: '物理基礎、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。',
+  ranks: [[0, '静止見習い'], [5, '等速直線運動'], [15, '等加速度運動'], [30, '力のつり合いマスター'], [50, 'エネルギー保存マスター'], [75, '波動マスター'], [100, '物理基礎 免許皆伝']],
+  rankNotes: ['まだ動き出す前', '一定の速さで進み始めた', 'ぐんぐん加速中', '力の矢印が描ける', 'エネルギーの行き先がわかる', '波と電気もばっちり', '全問正解！'],
+  courses: { undo: '運動の表し方', chikara: '力と運動', energy: 'エネルギーと熱', nami: '波', denki: '電気' },
+  stations: [
+    { id: 'undo', code: '第1章', name: '運動の表し方', desc: '速度・加速度、等加速度直線運動、落下運動。v-t グラフを自分で動かす' },
+    { id: 'chikara', code: '第2章', name: '力と運動', desc: '力のつり合い、作用・反作用、運動方程式、摩擦力。斜面の実験' },
+    { id: 'energy', code: '第3章', name: 'エネルギーと熱', tab: 'エネルギーと熱', desc: '仕事、力学的エネルギー保存、熱量の保存、熱力学第一法則' },
+    { id: 'nami', code: '第4章', name: '波', desc: 'v = fλ、横波と縦波、定常波。弦と気柱の固有振動、うなり' },
+    { id: 'denki', code: '第5章', name: '電気', desc: 'オームの法則、抵抗の直列・並列、電力、電磁誘導と交流' },
+  ],
+  links: [
+    ['つながり①', '「運動の表し方」の v-t グラフは、運動方程式で求めた加速度の確かめにも使える。'],
+    ['つながり②', '力がした「仕事」がエネルギーの変化になる。力の単元とエネルギーの単元は1本の線でつながっている。'],
+    ['つながり③', '電気エネルギーは熱（ジュール熱）や運動に変わる。エネルギーの移り変わりで物理全体を見通そう。'],
+  ],
+  tips: {
+    undo: 'v-t グラフは「傾き＝加速度」「面積＝移動距離」。<br>スライダーを動かして確かめよう！',
+    chikara: '力の問題は、まず物体にはたらく力をすべて矢印で描くことから。<br>斜面を傾けて、すべり出す角度を探してみよう。',
+    energy: '高さが減ったぶんだけ速さが増える。<br>力学的エネルギーの合計は、摩擦がなければ変わらないよ。',
+    nami: '波の速さは v = fλ。<br>振動数を上げると、波長はどうなるかな？',
+    denki: '直列は「電流が同じ」、並列は「電圧が同じ」。<br>つなぎかえて数値を比べよう！',
+    drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+    cards: '公式は「何を表す式か」とセットで覚えよう。<br>「まだ」だけを何周もするのが近道！',
+    glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+  },
+  glossHint: '例：加速度、かそくど、定常波',
+  cardsNote: '公式と単位も入っている。',
+};
+/* ===== 共通部品（数学Ⅰ ラボと同じ仕組み） ===== */
+const RANKS = SITE.ranks, RANK_NOTE = SITE.rankNotes, COURSE_NAME = SITE.courses, TIPS = SITE.tips, STORE_KEY = SITE.key;
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const PRAISE = SITE.praise || ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const M = (s) => String(s).replace(/-/g, '−');
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const UNITS = [{ id: 'home', name: 'ホーム' }, ...SITE.stations.map(s => ({ id: s.id, name: s.tab || s.name })),
+  { id: 'drill', name: '問題ドリル' }, { id: 'cards', name: '暗記カード' }, { id: 'glossary', name: '用語集' }];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}のページへ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+function seg(id, items, cur) { // items: [[value,label],...]
+  return `<div class="seg" id="${id}">${items.map(([v, l]) => `<button aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join('')}</div>`;
+}
+function bindSeg(root, id, fn) {
+  $$(`#${id} button`, root).forEach(b => b.onclick = () => { $$(`#${id} button`, root).forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+}
+/* 並べ替え問題：words を押して文を組み立てる */
+function orderTask(root, items, opts = {}) {
+  // items: [{ja, ans:[tokens], extra?:[], note}]
+  let k = 0, picked = [];
+  const box = h(`<div style="display:grid;gap:12px"><div class="row" style="justify-content:space-between"><b class="ot-q"></b><span class="small muted tnum ot-n"></span></div>
+    <div class="ot-ans" aria-live="polite"></div><div class="ot-pool row" style="gap:8px"></div>
+    <div class="row"><button class="btn ot-chk">答え合わせ</button><button class="btn ghost sm ot-clr">やり直す</button><button class="btn ghost sm ot-next">次の問題</button></div><div class="res ot-res" hidden></div></div>`);
+  root.appendChild(box);
+  let pool = [];
+  function load() {
+    const it = items[k]; picked = [];
+    pool = shuffle([...it.ans, ...(it.extra || [])].map((w, i) => ({ w, i })));
+    $('.ot-q', box).innerHTML = it.ja; $('.ot-n', box).textContent = `${k + 1} / ${items.length}`;
+    $('.ot-res', box).hidden = true; draw();
+  }
+  function draw() {
+    $('.ot-ans', box).innerHTML = picked.length ? picked.map((p, j) => `<button class="ot-w on" data-j="${j}">${p.w}</button>`).join('') : `<span class="small muted">${opts.hint || '下の語句を正しい順に押そう。押した語句をもう一度押すと戻せる。'}</span>`;
+    $('.ot-pool', box).innerHTML = pool.filter(p => !picked.includes(p)).map(p => `<button class="ot-w" data-i="${p.i}">${p.w}</button>`).join('');
+    $$('.ot-ans [data-j]', box).forEach(b => b.onclick = () => { picked.splice(+b.dataset.j, 1); draw(); });
+    $$('.ot-pool [data-i]', box).forEach(b => b.onclick = () => { picked.push(pool.find(p => p.i === +b.dataset.i)); draw(); });
+  }
+  $('.ot-chk', box).onclick = () => {
+    const it = items[k], got = picked.map(p => p.w), ok = got.join(' ') === it.ans.join(' ');
+    const r = $('.ot-res', box); r.hidden = false; r.className = 'res ot-res ' + (ok ? 'ok' : 'ng');
+    r.innerHTML = `<b>${ok ? '正解！' : 'おしい。正しい順は…'}</b><span class="fx" style="font-size:1.05rem">${(opts.join ? it.ans.join(opts.join) : it.ans.join(' '))}${opts.end || ''}</span>${it.note ? `<span class="small">${it.note}</span>` : ''}`;
+  };
+  $('.ot-clr', box).onclick = () => { picked = []; $('.ot-res', box).hidden = true; draw(); };
+  $('.ot-next', box).onclick = () => { k = (k + 1) % items.length; load(); };
+  load();
+}
+/* ===== 共通：グラフ ===== */
+const G = 9.8;
+function graph(o) { // o: {W,H,x:[a,b],y:[a,b],xl,yl,xt,yt}
+  const W = o.W || 360, H = o.H || 240, L = 46, R = 12, T = 14, B = 34;
+  const X = x => L + (x - o.x[0]) / (o.x[1] - o.x[0]) * (W - L - R), Y = y => H - B - (y - o.y[0]) / (o.y[1] - o.y[0]) * (H - T - B);
+  let s = '';
+  const step = (a, b) => { const r = (b - a) / 5, p = 10 ** Math.floor(Math.log10(r)), m = r / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; };
+  const sx = o.xt || step(...o.x), sy = o.yt || step(...o.y);
+  for (let v = Math.ceil(o.y[0] / sy) * sy; v <= o.y[1] + 1e-9; v += sy) s += `<line class="g" x1="${L}" y1="${Y(v)}" x2="${W - R}" y2="${Y(v)}"/><text class="tk" x="${L - 5}" y="${Y(v) + 4}" text-anchor="end">${fmt(v, 1)}</text>`;
+  for (let v = Math.ceil(o.x[0] / sx) * sx; v <= o.x[1] + 1e-9; v += sx) s += `<text class="tk" x="${X(v)}" y="${H - B + 15}" text-anchor="middle">${fmt(v, 1)}</text>`;
+  const y0 = Math.min(Math.max(0, o.y[0]), o.y[1]);
+  s += `<line class="ax" x1="${L}" y1="${Y(y0)}" x2="${W - R}" y2="${Y(y0)}"/><line class="ax" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"/>`;
+  s += `<text class="tk" x="${W - R}" y="${H - 4}" text-anchor="end">${o.xl}</text><text class="tk" x="${L + 4}" y="${T + 2}">${o.yl}</text>`;
+  return { X, Y, s, W, H };
+}
+const niceRange = (lo, hi) => { const pad = (hi - lo) * 0.08 || 1; return [Math.min(0, lo - pad), Math.max(0, hi + pad)]; };
+
+/* ===== 第1章 運動の表し方 ===== */
+VIEWS.undo = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '運動の表し方', '物体の運動は、位置・速度・加速度で表す。加速度が一定の運動（等加速度直線運動）は、3つの式とグラフで完全に説明できる。'));
+  root.appendChild(points([
+    ['速度と加速度', `<p>速度 v ＝ ${F('位置の変化 Δx', '時間 Δt')}　[m/s]<br>加速度 a ＝ ${F('速度の変化 Δv', '時間 Δt')}　[m/s²]<br>速度・加速度には<b>向き</b>がある（正・負で表す）。</p>`],
+    ['等加速度直線運動の3式', '<p class="fx" style="font-size:1rem;line-height:2">v ＝ v₀ ＋ at<br>x ＝ v₀t ＋ ½at²<br>v² − v₀² ＝ 2ax</p>'],
+    ['v-t グラフの読み方', '<p><mark>傾き</mark> ＝ 加速度<br><mark>グラフと t 軸で囲まれた面積</mark> ＝ 変位（移動距離）<br>t 軸より下の面積は、負の向きへの変位。</p>'],
+    ['落下運動', '<p>空気抵抗がなければ、物体は質量に関係なく重力加速度 g ＝ 9.8 m/s² で落下する。<br>自由落下：v ＝ gt、y ＝ ½gt²<br>鉛直投げ上げ：上向きを正とすると a ＝ −g</p>'],
+  ]));
+
+  const mv = labCard('実験', '等加速度直線運動のグラフ', '初速度 v₀ と加速度 a を決めて、時刻 t を動かす。v-t グラフの色のついた面積が変位 x');
+  mv.insertAdjacentHTML('beforeend', `<div class="row" style="gap:6px"><button class="btn ghost sm" data-p="0,9.8">自由落下（下向き正）</button><button class="btn ghost sm" data-p="19.6,-9.8">鉛直投げ上げ（上向き正）</button><button class="btn ghost sm" data-p="10,-2">ブレーキ</button><button class="btn ghost sm" data-p="5,0">等速直線運動</button></div>
+    <div class="ctls">${slider('mv0', '初速度 v₀ [m/s]', -20, 30, 0.2, 2)}${slider('mva', '加速度 a [m/s²]', -10, 10, 0.1, 2)}${slider('mvt', '時刻 t [s]', 0, 10, 0.1, 4)}</div>
+    <div class="grid2"><svg class="plot" id="mvvt" viewBox="0 0 360 240" role="img" aria-label="v-t グラフ"></svg><svg class="plot" id="mvxt" viewBox="0 0 360 240" role="img" aria-label="x-t グラフ"></svg></div>
+    <svg class="plot" id="mvtrack" viewBox="0 0 560 70" role="img" aria-label="物体の位置"></svg>
+    <ol class="steps fx" id="mvs" style="font-size:1rem"></ol>`);
+  root.appendChild(mv);
+  function drawMv() {
+    const v0 = +$('#mv0').value, a = +$('#mva').value, t = +$('#mvt').value;
+    $('#mv0-v').textContent = fmt(v0, 1); $('#mva-v').textContent = fmt(a, 1); $('#mvt-v').textContent = fmt(t, 1);
+    const T = 10, vs = [], xs = [];
+    for (let i = 0; i <= 100; i++) { const tt = T * i / 100; vs.push(v0 + a * tt); xs.push(v0 * tt + a * tt * tt / 2); }
+    const vr = niceRange(Math.min(...vs), Math.max(...vs)), xr = niceRange(Math.min(...xs), Math.max(...xs));
+    const g1 = graph({ x: [0, T], y: vr, xl: 't [s]', yl: 'v [m/s]', xt: 2 });
+    let s = g1.s;
+    let area = `M${g1.X(0)} ${g1.Y(0)}`; for (let i = 0; i <= 60; i++) { const tt = t * i / 60; area += ` L${g1.X(tt)} ${g1.Y(v0 + a * tt)}`; } area += ` L${g1.X(t)} ${g1.Y(0)} Z`;
+    s += `<path d="${area}" style="fill:var(--accent-soft)"/><path class="cv" d="M${g1.X(0)} ${g1.Y(v0)} L${g1.X(T)} ${g1.Y(v0 + a * T)}"/><circle class="dot" cx="${g1.X(t)}" cy="${g1.Y(v0 + a * t)}" r="6"/>`;
+    $('#mvvt').innerHTML = s;
+    const g2 = graph({ x: [0, T], y: xr, xl: 't [s]', yl: 'x [m]', xt: 2 });
+    let d = ''; for (let i = 0; i <= 100; i++) { const tt = T * i / 100; d += (i ? 'L' : 'M') + g2.X(tt).toFixed(1) + ' ' + g2.Y(v0 * tt + a * tt * tt / 2).toFixed(1); }
+    const x = v0 * t + a * t * t / 2, v = v0 + a * t;
+    $('#mvxt').innerHTML = g2.s + `<path class="cv" d="${d}"/><circle class="dot" cx="${g2.X(t)}" cy="${g2.Y(x)}" r="6"/>`;
+    const tx = p => 30 + (p - xr[0]) / (xr[1] - xr[0]) * 500;
+    $('#mvtrack').innerHTML = `<line class="ax" x1="20" y1="45" x2="540" y2="45"/><line class="ax" x1="${tx(0)}" y1="35" x2="${tx(0)}" y2="55"/><text class="tk" x="${tx(0)}" y="66" text-anchor="middle">x = 0</text><circle cx="${tx(x)}" cy="33" r="11" class="dot"/>` +
+      (Math.abs(v) > 0.05 ? `<line x1="${tx(x)}" y1="33" x2="${tx(x) + Math.sign(v) * Math.min(80, 8 + Math.abs(v) * 3)}" y2="33" style="stroke:var(--cobalt);stroke-width:3" marker-end="url(#arr)"/>` : '') + `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--cobalt)"/></marker></defs>`;
+    $('#mvs').innerHTML = `<li><span>v ＝ v₀ ＋ at ＝ ${fmt(v0, 1)} ＋ (${fmt(a, 1)}) × ${fmt(t, 1)} ＝ <mark>${fmt(v, 2)} m/s</mark><span class="why">v-t グラフの赤い点の高さ</span></span></li>
+      <li><span>x ＝ v₀t ＋ ½at² ＝ <mark>${fmt(x, 2)} m</mark><span class="why">v-t グラフの色のついた面積（t 軸より下は負として引く）</span></span></li>
+      <li><span>v² − v₀² ＝ ${fmt(v * v - v0 * v0, 2)}、2ax ＝ ${fmt(2 * a * x, 2)}<span class="why">時間 t をふくまない式。どちらも同じ値になる</span></span></li>`;
+  }
+  $$('[data-p]', mv).forEach(b => b.onclick = () => { const [p, q] = b.dataset.p.split(','); $('#mv0').value = p; $('#mva').value = q; $('#mvt').value = 2; drawMv(); });
+  ['#mv0', '#mva', '#mvt'].forEach(i => $(i, mv).oninput = drawMv); drawMv();
+  root.appendChild(trap('鉛直投げ上げの<b>最高点</b>では速度は 0 だが、加速度は −9.8 m/s² のまま（0 ではない）。重力はずっとはたらいている。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('undo'));
+};
+
+/* ===== 第2章 力と運動 ===== */
+VIEWS.chikara = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '力と運動', '力は「大きさ・向き・作用点」をもつベクトル。物体にはたらく力をすべて描き出し、つり合いの式や運動方程式を立てるのが基本の流れ。'));
+  root.appendChild(points([
+    ['運動の3法則', '<p><b>第1法則（慣性の法則）</b>：力がはたらかない（つり合う）とき、静止または等速直線運動を続ける。<br><b>第2法則（運動方程式）</b>：<mark>ma ＝ F</mark><br><b>第3法則（作用・反作用）</b>：2物体が及ぼし合う力は、同じ大きさで逆向き。</p>'],
+    ['つり合いと作用・反作用', '<p><b>つり合い</b>：<mark>1つの物体</mark>にはたらく力どうし。<br><b>作用・反作用</b>：<mark>2つの物体</mark>の間で及ぼし合う力。<br>どちらも「同じ大きさ・逆向き」だが、はたらく物体がちがう。</p>'],
+    ['いろいろな力', '<p>重力 W ＝ mg<br>弾性力 F ＝ kx（フックの法則）<br>最大摩擦力 F₀ ＝ μN、動摩擦力 F′ ＝ μ′N<br>浮力 F ＝ ρVg（アルキメデスの原理）<br>圧力 p ＝ F / S [Pa]</p>'],
+    ['力の分解', '<p>傾き θ の斜面では、重力 mg を<br>斜面に平行な成分 <mark>mg sin θ</mark><br>斜面に垂直な成分 <mark>mg cos θ</mark><br>に分けて考える。</p>'],
+  ]));
+
+  const sl = labCard('実験', '斜面の上の物体', '斜面の角度を大きくしていくと、どこですべり出す？ 矢印は物体にはたらく力');
+  sl.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('slt', '斜面の角度 θ [°]', 0, 60, 1, 20)}${slider('slm', '質量 m [kg]', 1, 10, 0.5, 2)}${slider('slu', '静止摩擦係数 μ', 0, 1, 0.05, 0.5)}${slider('slv', '動摩擦係数 μ′', 0, 1, 0.05, 0.3)}</div>
+    <div class="lab-split"><svg class="plot" id="slsvg" viewBox="0 0 420 300" role="img" aria-label="斜面と力"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="stat-grid" id="sli"></div><div class="res" id="slr"></div></div></div>`);
+  root.appendChild(sl);
+  function drawSl() {
+    let mu = +$('#slu').value, mu2 = +$('#slv').value; if (mu2 > mu) { mu2 = mu; $('#slv').value = mu; }
+    const th = +$('#slt').value, m = +$('#slm').value, r = th * Math.PI / 180;
+    $('#slt-v').textContent = th; $('#slm-v').textContent = m; $('#slu-v').textContent = fmt(mu); $('#slv-v').textContent = fmt(mu2);
+    const W = m * G, P = W * Math.sin(r), N = W * Math.cos(r), F0 = mu * N, slide = P > F0 + 1e-9;
+    const f = slide ? mu2 * N : P, a = slide ? (P - f) / m : 0;
+    // 図
+    const ox = 40, oy = 270, Lx = 340, top = [ox + Lx, oy - Lx * Math.tan(r)];
+    const cx = ox + Lx * 0.55, cy = oy - Lx * 0.55 * Math.tan(r);
+    const ux = Math.cos(r), uy = -Math.sin(r), nx = -Math.sin(r), ny = -Math.cos(r); // 斜面上向き・法線
+    const bc = [cx + nx * 22, cy + ny * 22], sc = 4.2;
+    const arrow = (x1, y1, dx, dy, col, lbl, dash) => { const x2 = x1 + dx, y2 = y1 + dy; return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:var(${col});stroke-width:3${dash ? ';stroke-dasharray:5 4' : ''}" marker-end="url(#a${col.slice(2)})"/>${lbl ? `<text class="tk" x="${x2 + 4}" y="${y2 + (dy > 0 ? 14 : -4)}" style="fill:var(${col});font-weight:700">${lbl}</text>` : ''}`; };
+    const mk = c => `<marker id="a${c}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--${c})"/></marker>`;
+    let s = `<defs>${['ink', 'accent', 'cobalt', 'good', 'muted'].map(mk).join('')}</defs>`;
+    s += `<polygon points="${ox},${oy} ${top[0]},${oy} ${top[0]},${top[1]}" style="fill:var(--card-2);stroke:var(--ink);stroke-width:1.5"/>`;
+    s += `<path d="M${ox + 40} ${oy} A40 40 0 0 0 ${ox + 40 * Math.cos(r)} ${oy - 40 * Math.sin(r)}" style="fill:none;stroke:var(--accent)"/><text class="tk" x="${ox + 46}" y="${oy - 6}">θ</text>`;
+    s += `<g transform="rotate(${-th} ${bc[0]} ${bc[1]})"><rect x="${bc[0] - 24}" y="${bc[1] - 22}" width="48" height="44" rx="4" style="fill:var(--marker);stroke:var(--ink);stroke-width:1.5"/></g>`;
+    s += arrow(bc[0], bc[1], 0, W * sc, '--ink', 'mg');
+    s += arrow(bc[0], bc[1], -ux * P * sc, -uy * P * sc, '--muted', 'mg sinθ', 1);
+    s += arrow(bc[0], bc[1], -nx * N * sc, -ny * N * sc, '--muted', '', 1);
+    s += arrow(bc[0], bc[1], nx * N * sc, ny * N * sc, '--cobalt', 'N');
+    if (f > 0.01) s += arrow(bc[0] - ux * 0, bc[1], ux * f * sc, uy * f * sc, '--good', slide ? '動摩擦力' : '静止摩擦力');
+    $('#slsvg').innerHTML = s;
+    const c = (k, v) => `<div class="var"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+    $('#sli').innerHTML = c('重力 mg', fmt(W, 1) + ' N') + c('斜面方向 mg sinθ', fmt(P, 1) + ' N') + c('垂直抗力 N ＝ mg cosθ', fmt(N, 1) + ' N') + c('最大摩擦力 μN', fmt(F0, 1) + ' N');
+    const thc = Math.atan(mu) * 180 / Math.PI;
+    $('#slr').className = 'res ' + (slide ? 'ng' : 'ok');
+    $('#slr').innerHTML = slide ? `<b>すべり出す！</b><span>mg sinθ（${fmt(P, 1)} N）＞ μN（${fmt(F0, 1)} N）。</span><span class="fx">加速度 a ＝ g(sinθ − μ′cosθ) ＝ ${fmt(a, 2)} m/s²</span>`
+      : `<b>静止している</b><span>斜面方向の力 mg sinθ（${fmt(P, 1)} N）と静止摩擦力（${fmt(f, 1)} N）がつり合っている。</span>`;
+    $('#slr').innerHTML += `<span class="small">すべり出す角度：tan θ ＝ μ より約 ${fmt(thc, 1)}°。質量を変えてもこの角度は変わらない。</span>`;
+  }
+  ['#slt', '#slm', '#slu', '#slv'].forEach(i => $(i, sl).oninput = drawSl); drawSl();
+  root.appendChild(trap('机の上の本で、「本にはたらく重力」と「机が本を押す力（垂直抗力）」は<b>つり合い</b>の関係。作用・反作用ではない。垂直抗力の反作用は「本が机を押す力」。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('chikara'));
+};
+
+/* ===== 第3章 エネルギーと熱 ===== */
+const SPH = [['水', 4.2], ['アルミニウム', 0.90], ['鉄', 0.45], ['銅', 0.38]];
+VIEWS.energy = (root) => {
+  root.appendChild(sectionHead('UNIT 3', 'エネルギーと熱', '力が物体を動かすと「仕事」をする。仕事をされた物体はエネルギーが変わる。熱もエネルギーの一つで、移り変わってもエネルギーの総量は保存される。'));
+  root.appendChild(points([
+    ['仕事と仕事率', '<p>仕事 W ＝ Fx cos θ　[J]（力と移動の向きが垂直なら 0）<br>仕事率 P ＝ W / t　[W]</p>'],
+    ['力学的エネルギー', '<p>運動エネルギー K ＝ ½mv²<br>重力による位置エネルギー U ＝ mgh<br>弾性力による位置エネルギー U ＝ ½kx²<br>重力・弾性力だけが仕事をするとき、<mark>K ＋ U ＝ 一定</mark>。</p>'],
+    ['熱と温度', '<p>熱量 Q ＝ mcΔT（c：比熱 [J/(g·K)]）<br>熱容量 C ＝ mc<br>絶対温度 T [K] ＝ t [℃] ＋ 273<br>高温の物体が失った熱量 ＝ 低温の物体が得た熱量（<mark>熱量の保存</mark>）</p>'],
+    ['熱力学第一法則', '<p>ΔU ＝ Q ＋ W<br>（ΔU：内部エネルギーの変化、Q：吸収した熱量、W：外部からされた仕事）<br>熱機関の熱効率 e ＝ W′ / Q₁（1 より必ず小さい）</p>'],
+  ]));
+
+  const en = labCard('実験', '力学的エネルギー保存', '高さ h₀ から静かにはなした物体。今の高さを動かすと、運動エネルギーと位置エネルギーの割合が変わる');
+  en.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('enm', '質量 m [kg]', 0.5, 10, 0.5, 2)}${slider('enh', 'はなす高さ h₀ [m]', 1, 50, 1, 20)}${slider('eny', '今の高さ h [m]', 0, 50, 0.5, 10)}</div>
+    <div class="lab-split"><svg class="plot" id="ensvg" viewBox="0 0 420 260" role="img" aria-label="エネルギーの棒グラフ"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="stat-grid" id="eni"></div><div class="note" id="enn"></div></div></div>`);
+  root.appendChild(en);
+  function drawEn() {
+    const m = +$('#enm').value, h0 = +$('#enh').value; let y = +$('#eny').value; if (y > h0) { y = h0; $('#eny').value = h0; }
+    $('#enm-v').textContent = m; $('#enh-v').textContent = h0; $('#eny-v').textContent = y;
+    const E = m * G * h0, U = m * G * y, K = E - U, v = Math.sqrt(2 * G * (h0 - y));
+    const Y = e => 220 - e / E * 180;
+    let s = `<line class="ax" x1="20" y1="220" x2="400" y2="220"/>`;
+    // 落下のようす
+    const py = h => 220 - h / h0 * 180;
+    s += `<line x1="70" y1="${py(h0)}" x2="70" y2="220" style="stroke:var(--line);stroke-width:2;stroke-dasharray:4 4"/><circle cx="70" cy="${py(h0)}" r="7" style="fill:none;stroke:var(--muted)"/><circle cx="70" cy="${py(y)}" r="11" class="dot"/><text class="tk" x="70" y="240" text-anchor="middle">地面</text>`;
+    [['K', K, '--accent', 180], ['U', U, '--cobalt', 250], ['K＋U', E, '--good', 320]].forEach(([n, e, c, x]) => s += `<rect x="${x}" y="${Y(e)}" width="46" height="${220 - Y(e)}" style="fill:var(${c})" opacity=".85"/><text class="tk" x="${x + 23}" y="${Y(e) - 6}" text-anchor="middle">${fmt(e, 0)} J</text><text class="lbl" x="${x + 23}" y="240" text-anchor="middle">${n}</text>`);
+    $('#ensvg').innerHTML = s;
+    const c = (k, val) => `<div class="var"><div class="k">${k}</div><div class="v">${val}</div></div>`;
+    $('#eni').innerHTML = c('運動エネルギー ½mv²', fmt(K, 1) + ' J') + c('位置エネルギー mgh', fmt(U, 1) + ' J') + c('速さ v', fmt(v, 2) + ' m/s');
+    $('#enn').innerHTML = `力学的エネルギーの合計は、どの高さでも <b>${fmt(E, 1)} J</b>（＝ mgh₀）。<br>地面での速さは v ＝ √(2gh₀) ＝ ${fmt(Math.sqrt(2 * G * h0), 2)} m/s。<b>質量を変えても速さは変わらない</b>ことを確かめよう。`;
+  }
+  ['#enm', '#enh', '#eny'].forEach(i => $(i, en).oninput = drawEn); drawEn();
+
+  const mx = labCard('実験', '熱量の保存（湯と水を混ぜる）', '温度のちがう水を混ぜると、何℃になる？（容器や外への熱の出入りは考えない）');
+  mx.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('mxm1', '湯の質量 [g]', 10, 500, 10, 100)}${slider('mxt1', '湯の温度 [℃]', 0, 100, 1, 80)}${slider('mxm2', '水の質量 [g]', 10, 500, 10, 200)}${slider('mxt2', '水の温度 [℃]', 0, 100, 1, 20)}</div>
+    <ol class="steps fx" id="mxs" style="font-size:1rem"></ol>
+    <div class="scroll-x"><table class="tbl ctr"><thead><tr><th>物質</th>${SPH.map(s => `<th>${s[0]}</th>`).join('')}</tr></thead><tbody><tr><th>比熱 [J/(g·K)]</th>${SPH.map(s => `<td>${s[1]}</td>`).join('')}</tr></tbody></table></div>
+    <p class="small muted">水は比熱が大きいので、あたたまりにくく冷めにくい。</p>`);
+  root.appendChild(mx);
+  function drawMx() {
+    const m1 = +$('#mxm1').value, t1 = +$('#mxt1').value, m2 = +$('#mxm2').value, t2 = +$('#mxt2').value;
+    $('#mxm1-v').textContent = m1; $('#mxt1-v').textContent = t1; $('#mxm2-v').textContent = m2; $('#mxt2-v').textContent = t2;
+    const T = (m1 * t1 + m2 * t2) / (m1 + m2), Q = m1 * 4.2 * Math.abs(t1 - T);
+    $('#mxs').innerHTML = `<li><span>湯が失う熱量 ＝ ${m1} × 4.2 × (${t1} − T)<span class="why">Q ＝ mcΔT</span></span></li><li><span>水が得る熱量 ＝ ${m2} × 4.2 × (T − ${t2})</span></li>
+      <li><span>2つが等しいので　T ＝ ${F(`${m1} × ${t1} ＋ ${m2} × ${t2}`, `${m1} ＋ ${m2}`)} ＝ <mark>${fmt(T, 1)} ℃</mark><span class="why">移動した熱量は約 ${fmt(Q, 0)} J</span></span></li>`;
+  }
+  ['#mxm1', '#mxt1', '#mxm2', '#mxt2'].forEach(i => $(i, mx).oninput = drawMx); drawMx();
+  root.appendChild(trap('熱力学第一法則の W は「外部から<b>された</b>仕事」。気体が外部に仕事を<b>した</b>ときは W が負になる。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('energy'));
+};
+
+/* ===== 第4章 波 ===== */
+VIEWS.nami = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '波', '波は振動が次々に伝わる現象で、媒質そのものは移動しない。波の速さ・振動数・波長の関係と、重ね合わせでできる定常波が中心。音は空気を伝わる縦波。'));
+  root.appendChild(points([
+    ['波の基本式', '<p class="fx" style="font-size:1rem">v ＝ fλ　　T ＝ 1 / f</p><p>v：波の速さ [m/s]、f：振動数 [Hz]、λ：波長 [m]、T：周期 [s]</p>'],
+    ['横波と縦波', '<p><b>横波</b>：媒質の振動方向が、波の進む向きと垂直（弦の波）。<br><b>縦波</b>：振動方向が進む向きと平行。疎と密がくり返す（<mark>音波</mark>）。</p>'],
+    ['定常波と固有振動', '<p>同じ波が逆向きに重なると定常波（節と腹）。節と節の間隔は <mark>λ/2</mark>。<br><b>弦・開管</b>：λ ＝ 2L/n（n ＝ 1, 2, 3, …）<br><b>閉管</b>：λ ＝ 4L/m（m ＝ 1, 3, 5, …）</p>'],
+    ['音', '<p>空気中の音速 V ＝ 331.5 ＋ 0.6t [m/s]（t：気温 ℃）<br>高さ ↔ 振動数、大きさ ↔ 振幅、音色 ↔ 波形<br>うなりの回数 ＝ |f₁ − f₂|（1秒あたり）</p>'],
+  ]));
+
+  const wv = labCard('実験', '波を動かす', '振幅・波長・振動数を変えると、波の速さ v ＝ fλ が変わる');
+  wv.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">波の種類${seg('wvk', [['yoko', '横波'], ['tate', '縦波']], 'yoko')}</label>${slider('wvA', '振幅 A [m]', 0.1, 1, 0.1, 0.5)}${slider('wvl', '波長 λ [m]', 1, 6, 0.5, 3)}${slider('wvf', '振動数 f [Hz]', 0.2, 2, 0.1, 0.5)}</div>
+    <svg class="plot" id="wvsvg" viewBox="0 0 560 200" role="img" aria-label="波のようす"></svg><div class="stat-grid" id="wvi"></div><div class="note small" id="wvn"></div>`);
+  root.appendChild(wv);
+  let wk = 'yoko', t0 = performance.now();
+  bindSeg(wv, 'wvk', v => { wk = v; });
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function frame(now) {
+    if (!document.body.contains(wv)) return;
+    const A = +$('#wvA').value, lam = +$('#wvl').value, f = +$('#wvf').value, t = still ? 0 : (now - t0) / 1000;
+    $('#wvA-v').textContent = fmt(A, 1); $('#wvl-v').textContent = fmt(lam, 1); $('#wvf-v').textContent = fmt(f, 1);
+    const k = 2 * Math.PI / lam, w = 2 * Math.PI * f, X = x => 20 + x / 12 * 520, Y = y => 100 - y * 70;
+    let s = `<line class="ax" x1="20" y1="100" x2="540" y2="100"/>`;
+    for (let x = 0; x <= 12; x += 1) s += `<text class="tk" x="${X(x)}" y="196" text-anchor="middle">${x}</text>`;
+    if (wk === 'yoko') {
+      let d = ''; for (let i = 0; i <= 240; i++) { const x = 12 * i / 240; d += (i ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Y(A * Math.sin(w * t - k * x)).toFixed(1); }
+      s += `<path class="cv" d="${d}"/>`;
+      for (let x = 0; x <= 12; x += 0.5) s += `<circle cx="${X(x)}" cy="${Y(A * Math.sin(w * t - k * x))}" r="3" style="fill:var(--cobalt)"/>`;
+      s += `<circle cx="${X(3)}" cy="${Y(A * Math.sin(w * t - k * 3))}" r="7" class="dot"/>`;
+    } else {
+      for (let x = 0; x <= 12; x += 0.25) { const dx = A * 0.5 * Math.sin(w * t - k * x); s += `<line x1="${X(x + dx)}" y1="55" x2="${X(x + dx)}" y2="145" style="stroke:var(${Math.abs(x - 3) < 0.01 ? '--accent' : '--cobalt'});stroke-width:${Math.abs(x - 3) < 0.01 ? 3 : 1.5}"/>`; }
+    }
+    s += `<path d="M${X(0)} 20 h${lam / 12 * 520}" style="stroke:var(--accent);stroke-width:2"/><text class="tk" x="${X(lam / 2)}" y="16" text-anchor="middle">λ ＝ ${fmt(lam, 1)} m</text>`;
+    $('#wvsvg').innerHTML = s;
+    const c = (kk, v) => `<div class="var"><div class="k">${kk}</div><div class="v">${v}</div></div>`;
+    $('#wvi').innerHTML = c('波の速さ v ＝ fλ', fmt(f * lam, 2) + ' m/s') + c('周期 T ＝ 1/f', fmt(1 / f, 2) + ' s');
+    $('#wvn').innerHTML = wk === 'yoko' ? '赤い点（媒質の1点）は上下に振動するだけで、右へは進まない。進むのは「振動の形」。' : '縦波は、媒質が進む向きと同じ方向に振動し、線がこみ合う「密」とまばらな「疎」が伝わっていく。赤い線が1つの媒質。';
+    if (!still) requestAnimationFrame(frame);
+  }
+  ['#wvA', '#wvl', '#wvf'].forEach(i => $(i, wv).oninput = () => { if (still) frame(0); });
+  $$('#wvk button', wv).forEach(b => b.addEventListener('click', () => { if (still) frame(0); }));
+  requestAnimationFrame(frame);
+
+  const sw = labCard('実験', '弦と気柱の固有振動', '長さ L と振動の番号を選ぶと、定常波の形と振動数が出る');
+  sw.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">種類${seg('swk', [['gen', '弦（両端固定）'], ['kai', '開管'], ['hei', '閉管']], 'gen')}</label>${slider('swn', '何番目の振動', 1, 4, 1, 1)}${slider('swL', '長さ L [m]', 0.2, 1.5, 0.05, 0.85)}${slider('swv', '波の速さ v [m/s]', 100, 400, 10, 340)}</div>
+    <svg class="plot" id="swsvg" viewBox="0 0 560 170" role="img" aria-label="定常波"></svg><div class="res" id="swr"></div>`);
+  root.appendChild(sw);
+  let sk = 'gen';
+  bindSeg(sw, 'swk', v => { sk = v; drawSw(); });
+  function drawSw() {
+    const n = +$('#swn').value, L = +$('#swL').value, v = +$('#swv').value;
+    $('#swn-v').textContent = n; $('#swL-v').textContent = fmt(L, 2); $('#swv-v').textContent = v;
+    const m = sk === 'hei' ? 2 * n - 1 : n, lam = sk === 'hei' ? 4 * L / m : 2 * L / n, f = v / lam;
+    const X0 = 40, X1 = 520, Y = 85, amp = 50, k = 2 * Math.PI / lam;
+    const disp = x => sk === 'gen' ? Math.sin(k * x) : Math.cos(k * x); // 弦：両端が節。管：開口端（x=0）が腹
+    let s = '';
+    if (sk === 'gen') s += `<line x1="${X0}" y1="20" x2="${X0}" y2="150" style="stroke:var(--ink);stroke-width:4"/><line x1="${X1}" y1="20" x2="${X1}" y2="150" style="stroke:var(--ink);stroke-width:4"/>`;
+    else s += `<path d="M${X0} 25 H${X1} M${X0} 145 H${X1}" style="stroke:var(--ink);stroke-width:3"/>` + (sk === 'hei' ? `<line x1="${X1}" y1="25" x2="${X1}" y2="145" style="stroke:var(--ink);stroke-width:5"/>` : '');
+    [1, -1].forEach(sg => { let d = ''; for (let i = 0; i <= 200; i++) { const x = L * i / 200; d += (i ? 'L' : 'M') + (X0 + (X1 - X0) * i / 200).toFixed(1) + ' ' + (Y - sg * amp * disp(x)).toFixed(1); } s += `<path d="${d}" style="fill:none;stroke:var(${sg > 0 ? '--accent' : '--cobalt'});stroke-width:2.5"/>`; });
+    s += `<text class="tk" x="${X0}" y="166">${sk === 'gen' ? '固定端' : '開口端'}</text><text class="tk" x="${X1}" y="166" text-anchor="end">${sk === 'gen' ? '固定端' : sk === 'kai' ? '開口端' : '閉口端'}</text>`;
+    $('#swsvg').innerHTML = s;
+    const name = sk === 'hei' ? (m === 1 ? '基本振動' : `${m}倍振動`) : (n === 1 ? '基本振動' : `${n}倍振動`);
+    $('#swr').innerHTML = `<b>${name}</b><span class="fx">λ ＝ ${sk === 'hei' ? `4L / ${m}` : `2L / ${n}`} ＝ ${fmt(lam, 3)} m　　f ＝ v / λ ＝ <mark>${fmt(f, 1)} Hz</mark></span><span class="small">${sk === 'gen' ? '両端が節。' : sk === 'kai' ? '両端が腹（開口端は腹）。' : '開口端が腹、閉口端が節。閉管では奇数倍の振動しか起こらない。'}${sk === 'gen' ? '' : '（実際の気柱では開口端補正があるが、ここでは考えない）'}</span>`;
+  }
+  ['#swn', '#swL', '#swv'].forEach(i => $(i, sw).oninput = drawSw); drawSw();
+  root.appendChild(trap('閉管の固有振動は<b>奇数倍（1, 3, 5 倍…）</b>だけ。「2倍振動」は存在しない。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('nami'));
+};
+
+/* ===== 第5章 電気 ===== */
+VIEWS.denki = (root) => {
+  root.appendChild(sectionHead('UNIT 5', '電気', '電流は電荷の流れ。電圧・電流・抵抗の関係（オームの法則）と、抵抗のつなぎ方による違いが基本。電流は磁場をつくり、磁場の変化は電流を生む（電磁誘導）。'));
+  root.appendChild(points([
+    ['オームの法則', '<p class="fx" style="font-size:1rem">V ＝ RI</p><p>抵抗 R ＝ ρ L / S（長さに比例、断面積に反比例）<br>電気量 Q ＝ It [C]。電流の向きは電子の流れと逆。</p>'],
+    ['抵抗のつなぎ方', '<p><b>直列</b>：R ＝ R₁ ＋ R₂（電流が共通）<br><b>並列</b>：1/R ＝ 1/R₁ ＋ 1/R₂（電圧が共通）</p>'],
+    ['電力とジュール熱', '<p>電力 P ＝ VI ＝ RI² ＝ V²/R [W]<br>ジュール熱・電力量 W ＝ Pt [J]<br>1 kWh ＝ 3.6×10⁶ J</p>'],
+    ['電磁誘導と交流', '<p>コイルを通る磁場が変化すると電流が流れる（<mark>電磁誘導</mark>）。発電機のしくみ。<br>変圧器：V₁ : V₂ ＝ N₁ : N₂<br>交流の周波数は東日本 50 Hz・西日本 60 Hz。</p>'],
+  ]));
+
+  const ci = labCard('実験', '抵抗の直列・並列', '電源の電圧と2つの抵抗を決めて、つなぎ方を変えてみよう');
+  ci.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">つなぎ方${seg('cik', [['s', '直列'], ['p', '並列']], 's')}</label>${slider('ciV', '電源の電圧 V [V]', 1, 12, 0.5, 6)}${slider('ci1', 'R₁ [Ω]', 1, 30, 1, 10)}${slider('ci2', 'R₂ [Ω]', 1, 30, 1, 20)}</div>
+    <div class="lab-split"><svg class="plot" id="cisvg" viewBox="0 0 400 240" role="img" aria-label="回路図"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="stat-grid" id="cii"></div><ol class="steps fx" id="cis" style="font-size:.95rem"></ol></div></div>`);
+  root.appendChild(ci);
+  let ck = 's';
+  bindSeg(ci, 'cik', v => { ck = v; drawCi(); });
+  function drawCi() {
+    const V = +$('#ciV').value, R1 = +$('#ci1').value, R2 = +$('#ci2').value;
+    $('#ciV-v').textContent = V; $('#ci1-v').textContent = R1; $('#ci2-v').textContent = R2;
+    const R = ck === 's' ? R1 + R2 : R1 * R2 / (R1 + R2), I = V / R;
+    const I1 = ck === 's' ? I : V / R1, I2 = ck === 's' ? I : V / R2, V1 = I1 * R1, V2 = I2 * R2;
+    const res = (x, y, lbl, val) => `<rect x="${x - 30}" y="${y - 11}" width="60" height="22" rx="3" style="fill:var(--marker);stroke:var(--ink);stroke-width:1.5"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-weight="700" font-size="13">${lbl}</text><text class="tk" x="${x}" y="${y + 28}" text-anchor="middle">${val}</text>`;
+    let s = `<g style="stroke:var(--ink);stroke-width:2;fill:none">`;
+    if (ck === 's') s += `<path d="M60 200 V40 H340 V200 H60"/></g>` + res(150, 40, 'R₁', `${R1} Ω・${fmt(V1, 2)} V`) + res(250, 40, 'R₂', `${R2} Ω・${fmt(V2, 2)} V`);
+    else s += `<path d="M60 200 V40 H140 M140 40 V20 H320 V40 M140 40 V90 H320 V40 M320 40 H340 V200 H60"/></g>` + res(230, 20, 'R₁', `${R1} Ω・${fmt(I1, 2)} A`) + res(230, 90, 'R₂', `${R2} Ω・${fmt(I2, 2)} A`);
+    s += `<line x1="45" y1="120" x2="75" y2="120" style="stroke:var(--ink);stroke-width:3"/><line x1="52" y1="132" x2="68" y2="132" style="stroke:var(--ink);stroke-width:6"/><rect x="40" y="121" width="40" height="10" style="fill:var(--card)"/><line x1="45" y1="120" x2="75" y2="120" style="stroke:var(--ink);stroke-width:3"/><line x1="52" y1="132" x2="68" y2="132" style="stroke:var(--ink);stroke-width:6"/><text class="tk" x="88" y="130">${V} V</text>`;
+    s += `<text class="lbl" x="200" y="220" text-anchor="middle" style="fill:var(--accent)">全体の電流 ${fmt(I, 3)} A</text>`;
+    $('#cisvg').innerHTML = s;
+    const c = (k, v) => `<div class="var"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+    $('#cii').innerHTML = c('合成抵抗 R', fmt(R, 2) + ' Ω') + c('全体の電流 I', fmt(I, 3) + ' A') + c('消費電力 P ＝ VI', fmt(V * I, 2) + ' W');
+    $('#cis').innerHTML = ck === 's' ? `<li><span>R ＝ R₁ ＋ R₂ ＝ ${R1} ＋ ${R2} ＝ ${R} Ω</span></li><li><span>I ＝ V / R ＝ ${V} / ${R} ＝ ${fmt(I, 3)} A<span class="why">直列では R₁ と R₂ に同じ電流が流れる</span></span></li><li><span>V₁ ＝ R₁I ＝ ${fmt(V1, 2)} V、V₂ ＝ R₂I ＝ ${fmt(V2, 2)} V<span class="why">電圧は抵抗の大きさの比に分かれる（合計 ${V} V）</span></span></li>`
+      : `<li><span>1/R ＝ 1/${R1} ＋ 1/${R2}　→　R ＝ ${fmt(R, 2)} Ω<span class="why">並列にすると、どちらの抵抗よりも小さくなる</span></span></li><li><span>I₁ ＝ V / R₁ ＝ ${fmt(I1, 3)} A、I₂ ＝ V / R₂ ＝ ${fmt(I2, 3)} A<span class="why">並列ではどちらにも同じ電圧 ${V} V がかかる</span></span></li><li><span>I ＝ I₁ ＋ I₂ ＝ ${fmt(I, 3)} A</span></li>`;
+  }
+  ['#ciV', '#ci1', '#ci2'].forEach(i => $(i, ci).oninput = drawCi); drawCi();
+  root.appendChild(trap('家庭のコンセントにつなぐ電気器具は<b>並列</b>につながっている。器具を増やすと全体の電流が増えるので、たこ足配線は危険。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('denki'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から）重力加速度 9.8 m/s² ===== */
+const QUESTIONS = [
+/* ---------- 運動の表し方 ---------- */
+{ id: 'u1', unit: 'undo', type: '速さ', lv: 1, inUnit: true,
+  stem: '<p>時速 72 km は秒速何 m か。</p>', choices: ['7.2 m/s', '12 m/s', '20 m/s', '72 m/s'], ans: 2,
+  exp: '<p>72 km/h ＝ 72000 m ÷ 3600 s ＝ <mark>20 m/s</mark>。km/h を 3.6 で割ると m/s になる。</p>' },
+{ id: 'u2', unit: 'undo', type: '等加速度運動', lv: 1, inUnit: true,
+  stem: '<p>静止していた物体が、一定の加速度 2.0 m/s² で動き出した。5.0 秒後の速さはいくらか。</p>', choices: ['2.5 m/s', '5.0 m/s', '7.0 m/s', '10 m/s'], ans: 3,
+  exp: '<p>v ＝ v₀ ＋ at ＝ 0 ＋ 2.0 × 5.0 ＝ <mark>10 m/s</mark>。</p>' },
+{ id: 'u3', unit: 'undo', type: '等加速度運動', lv: 2, inUnit: true,
+  stem: '<p>静止していた物体が、一定の加速度 2.0 m/s² で動き出した。5.0 秒間に進む距離はいくらか。</p>', choices: ['10 m', '25 m', '50 m', '100 m'], ans: 1,
+  exp: '<p>x ＝ v₀t ＋ ½at² ＝ ½ × 2.0 × 5.0² ＝ <mark>25 m</mark>。v-t グラフの三角形の面積（½ × 5.0 × 10）と同じ。</p>' },
+{ id: 'u4', unit: 'undo', type: 'v-tグラフ', lv: 1, inUnit: true,
+  stem: '<p>v-t グラフで、グラフと t 軸で囲まれた部分の面積が表すものはどれか。</p>', choices: ['加速度', '変位（移動距離）', '速さ', '時間'], ans: 1,
+  exp: '<p>面積は<mark>変位</mark>、グラフの傾きは加速度を表す。</p>' },
+{ id: 'u5', unit: 'undo', type: '自由落下', lv: 2, inUnit: true,
+  stem: '<p>物体を静かにはなしてから 2.0 秒後の速さはいくらか。</p>', choices: ['4.9 m/s', '9.8 m/s', '19.6 m/s', '39.2 m/s'], ans: 2,
+  exp: '<p>自由落下は v ＝ gt。9.8 × 2.0 ＝ <mark>19.6 m/s</mark>。</p>' },
+{ id: 'u6', unit: 'undo', type: '自由落下', lv: 2,
+  stem: '<p>物体を静かにはなしてから 2.0 秒間に落下する距離はいくらか。</p>', choices: ['9.8 m', '19.6 m', '39.2 m', '4.9 m'], ans: 1,
+  exp: '<p>y ＝ ½gt² ＝ ½ × 9.8 × 2.0² ＝ <mark>19.6 m</mark>。</p>' },
+{ id: 'u7', unit: 'undo', type: '鉛直投げ上げ', lv: 3,
+  stem: '<p>物体を真上に 19.6 m/s で投げ上げた。最高点の高さはいくらか。</p>', choices: ['9.8 m', '19.6 m', '39.2 m', '4.9 m'], ans: 1,
+  exp: '<p>最高点では v ＝ 0。v² − v₀² ＝ 2ax（上向き正、a ＝ −9.8）より 0 − 19.6² ＝ 2 × (−9.8) × x、x ＝ <mark>19.6 m</mark>。最高点までの時間は 2.0 s。</p>' },
+{ id: 'u8', unit: 'undo', type: '等加速度運動', lv: 2,
+  stem: '<p>速さ 10 m/s で走る自転車がブレーキをかけ、一定の加速度 −2.0 m/s² で止まった。止まるまでに進んだ距離はいくらか。</p>', choices: ['5.0 m', '10 m', '25 m', '50 m'], ans: 2,
+  exp: '<p>v² − v₀² ＝ 2ax より 0 − 10² ＝ 2 × (−2.0) × x、x ＝ <mark>25 m</mark>。時間がわからないときはこの式が便利。</p>' },
+{ id: 'u9', unit: 'undo', type: '相対速度', lv: 2,
+  stem: '<p>東向きに 20 m/s で走る車 A から、東向きに 15 m/s で走る車 B を見ると、B の速度はどう見えるか。</p>', choices: ['東向きに 5 m/s', '西向きに 5 m/s', '東向きに 35 m/s', '西向きに 35 m/s'], ans: 1,
+  exp: '<p>A から見た B の相対速度 ＝ v<sub>B</sub> − v<sub>A</sub> ＝ 15 − 20 ＝ −5 m/s。東向きを正としたので<mark>西向きに 5 m/s</mark>（A から見ると B は後ろへ下がっていく）。</p>' },
+{ id: 'u10', unit: 'undo', type: '速度の合成', lv: 2,
+  stem: '<p>静水に対して 4.0 m/s で進む船が、流れの速さ 3.0 m/s の川を、流れに垂直な向きに船首を向けて進む。岸から見た船の速さはいくらか。</p>', choices: ['1.0 m/s', '5.0 m/s', '7.0 m/s', '12 m/s'], ans: 1,
+  exp: '<p>直角に合成するので √(4.0² ＋ 3.0²) ＝ <mark>5.0 m/s</mark>。</p>' },
+{ id: 'u11', unit: 'undo', type: 'グラフ', lv: 1,
+  stem: '<p>等速直線運動をする物体の x-t グラフ（位置と時間）の形はどれか。</p>', choices: ['傾きが一定の直線', '放物線', 't 軸に平行な直線', '双曲線'], ans: 0,
+  exp: '<p>x ＝ vt ＋ x₀ なので、x-t グラフは<mark>傾きが速度 v の直線</mark>。等加速度運動なら放物線になる。</p>' },
+{ id: 'u12', unit: 'undo', type: '落下運動', lv: 1,
+  stem: '<p>空気抵抗が無視できるとき、同じ高さから同時に静かにはなした鉄球（重い）とピンポン球（軽い）はどうなるか。</p>', choices: ['鉄球が先に着地する', 'ピンポン球が先に着地する', '同時に着地する', '質量の比で決まる'], ans: 2,
+  exp: '<p>落下の加速度は質量に関係なく g なので<mark>同時に着地</mark>する。実際には空気抵抗の影響で軽い物体がおくれる。</p>' },
+{ id: 'u13', unit: 'undo', type: '加速度', lv: 1,
+  stem: '<p>速度が 4.0 秒間で 6.0 m/s から 18 m/s に一定の割合で増えた。加速度の大きさはいくらか。</p>', choices: ['1.5 m/s²', '3.0 m/s²', '4.5 m/s²', '12 m/s²'], ans: 1,
+  exp: '<p>a ＝ Δv / Δt ＝ (18 − 6.0) / 4.0 ＝ <mark>3.0 m/s²</mark>。</p>' },
+
+/* ---------- 力と運動 ---------- */
+{ id: 'f1', unit: 'chikara', type: '運動方程式', lv: 1, inUnit: true,
+  stem: '<p>質量 2.0 kg の物体に 6.0 N の力を加えた。生じる加速度の大きさはいくらか（摩擦はない）。</p>', choices: ['0.33 m/s²', '3.0 m/s²', '8.0 m/s²', '12 m/s²'], ans: 1,
+  exp: '<p>ma ＝ F より a ＝ 6.0 / 2.0 ＝ <mark>3.0 m/s²</mark>。</p>' },
+{ id: 'f2', unit: 'chikara', type: '作用・反作用', lv: 2, inUnit: true,
+  stem: '<p>机の上に本が静止している。「机が本を押す力（垂直抗力）」の<b>反作用</b>はどれか。</p>', choices: ['本にはたらく重力', '本が机を押す力', '地球が本を引く力', '机にはたらく重力'], ans: 1,
+  exp: '<p>作用・反作用は2つの物体の間で及ぼし合う力。「机が本を押す」の反作用は<mark>「本が机を押す力」</mark>。本にはたらく重力とはつり合いの関係。</p>' },
+{ id: 'f3', unit: 'chikara', type: '重力', lv: 1, inUnit: true,
+  stem: '<p>質量 5.0 kg の物体にはたらく重力の大きさはいくらか。</p>', choices: ['5.0 N', '9.8 N', '49 N', '0.51 N'], ans: 2,
+  exp: '<p>W ＝ mg ＝ 5.0 × 9.8 ＝ <mark>49 N</mark>。</p>' },
+{ id: 'f4', unit: 'chikara', type: '摩擦力', lv: 2, inUnit: true,
+  stem: '<p>水平な床の上の質量 2.0 kg の物体。静止摩擦係数を 0.50 とすると、最大摩擦力の大きさはいくらか。</p>', choices: ['1.0 N', '4.9 N', '9.8 N', '19.6 N'], ans: 2,
+  exp: '<p>垂直抗力 N ＝ mg ＝ 19.6 N。最大摩擦力 ＝ μN ＝ 0.50 × 19.6 ＝ <mark>9.8 N</mark>。</p>' },
+{ id: 'f5', unit: 'chikara', type: '斜面', lv: 2, inUnit: true,
+  stem: '<p>傾き 30° のなめらかな斜面に質量 2.0 kg の物体を置いた。重力の斜面に平行な成分の大きさはいくらか。</p>', choices: ['9.8 N', '17 N', '19.6 N', '4.9 N'], ans: 0,
+  exp: '<p>mg sin30° ＝ 2.0 × 9.8 × ½ ＝ <mark>9.8 N</mark>。斜面に垂直な成分は mg cos30° ≒ 17 N。</p>' },
+{ id: 'f6', unit: 'chikara', type: '慣性の法則', lv: 1,
+  stem: '<p>電車が急に発進すると、立っている乗客が後ろへ倒れそうになる。これを説明する法則はどれか。</p>', choices: ['慣性の法則', '作用・反作用の法則', 'フックの法則', 'オームの法則'], ans: 0,
+  exp: '<p>体は静止を続けようとする（<mark>慣性の法則</mark>）ので、電車が前に動くと取り残されて後ろへ倒れそうになる。</p>' },
+{ id: 'f7', unit: 'chikara', type: 'フックの法則', lv: 1,
+  stem: '<p>ばね定数 50 N/m のばねを 0.10 m 伸ばすのに必要な力はいくらか。</p>', choices: ['0.20 N', '5.0 N', '50 N', '500 N'], ans: 1,
+  exp: '<p>F ＝ kx ＝ 50 × 0.10 ＝ <mark>5.0 N</mark>。</p>' },
+{ id: 'f8', unit: 'chikara', type: '浮力', lv: 3,
+  stem: '<p>体積 1.0×10⁻³ m³ の物体が水中に完全にしずんでいる。物体が受ける浮力の大きさはいくらか。水の密度は 1.0×10³ kg/m³ とする。</p>', choices: ['0.98 N', '1.0 N', '9.8 N', '98 N'], ans: 2,
+  exp: '<p>浮力 F ＝ ρVg ＝ 1.0×10³ × 1.0×10⁻³ × 9.8 ＝ <mark>9.8 N</mark>。物体がおしのけた水の重さに等しい（アルキメデスの原理）。</p>' },
+{ id: 'f9', unit: 'chikara', type: '圧力', lv: 1,
+  stem: '<p>100 N の力が 0.50 m² の面に垂直にはたらく。圧力はいくらか。</p>', choices: ['50 Pa', '100 Pa', '200 Pa', '0.0050 Pa'], ans: 2,
+  exp: '<p>p ＝ F / S ＝ 100 / 0.50 ＝ <mark>200 Pa</mark>。</p>' },
+{ id: 'f10', unit: 'chikara', type: '摩擦力', lv: 1,
+  stem: '<p>あらい面の上をすべっている物体にはたらく動摩擦力の向きはどれか。</p>', choices: ['運動の向き', '運動と逆向き', '鉛直上向き', '鉛直下向き'], ans: 1,
+  exp: '<p>動摩擦力は、面に対して物体がすべる向きと<mark>逆向き</mark>にはたらく。</p>' },
+{ id: 'f11', unit: 'chikara', type: '運動方程式', lv: 3,
+  stem: '<p>なめらかな水平面上で、質量 1.0 kg の物体 A と 2.0 kg の物体 B を軽い糸でつなぎ、B を 9.0 N で水平に引いた。全体の加速度の大きさはいくらか。</p>', choices: ['3.0 m/s²', '4.5 m/s²', '9.0 m/s²', '1.5 m/s²'], ans: 0,
+  exp: '<p>A と B を一体とみなすと、(1.0 ＋ 2.0)a ＝ 9.0 より a ＝ <mark>3.0 m/s²</mark>。糸が A を引く力は 1.0 × 3.0 ＝ 3.0 N。</p>' },
+{ id: 'f12', unit: 'chikara', type: '見かけの重さ', lv: 3,
+  stem: '<p>エレベーターが上向きに加速しているとき、中で体重計に乗った人の目盛りは、静止しているときと比べてどうなるか。</p>', choices: ['大きくなる', '小さくなる', '変わらない', '0 になる'], ans: 0,
+  exp: '<p>人について ma ＝ N − mg より N ＝ m(g ＋ a)。体重計が押す力 N が mg より<mark>大きくなる</mark>。</p>' },
+{ id: 'f13', unit: 'chikara', type: 'つり合い', lv: 1,
+  stem: '<p>1つの物体に2つの力がはたらいてつり合っているとき、2つの力について正しいものはどれか。</p>', choices: ['同じ大きさで、同じ向き', '同じ大きさで、逆向き、同一直線上', '大きさがちがい、逆向き', '必ず垂直に交わる'], ans: 1,
+  exp: '<p>2力のつり合いは、<mark>同じ大きさ・逆向き・同一直線上</mark>。</p>' },
+
+/* ---------- エネルギーと熱 ---------- */
+{ id: 'e1', unit: 'energy', type: '仕事', lv: 1, inUnit: true,
+  stem: '<p>物体に 10 N の力を加え、力の向きに 3.0 m 動かした。力がした仕事はいくらか。</p>', choices: ['3.3 J', '7.0 J', '13 J', '30 J'], ans: 3,
+  exp: '<p>W ＝ Fx ＝ 10 × 3.0 ＝ <mark>30 J</mark>。</p>' },
+{ id: 'e2', unit: 'energy', type: '運動エネルギー', lv: 1, inUnit: true,
+  stem: '<p>質量 2.0 kg の物体が 3.0 m/s で動いている。運動エネルギーはいくらか。</p>', choices: ['3.0 J', '6.0 J', '9.0 J', '18 J'], ans: 2,
+  exp: '<p>K ＝ ½mv² ＝ ½ × 2.0 × 3.0² ＝ <mark>9.0 J</mark>。</p>' },
+{ id: 'e3', unit: 'energy', type: '力学的エネルギー保存', lv: 2, inUnit: true,
+  stem: '<p>高さ 20 m の所から物体を静かにはなした。地面に達する直前の速さに最も近いものはどれか。</p>', choices: ['14 m/s', '20 m/s', '28 m/s', '40 m/s'], ans: 1,
+  exp: '<p>mgh ＝ ½mv² より v ＝ √(2gh) ＝ √(2 × 9.8 × 20) ＝ √392 ≒ <mark>20 m/s</mark>。質量に関係しない。</p>' },
+{ id: 'e4', unit: 'energy', type: '熱量', lv: 1, inUnit: true,
+  stem: '<p>水 100 g の温度を 10 K 上げるのに必要な熱量はいくらか。水の比熱は 4.2 J/(g·K) とする。</p>', choices: ['42 J', '420 J', '840 J', '4200 J'], ans: 3,
+  exp: '<p>Q ＝ mcΔT ＝ 100 × 4.2 × 10 ＝ <mark>4200 J</mark>。</p>' },
+{ id: 'e5', unit: 'energy', type: '熱力学第一法則', lv: 3, inUnit: true,
+  stem: '<p>気体が 500 J の熱を吸収し、外部に 200 J の仕事をした。気体の内部エネルギーの変化はいくらか。</p>', choices: ['＋300 J', '＋700 J', '−300 J', '−700 J'], ans: 0,
+  exp: '<p>ΔU ＝ Q ＋ W。外部に仕事を「した」ので W ＝ −200 J。ΔU ＝ 500 − 200 ＝ <mark>＋300 J</mark>（増加）。</p>' },
+{ id: 'e6', unit: 'energy', type: '仕事', lv: 2,
+  stem: '<p>荷物を持って水平に歩くとき、荷物を支える鉛直上向きの力が荷物にする仕事はいくらか。</p>', choices: ['正の仕事', '負の仕事', '0', '移動距離によって正にも負にもなる'], ans: 2,
+  exp: '<p>力（鉛直）と移動の向き（水平）が垂直なので、W ＝ Fx cos90° ＝ <mark>0</mark>。</p>' },
+{ id: 'e7', unit: 'energy', type: '仕事率', lv: 1,
+  stem: '<p>20 秒間に 600 J の仕事をした。仕事率はいくらか。</p>', choices: ['12 W', '30 W', '580 W', '12000 W'], ans: 1,
+  exp: '<p>P ＝ W / t ＝ 600 / 20 ＝ <mark>30 W</mark>。</p>' },
+{ id: 'e8', unit: 'energy', type: '位置エネルギー', lv: 1,
+  stem: '<p>質量 2.0 kg の物体が地面から 5.0 m の高さにある。地面を基準とした重力による位置エネルギーはいくらか。</p>', choices: ['10 J', '49 J', '98 J', '196 J'], ans: 2,
+  exp: '<p>U ＝ mgh ＝ 2.0 × 9.8 × 5.0 ＝ <mark>98 J</mark>。</p>' },
+{ id: 'e9', unit: 'energy', type: '弾性エネルギー', lv: 2,
+  stem: '<p>ばね定数 100 N/m のばねを 0.20 m 縮めた。弾性力による位置エネルギーはいくらか。</p>', choices: ['2.0 J', '4.0 J', '10 J', '20 J'], ans: 0,
+  exp: '<p>U ＝ ½kx² ＝ ½ × 100 × 0.20² ＝ <mark>2.0 J</mark>。</p>' },
+{ id: 'e10', unit: 'energy', type: '熱量の保存', lv: 2,
+  stem: '<p>80 ℃ の水 100 g と 20 ℃ の水 200 g を混ぜた。全体の温度は何 ℃ になるか（外部との熱の出入りはない）。</p>', choices: ['40 ℃', '50 ℃', '60 ℃', '30 ℃'], ans: 0,
+  exp: '<p>100 × (80 − T) ＝ 200 × (T − 20) より T ＝ <mark>40 ℃</mark>。</p>' },
+{ id: 'e11', unit: 'energy', type: '絶対温度', lv: 1,
+  stem: '<p>27 ℃ を絶対温度で表すとどれか。</p>', choices: ['−246 K', '27 K', '273 K', '300 K'], ans: 3,
+  exp: '<p>T ＝ t ＋ 273 ＝ 27 ＋ 273 ＝ <mark>300 K</mark>。</p>' },
+{ id: 'e12', unit: 'energy', type: '熱効率', lv: 2,
+  stem: '<p>熱機関が高温の熱源から 1000 J の熱を受け取り、300 J の仕事をした。熱効率はいくらか。</p>', choices: ['0.30', '0.70', '0.43', '3.3'], ans: 0,
+  exp: '<p>e ＝ W′ / Q₁ ＝ 300 / 1000 ＝ <mark>0.30</mark>（30 %）。残りの 700 J は低温の熱源へ捨てられる。</p>' },
+{ id: 'e13', unit: 'energy', type: '不可逆変化', lv: 2,
+  stem: '<p>熱の移動について正しいものはどれか。</p>', choices: ['熱は自然に高温の物体から低温の物体へ移り、その逆は自然には起こらない', '熱は低温から高温へも自然に移る', '熱はすべて仕事に変えることができる', '熱と温度は同じ意味である'], ans: 0,
+  exp: '<p>熱は<mark>高温から低温へ自然に移る</mark>が、逆向きは自然には起こらない（不可逆変化）。熱をすべて仕事に変える熱機関はつくれない。</p>' },
+
+/* ---------- 波 ---------- */
+{ id: 'w1', unit: 'nami', type: '波の基本式', lv: 1, inUnit: true,
+  stem: '<p>振動数 50 Hz、波長 2.0 m の波の速さはいくらか。</p>', choices: ['0.040 m/s', '25 m/s', '52 m/s', '100 m/s'], ans: 3,
+  exp: '<p>v ＝ fλ ＝ 50 × 2.0 ＝ <mark>100 m/s</mark>。</p>' },
+{ id: 'w2', unit: 'nami', type: '縦波', lv: 1, inUnit: true,
+  stem: '<p>空気中を伝わる音波の種類はどれか。</p>', choices: ['横波', '縦波', '表面波', '電磁波'], ans: 1,
+  exp: '<p>音波は空気の疎密が伝わる<mark>縦波</mark>（疎密波）。</p>' },
+{ id: 'w3', unit: 'nami', type: '弦の振動', lv: 2, inUnit: true,
+  stem: '<p>長さ 0.50 m の弦が基本振動しているとき、弦を伝わる波の波長はいくらか。</p>', choices: ['0.25 m', '0.50 m', '1.0 m', '2.0 m'], ans: 2,
+  exp: '<p>基本振動では弦の長さが半波長分。λ ＝ 2L ＝ <mark>1.0 m</mark>。</p>' },
+{ id: 'w4', unit: 'nami', type: '気柱の振動', lv: 3, inUnit: true,
+  stem: '<p>長さ 0.85 m の閉管の基本振動数はいくらか。音速は 340 m/s とし、開口端補正は考えない。</p>', choices: ['100 Hz', '200 Hz', '400 Hz', '50 Hz'], ans: 0,
+  exp: '<p>閉管の基本振動は λ ＝ 4L ＝ 3.4 m。f ＝ v / λ ＝ 340 / 3.4 ＝ <mark>100 Hz</mark>。同じ長さの開管なら λ ＝ 2L で 200 Hz。</p>' },
+{ id: 'w5', unit: 'nami', type: 'うなり', lv: 2, inUnit: true,
+  stem: '<p>440 Hz と 442 Hz のおんさを同時に鳴らした。1 秒間に聞こえるうなりの回数はいくつか。</p>', choices: ['1 回', '2 回', '441 回', '882 回'], ans: 1,
+  exp: '<p>うなりの回数 ＝ |f₁ − f₂| ＝ 442 − 440 ＝ <mark>2 回</mark>。</p>' },
+{ id: 'w6', unit: 'nami', type: '周期', lv: 1,
+  stem: '<p>周期が 0.50 s の波の振動数はいくらか。</p>', choices: ['0.50 Hz', '1.0 Hz', '2.0 Hz', '5.0 Hz'], ans: 2,
+  exp: '<p>f ＝ 1 / T ＝ 1 / 0.50 ＝ <mark>2.0 Hz</mark>。</p>' },
+{ id: 'w7', unit: 'nami', type: '音速', lv: 2,
+  stem: '<p>気温 20 ℃ の空気中の音速はいくらか。V ＝ 331.5 ＋ 0.6t [m/s] とする。</p>', choices: ['331.5 m/s', '340.5 m/s', '343.5 m/s', '351.5 m/s'], ans: 2,
+  exp: '<p>V ＝ 331.5 ＋ 0.6 × 20 ＝ <mark>343.5 m/s</mark>。気温が高いほど音は速く伝わる。</p>' },
+{ id: 'w8', unit: 'nami', type: '定常波', lv: 2,
+  stem: '<p>定常波で、となり合う節と節の間隔はどれか。</p>', choices: ['λ/4', 'λ/2', 'λ', '2λ'], ans: 1,
+  exp: '<p>節と節（腹と腹）の間隔は<mark>半波長 λ/2</mark>。節と腹の間隔は λ/4。</p>' },
+{ id: 'w9', unit: 'nami', type: '反射', lv: 2,
+  stem: '<p>固定端で波が反射するとき、反射波について正しいものはどれか。</p>', choices: ['山は山のまま反射する', '山が谷になって反射する（位相が逆になる）', '反射しない', '波長が半分になる'], ans: 1,
+  exp: '<p>固定端反射では<mark>位相が逆になり、山は谷になって</mark>反射する。自由端反射では山は山のまま。</p>' },
+{ id: 'w10', unit: 'nami', type: '音の3要素', lv: 1,
+  stem: '<p>音の「高さ」を決めるものはどれか。</p>', choices: ['振幅', '振動数', '波形', '媒質の種類'], ans: 1,
+  exp: '<p>高さは<mark>振動数</mark>、大きさは振幅、音色は波形で決まる。</p>' },
+{ id: 'w11', unit: 'nami', type: '弦の振動', lv: 2,
+  stem: '<p>弦の基本振動数が 200 Hz のとき、3 倍振動の振動数はいくらか（張力・長さは同じ）。</p>', choices: ['67 Hz', '200 Hz', '400 Hz', '600 Hz'], ans: 3,
+  exp: '<p>弦の固有振動数は基本振動数の整数倍。3 × 200 ＝ <mark>600 Hz</mark>。</p>' },
+{ id: 'w12', unit: 'nami', type: '重ね合わせ', lv: 2,
+  stem: '<p>2つの波が重なったときの媒質の変位について正しいものはどれか。</p>', choices: ['それぞれの波の変位の和になる', '大きい方の波の変位になる', '必ず 0 になる', '変位の積になる'], ans: 0,
+  exp: '<p><mark>重ね合わせの原理</mark>：合成波の変位は、それぞれの波の変位の和。重なったあとは、それぞれの波はもとの形のまま進む（波の独立性）。</p>' },
+{ id: 'w13', unit: 'nami', type: '気柱の振動', lv: 3,
+  stem: '<p>閉管で起こらない固有振動はどれか。</p>', choices: ['基本振動', '2倍振動', '3倍振動', '5倍振動'], ans: 1,
+  exp: '<p>閉管は閉口端が節、開口端が腹なので、基本振動の<b>奇数倍</b>だけが起こる。<mark>2倍振動</mark>は起こらない。</p>' },
+
+/* ---------- 電気 ---------- */
+{ id: 'd1', unit: 'denki', type: 'オームの法則', lv: 1, inUnit: true,
+  stem: '<p>20 Ω の抵抗に 0.50 A の電流が流れている。抵抗の両端の電圧はいくらか。</p>', choices: ['0.025 V', '2.5 V', '5.0 V', '10 V'], ans: 3,
+  exp: '<p>V ＝ RI ＝ 20 × 0.50 ＝ <mark>10 V</mark>。</p>' },
+{ id: 'd2', unit: 'denki', type: '合成抵抗', lv: 1, inUnit: true,
+  stem: '<p>6.0 Ω と 3.0 Ω の抵抗を並列につないだ。合成抵抗はいくらか。</p>', choices: ['2.0 Ω', '4.5 Ω', '9.0 Ω', '18 Ω'], ans: 0,
+  exp: '<p>1/R ＝ 1/6.0 ＋ 1/3.0 ＝ 1/2.0 より R ＝ <mark>2.0 Ω</mark>。並列の合成抵抗は、どちらの抵抗よりも小さい。</p>' },
+{ id: 'd3', unit: 'denki', type: '電力', lv: 1, inUnit: true,
+  stem: '<p>100 V の電圧で 2.0 A の電流が流れる電気器具の消費電力はいくらか。</p>', choices: ['50 W', '102 W', '200 W', '400 W'], ans: 2,
+  exp: '<p>P ＝ VI ＝ 100 × 2.0 ＝ <mark>200 W</mark>。</p>' },
+{ id: 'd4', unit: 'denki', type: '電磁誘導', lv: 2, inUnit: true,
+  stem: '<p>コイルに棒磁石を近づけたり遠ざけたりすると、コイルに電流が流れる。この現象を何というか。</p>', choices: ['電磁誘導', '静電誘導', 'ジュール熱', '放電'], ans: 0,
+  exp: '<p>コイルを貫く磁場が変化すると誘導電流が流れる（<mark>電磁誘導</mark>）。発電機や IH 調理器に利用されている。</p>' },
+{ id: 'd5', unit: 'denki', type: '変圧器', lv: 2, inUnit: true,
+  stem: '<p>一次コイルの巻数 100 回、二次コイルの巻数 500 回の変圧器。一次側に 100 V の交流電圧を加えると、二次側の電圧はいくらか。</p>', choices: ['20 V', '100 V', '500 V', '5000 V'], ans: 2,
+  exp: '<p>V₁ : V₂ ＝ N₁ : N₂ より V₂ ＝ 100 × 500/100 ＝ <mark>500 V</mark>。</p>' },
+{ id: 'd6', unit: 'denki', type: '合成抵抗', lv: 1,
+  stem: '<p>10 Ω と 20 Ω の抵抗を直列につないだ。合成抵抗はいくらか。</p>', choices: ['6.7 Ω', '15 Ω', '30 Ω', '200 Ω'], ans: 2,
+  exp: '<p>直列は R ＝ R₁ ＋ R₂ ＝ <mark>30 Ω</mark>。</p>' },
+{ id: 'd7', unit: 'denki', type: 'ジュール熱', lv: 2,
+  stem: '<p>消費電力 100 W の電熱線を 60 秒間使った。発生するジュール熱はいくらか。</p>', choices: ['1.7 J', '160 J', '600 J', '6000 J'], ans: 3,
+  exp: '<p>W ＝ Pt ＝ 100 × 60 ＝ <mark>6000 J</mark>。</p>' },
+{ id: 'd8', unit: 'denki', type: '電力量', lv: 2,
+  stem: '<p>1 kWh は何 J か。</p>', choices: ['1000 J', '3600 J', '3.6×10⁶ J', '6.0×10⁴ J'], ans: 2,
+  exp: '<p>1 kWh ＝ 1000 W × 3600 s ＝ <mark>3.6×10⁶ J</mark>。</p>' },
+{ id: 'd9', unit: 'denki', type: '抵抗率', lv: 2,
+  stem: '<p>同じ材料の導線で、長さを 2 倍、断面積を 2 倍にすると、抵抗はどうなるか。</p>', choices: ['4 倍', '2 倍', '変わらない', '½ 倍'], ans: 2,
+  exp: '<p>R ＝ ρL/S。長さ 2 倍で 2 倍、断面積 2 倍で ½ 倍なので、<mark>変わらない</mark>。</p>' },
+{ id: 'd10', unit: 'denki', type: '電流の向き', lv: 1,
+  stem: '<p>導線の中を電流が流れているとき、電子の流れの向きについて正しいものはどれか。</p>', choices: ['電流と同じ向き', '電流と逆向き', '電流と垂直な向き', '電子は動かない'], ans: 1,
+  exp: '<p>電子は負の電荷をもつので、電子の流れは<mark>電流と逆向き</mark>。</p>' },
+{ id: 'd11', unit: 'denki', type: '交流', lv: 1,
+  stem: '<p>日本の家庭用電源の周波数について正しいものはどれか。</p>', choices: ['全国どこでも 50 Hz', '全国どこでも 60 Hz', '東日本は 50 Hz、西日本は 60 Hz', '東日本は 60 Hz、西日本は 50 Hz'], ans: 2,
+  exp: '<p><mark>東日本は 50 Hz、西日本は 60 Hz</mark>。明治時代に輸入した発電機のちがいによる。</p>' },
+{ id: 'd12', unit: 'denki', type: '送電', lv: 3,
+  stem: '<p>発電所から高い電圧で送電する理由として正しいものはどれか。</p>', choices: ['電流を小さくして、送電線で発生するジュール熱（電力損失）を減らすため', '電流を大きくするため', '送電線の抵抗を大きくするため', '直流に変えるため'], ans: 0,
+  exp: '<p>同じ電力を送るとき、電圧を高くすると<mark>電流が小さくなり、送電線での損失 RI² が減る</mark>。</p>' },
+{ id: 'd13', unit: 'denki', type: '電気量', lv: 1,
+  stem: '<p>2.0 A の電流が 10 秒間流れた。導線の断面を通過した電気量はいくらか。</p>', choices: ['0.20 C', '5.0 C', '12 C', '20 C'], ans: 3,
+  exp: '<p>Q ＝ It ＝ 2.0 × 10 ＝ <mark>20 C</mark>。</p>' },
+];
+
+/* ===== 暗記カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['undo', '等加速度直線運動の3式', 'v ＝ v₀ ＋ at ／ x ＝ v₀t ＋ ½at² ／ v² − v₀² ＝ 2ax'],
+  ['undo', 'v-t グラフの傾きと面積', '傾き ＝ 加速度、面積 ＝ 変位'],
+  ['undo', 'x-t グラフの傾き', '速度'],
+  ['undo', '自由落下の式', 'v ＝ gt、y ＝ ½gt²（g ＝ 9.8 m/s²）'],
+  ['undo', '相対速度（A から見た B）', 'v<sub>B</sub> − v<sub>A</sub>'],
+  ['undo', 'km/h → m/s', '3.6 で割る'],
+  ['chikara', '運動方程式', 'ma ＝ F'],
+  ['chikara', '慣性の法則', '力がはたらかないとき、静止または等速直線運動を続ける'],
+  ['chikara', '作用・反作用の法則', '2物体が及ぼし合う力は同じ大きさ・逆向き・同一直線上'],
+  ['chikara', 'フックの法則', 'F ＝ kx'],
+  ['chikara', '最大摩擦力・動摩擦力', 'F₀ ＝ μN ／ F′ ＝ μ′N'],
+  ['chikara', '浮力（アルキメデスの原理）', 'F ＝ ρVg（おしのけた流体の重さ）'],
+  ['chikara', '斜面での重力の分解', '平行 mg sinθ、垂直 mg cosθ'],
+  ['energy', '仕事', 'W ＝ Fx cosθ [J]'],
+  ['energy', '運動エネルギー', 'K ＝ ½mv²'],
+  ['energy', '重力による位置エネルギー', 'U ＝ mgh'],
+  ['energy', '弾性力による位置エネルギー', 'U ＝ ½kx²'],
+  ['energy', '熱量', 'Q ＝ mcΔT'],
+  ['energy', '熱力学第一法則', 'ΔU ＝ Q ＋ W（W は外部からされた仕事）'],
+  ['energy', '絶対温度', 'T ＝ t ＋ 273'],
+  ['energy', '熱効率', 'e ＝ W′ / Q₁'],
+  ['nami', '波の基本式', 'v ＝ fλ、T ＝ 1/f'],
+  ['nami', '弦・開管の固有振動', 'λ ＝ 2L/n（n ＝ 1, 2, 3, …）'],
+  ['nami', '閉管の固有振動', 'λ ＝ 4L/m（m ＝ 1, 3, 5, …）'],
+  ['nami', '空気中の音速', 'V ＝ 331.5 ＋ 0.6t [m/s]'],
+  ['nami', 'うなりの回数（1秒間）', '|f₁ − f₂|'],
+  ['nami', '音の3要素', '高さ：振動数、大きさ：振幅、音色：波形'],
+  ['nami', '固定端反射と自由端反射', '固定端：位相が逆（山 → 谷）／自由端：そのまま'],
+  ['denki', 'オームの法則', 'V ＝ RI'],
+  ['denki', '直列・並列の合成抵抗', '直列 R ＝ R₁ ＋ R₂／並列 1/R ＝ 1/R₁ ＋ 1/R₂'],
+  ['denki', '電力', 'P ＝ VI ＝ RI² ＝ V²/R'],
+  ['denki', '抵抗率', 'R ＝ ρL/S'],
+  ['denki', '変圧器', 'V₁ : V₂ ＝ N₁ : N₂'],
+  ['denki', '1 kWh', '3.6×10⁶ J'],
+  ['denki', '電気量', 'Q ＝ It [C]'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['変位', 'へんい', 'undo', '位置の変化。向きをふくむ量。'],
+  ['速度', 'そくど', 'undo', '単位時間あたりの変位。向きをもつ。単位 m/s。'],
+  ['加速度', 'かそくど', 'undo', '単位時間あたりの速度の変化。単位 m/s²。'],
+  ['等速直線運動', 'とうそくちょくせんうんどう', 'undo', '一定の速度で一直線上を進む運動。加速度は 0。'],
+  ['等加速度直線運動', 'とうかそくどちょくせんうんどう', 'undo', '加速度が一定の直線運動。'],
+  ['相対速度', 'そうたいそくど', 'undo', 'ある物体から見た、ほかの物体の速度。'],
+  ['自由落下', 'じゆうらっか', 'undo', '静かにはなした物体が重力だけを受けて落ちる運動。'],
+  ['鉛直投げ上げ', 'えんちょくなげあげ', 'undo', '物体を真上に投げ上げる運動。最高点で速度は 0。'],
+  ['重力加速度', 'じゅうりょくかそくど', 'undo', '重力による加速度。大きさ g ＝ 9.8 m/s²。'],
+  ['力', 'ちから', 'chikara', '物体の運動の状態を変えたり、変形させたりするはたらき。単位 N。'],
+  ['重力', 'じゅうりょく', 'chikara', '地球が物体を引く力。W ＝ mg。'],
+  ['垂直抗力', 'すいちょくこうりょく', 'chikara', '面が物体を垂直に押し返す力。'],
+  ['摩擦力', 'まさつりょく', 'chikara', '接触面で運動をさまたげる向きにはたらく力。静止摩擦力と動摩擦力がある。'],
+  ['弾性力', 'だんせいりょく', 'chikara', '変形した物体がもとにもどろうとする力。'],
+  ['張力', 'ちょうりょく', 'chikara', '糸やひもが物体を引く力。'],
+  ['慣性', 'かんせい', 'chikara', '物体がその運動の状態を続けようとする性質。'],
+  ['運動方程式', 'うんどうほうていしき', 'chikara', 'ma ＝ F。質量・加速度・力の関係。'],
+  ['作用・反作用', 'さよう・はんさよう', 'chikara', '2物体の間で及ぼし合う、同じ大きさ・逆向きの力。'],
+  ['浮力', 'ふりょく', 'chikara', '流体中の物体が受ける上向きの力。'],
+  ['圧力', 'あつりょく', 'chikara', '単位面積あたりに垂直にはたらく力。単位 Pa。'],
+  ['仕事', 'しごと', 'energy', '力を加えて物体を動かしたときの、力 × 移動距離。単位 J。'],
+  ['仕事率', 'しごとりつ', 'energy', '単位時間あたりの仕事。単位 W。'],
+  ['運動エネルギー', 'うんどうえねるぎー', 'energy', '運動している物体がもつエネルギー。½mv²。'],
+  ['位置エネルギー', 'いちえねるぎー', 'energy', '物体の位置で決まるエネルギー。重力による mgh、弾性力による ½kx²。'],
+  ['力学的エネルギー保存の法則', 'りきがくてきえねるぎーほぞんのほうそく', 'energy', '重力・弾性力だけが仕事をするとき、運動エネルギーと位置エネルギーの和は一定。'],
+  ['比熱', 'ひねつ', 'energy', '物質 1 g の温度を 1 K 上げるのに必要な熱量。'],
+  ['熱容量', 'ねつようりょう', 'energy', '物体の温度を 1 K 上げるのに必要な熱量。C ＝ mc。'],
+  ['絶対温度', 'ぜったいおんど', 'energy', '−273 ℃ を 0 K とした温度。単位 K。'],
+  ['内部エネルギー', 'ないぶえねるぎー', 'energy', '物体をつくる粒子の熱運動のエネルギーなどの総和。'],
+  ['熱力学第一法則', 'ねつりきがくだいいちほうそく', 'energy', 'ΔU ＝ Q ＋ W。熱と仕事をふくめたエネルギー保存の法則。'],
+  ['熱効率', 'ねつこうりつ', 'energy', '熱機関が受け取った熱のうち、仕事に変わった割合。'],
+  ['不可逆変化', 'ふかぎゃくへんか', 'energy', '自然には逆向きに進まない変化。熱が高温から低温へ移る変化など。'],
+  ['波長', 'はちょう', 'nami', '山から次の山までの長さ。λ。'],
+  ['振動数', 'しんどうすう', 'nami', '1 秒間の振動の回数。単位 Hz。'],
+  ['周期', 'しゅうき', 'nami', '1 回振動するのにかかる時間。T ＝ 1/f。'],
+  ['振幅', 'しんぷく', 'nami', '振動の中心から山の高さまでの大きさ。'],
+  ['横波', 'よこなみ', 'nami', '媒質の振動方向が、波の進む向きに垂直な波。'],
+  ['縦波', 'たてなみ', 'nami', '媒質の振動方向が、波の進む向きに平行な波。疎密波。音波など。'],
+  ['重ね合わせの原理', 'かさねあわせのげんり', 'nami', '重なった波の変位は、それぞれの波の変位の和になること。'],
+  ['定常波', 'ていじょうは', 'nami', '同じ波が逆向きに進んで重なってできる、進まない波。節と腹がある。'],
+  ['固有振動', 'こゆうしんどう', 'nami', '弦や気柱など、物体に特有の振動数での振動。'],
+  ['共振・共鳴', 'きょうしん・きょうめい', 'nami', '固有振動数と同じ振動数の振動を受けて、大きく振動すること。'],
+  ['うなり', 'うなり', 'nami', '振動数がわずかにちがう2つの音が重なり、音が周期的に強弱をくり返す現象。'],
+  ['電流', 'でんりゅう', 'denki', '電荷の流れ。単位 A。'],
+  ['電圧', 'でんあつ', 'denki', '電流を流そうとするはたらき。単位 V。'],
+  ['電気抵抗', 'でんきていこう', 'denki', '電流の流れにくさ。単位 Ω。'],
+  ['抵抗率', 'ていこうりつ', 'denki', '物質の種類で決まる電流の流れにくさ。R ＝ ρL/S。'],
+  ['ジュール熱', 'じゅーるねつ', 'denki', '抵抗に電流が流れると発生する熱。'],
+  ['電力量', 'でんりょくりょう', 'denki', '電流がした仕事の量。W ＝ Pt。'],
+  ['磁場', 'じば', 'denki', '磁力がはたらく空間。電流のまわりにもできる。'],
+  ['電磁誘導', 'でんじゆうどう', 'denki', 'コイルを貫く磁場の変化によって電流が流れる現象。'],
+  ['交流', 'こうりゅう', 'denki', '向きと大きさが周期的に変わる電流・電圧。'],
+  ['変圧器', 'へんあつき', 'denki', '電磁誘導を利用して交流の電圧を変える装置。'],
+];
+/* ===== ホーム ===== */
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">${SITE.eyebrow}</div>
+      <h1 class="hero-title">${SITE.heroTitle}</h1>
+      <p class="lead">${SITE.lead}</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">${SITE.bubble}</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>${SITE.subject}の地図</h3><span class="muted small">${SITE.stations.length}つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${SITE.stations.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">${SITE.links.map(([t, b]) => `<div class="point"><h4>${t}</h4><p class="small">${b}</p></div>`).join('')}</div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', `各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、覚えることは「暗記カード」で。`));
+  const st = h('<div class="stations"></div>');
+  SITE.stations.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.entries(S.ans).filter(([id, v]) => v === true && QUESTIONS.some(q => q.id === id)).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と暗記カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = shuffle(p).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 暗記カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">暗記カード</span><h3>フラッシュカード</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const sg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; sg.appendChild(b); });
+  function build() {
+    deck = shuffle(CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok')));
+    ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div style="font-size:1.05rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+  if (SITE.cardsExtra) SITE.cardsExtra(root);
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="${SITE.glossHint}" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const sg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    sg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    [`単元ページ（${SITE.stations.length}つ）`, `<p>上のタブの「${SITE.stations[0].tab || SITE.stations[0].name}」〜「${SITE.stations.at(-1).tab || SITE.stations.at(-1).name}」。<br>① <b>要点</b>：その単元の大事なところ<br>② <b>実験</b>：押したり動かしたりして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>`],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['暗記カード', `<p>表に問い、裏に答え。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。${SITE.cardsNote || ''}</p>`],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>覚えることがあやふや</td><td>暗記カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+
+/* ===== 起動 ===== */
+// 正解の位置がかたよらないよう、選択肢の順番を入れかえる（毎回同じ順。解説の ⓪〜③ も合わせて書きかえる。数値の選択肢は小さい順のまま）
+QUESTIONS.forEach(q => {
+  if (q.fixed || q.choices.every(c => /^[−+\-]?[0-9０-９.]/.test(c.replace(/<[^>]+>/g, '')))) return;
+  let sd = 7; for (const ch of q.id + STORE_KEY) sd = (sd * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = rng(sd), idx = q.choices.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  q.choices = idx.map(i => q.choices[i]); q.ans = idx.indexOf(q.ans);
+  q.exp = q.exp.replace(/[⓪①②③④]/g, c => MARK[idx.indexOf(MARK.indexOf(c))]);
+});
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+updateXP();
+route();
+</script>
+</body></html>

@@ -6,6 +6,7 @@
   koten/index.html  … 言語文化 ラボ（古文・漢文）
   eigo/index.html   … 英文法 ラボ
   chem/index.html   … 化学基礎 ラボ
+  butsuri/index.html … 物理基礎 ラボ
   chiri/index.html  … 地理総合 ラボ
   hoken/index.html  … 保健 ラボ
   robots.txt / .nojekyll … 検索エンジンに載せない設定と、GitHub Pages 用の設定ファイル（そのまま置いてください）
