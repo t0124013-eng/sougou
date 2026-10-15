@@ -1,0 +1,1710 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>地理総合 ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+.ot-ans{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ot-w{appearance:none;border:1.5px solid var(--ink);background:var(--card);border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:1rem;font-family:var(--f-body)}
+.ot-w.on{background:var(--ink);color:var(--paper)}
+.ot-w:hover{filter:brightness(1.1)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pick-grid button{appearance:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;font-weight:700;line-height:1.4}
+.pick-grid button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pick-grid button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tl{display:grid;gap:0;position:relative;padding-left:18px;border-left:3px solid var(--line)}
+.tl-row{position:relative;padding:8px 0 8px 12px}
+.tl-row::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+.tl-era{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+.big-kana{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.3}
+.kanbun{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font-family:var(--f-display)}
+.kb-c{display:grid;justify-items:center;min-width:46px;padding:4px 2px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);position:relative}
+.kb-c .k{font-size:1.9rem;font-weight:700;line-height:1.1}
+.kb-c .mk{font-size:.85rem;color:var(--accent);font-weight:700;min-height:1.2em}
+.kb-c .ok{font-size:.75rem;color:var(--muted);min-height:1.2em}
+.kb-c .no{position:absolute;top:-10px;right:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.72rem;min-width:20px;height:20px;display:grid;place-items:center;font-family:var(--f-code)}
+.kb-c.cur{border-color:var(--accent);background:var(--marker)}
+.kb-c.done{border-color:var(--good);background:var(--good-soft)}
+.kb-c.oki{opacity:.55}
+.conj td,.conj th{text-align:center;white-space:nowrap}
+.conj td b{color:var(--accent)}
+</style>
+</head><body>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>地理総合 ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">…</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題はすべてこの教材のためのオリジナル問題です。範囲は高等学校学習指導要領（平成30年告示）の「地理総合」にそろえています。</p><p>気候の実験の雨温図は、実在の都市の観測値ではなく、気候区分のしくみを確かめるためのモデルです。時差は標準時で計算し、夏時間（サマータイム）は考えていません。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+const SITE = {
+  key: 'chiri-lab-v1', subject: '地理総合',
+  eyebrow: '高校1年「地理総合」の実験室',
+  heroTitle: '動かしてわかる、<br><span class="hl">地理総合</span>',
+  lead: '時差を計算する、雨温図をつくって気候区分を判定する、人口ピラミッドの形を変える。地図とデータを自分で動かしながら、世界のしくみを読みとる教材。授業の予習・復習やテスト前に使おう。',
+  bubble: '地理総合、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。',
+  ranks: [[0, '地図見習い'], [5, '方位使い'], [15, '縮尺使い'], [30, '等高線使い'], [50, '気候マスター'], [75, '世界マスター'], [100, '地理総合 免許皆伝']],
+  rankNotes: ['地図を開いてみよう', '東西南北がわかる', '地図の距離が計算できる', '地形図から土地の高さが読める', '雨温図から気候がわかる', '世界の課題を説明できる', '全問正解！'],
+  courses: { chizu: '地図と時差', chikei: '地形', kiko: '気候', bunka: '生活文化と産業', bosai: '防災と地球的課題' },
+  stations: [
+    { id: 'chizu', code: '第1章', name: '地図と時差', desc: '緯度・経度と時差の計算、図法の特徴、地形図の縮尺と等高線、GIS' },
+    { id: 'chikei', code: '第2章', name: '地形', desc: 'プレートと大地形。扇状地・三角州・リアス海岸などの小地形と土地利用' },
+    { id: 'kiko', code: '第3章', name: '気候', desc: '雨温図をつくってケッペンの気候区分を判定。大気の大循環' },
+    { id: 'bunka', code: '第4章', name: '生活文化と産業', tab: '生活文化', desc: '宗教・言語と生活、気候に合わせた住居、世界の農業' },
+    { id: 'bosai', code: '第5章', name: '防災と地球的課題', tab: '防災と課題', desc: '自然災害とハザードマップ。人口ピラミッドと環境問題' },
+  ],
+  links: [
+    ['つながり①', '「地形」と「気候」がわかると、その土地の農業や住居のくふう（生活文化）が説明できる。'],
+    ['つながり②', '地形図の読み方は、ハザードマップで自分の住む地域の災害リスクを読むときにも使う。'],
+    ['つながり③', '人口・食料・環境などの地球的課題は、地域ごとの自然と社会の条件を知ってはじめて考えられる。'],
+  ],
+  tips: {
+    chizu: '経度15度で1時間の時差。<br>東にあるほど時刻が進んでいるよ！',
+    chikei: '川は山から海へ、運んだ土砂でいろいろな地形をつくる。<br>図を押して、土地の使われ方を見てみよう。',
+    kiko: '雨温図は「気温の線」と「降水量の棒」を見る。<br>スライダーを動かして気候が変わる境目を探そう！',
+    bunka: '宗教や住まいには、その土地の自然や歴史に合わせた理由があるよ。',
+    bosai: '人口ピラミッドの形から、その国の今と将来が読みとれるよ。',
+    drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+    cards: '暗記カードは「覚えた」「まだ」で仕分けよう。<br>「まだ」だけを何周もするのが近道！',
+    glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+  },
+  glossHint: '例：扇状地、せんじょうち、偏西風',
+  cardsNote: '気候区分の記号と名前も入っている。',
+};
+/* ===== 共通部品（数学Ⅰ ラボと同じ仕組み） ===== */
+const RANKS = SITE.ranks, RANK_NOTE = SITE.rankNotes, COURSE_NAME = SITE.courses, TIPS = SITE.tips, STORE_KEY = SITE.key;
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const PRAISE = SITE.praise || ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const M = (s) => String(s).replace(/-/g, '−');
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const UNITS = [{ id: 'home', name: 'ホーム' }, ...SITE.stations.map(s => ({ id: s.id, name: s.tab || s.name })),
+  { id: 'drill', name: '問題ドリル' }, { id: 'cards', name: '暗記カード' }, { id: 'glossary', name: '用語集' }];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}のページへ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+function seg(id, items, cur) { // items: [[value,label],...]
+  return `<div class="seg" id="${id}">${items.map(([v, l]) => `<button aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join('')}</div>`;
+}
+function bindSeg(root, id, fn) {
+  $$(`#${id} button`, root).forEach(b => b.onclick = () => { $$(`#${id} button`, root).forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+}
+/* 並べ替え問題：words を押して文を組み立てる */
+function orderTask(root, items, opts = {}) {
+  // items: [{ja, ans:[tokens], extra?:[], note}]
+  let k = 0, picked = [];
+  const box = h(`<div style="display:grid;gap:12px"><div class="row" style="justify-content:space-between"><b class="ot-q"></b><span class="small muted tnum ot-n"></span></div>
+    <div class="ot-ans" aria-live="polite"></div><div class="ot-pool row" style="gap:8px"></div>
+    <div class="row"><button class="btn ot-chk">答え合わせ</button><button class="btn ghost sm ot-clr">やり直す</button><button class="btn ghost sm ot-next">次の問題</button></div><div class="res ot-res" hidden></div></div>`);
+  root.appendChild(box);
+  let pool = [];
+  function load() {
+    const it = items[k]; picked = [];
+    pool = shuffle([...it.ans, ...(it.extra || [])].map((w, i) => ({ w, i })));
+    $('.ot-q', box).innerHTML = it.ja; $('.ot-n', box).textContent = `${k + 1} / ${items.length}`;
+    $('.ot-res', box).hidden = true; draw();
+  }
+  function draw() {
+    $('.ot-ans', box).innerHTML = picked.length ? picked.map((p, j) => `<button class="ot-w on" data-j="${j}">${p.w}</button>`).join('') : `<span class="small muted">${opts.hint || '下の語句を正しい順に押そう。押した語句をもう一度押すと戻せる。'}</span>`;
+    $('.ot-pool', box).innerHTML = pool.filter(p => !picked.includes(p)).map(p => `<button class="ot-w" data-i="${p.i}">${p.w}</button>`).join('');
+    $$('.ot-ans [data-j]', box).forEach(b => b.onclick = () => { picked.splice(+b.dataset.j, 1); draw(); });
+    $$('.ot-pool [data-i]', box).forEach(b => b.onclick = () => { picked.push(pool.find(p => p.i === +b.dataset.i)); draw(); });
+  }
+  $('.ot-chk', box).onclick = () => {
+    const it = items[k], got = picked.map(p => p.w), ok = got.join(' ') === it.ans.join(' ');
+    const r = $('.ot-res', box); r.hidden = false; r.className = 'res ot-res ' + (ok ? 'ok' : 'ng');
+    r.innerHTML = `<b>${ok ? '正解！' : 'おしい。正しい順は…'}</b><span class="fx" style="font-size:1.05rem">${(opts.join ? it.ans.join(opts.join) : it.ans.join(' '))}${opts.end || ''}</span>${it.note ? `<span class="small">${it.note}</span>` : ''}`;
+  };
+  $('.ot-clr', box).onclick = () => { picked = []; $('.ot-res', box).hidden = true; draw(); };
+  $('.ot-next', box).onclick = () => { k = (k + 1) % items.length; load(); };
+  load();
+}
+/* ===== 第1章 地図と時差 ===== */
+const CITIES = [ // [都市, 標準時(UTC+), 標準時子午線の説明]
+  ['東京', 9, '東経135度'], ['ペキン', 8, '東経120度'], ['ニューデリー', 5.5, '東経82.5度'], ['ドバイ', 4, '東経60度'], ['モスクワ', 3, '東経45度'],
+  ['カイロ', 2, '東経30度'], ['ロンドン', 0, '経度0度（本初子午線）'], ['リオデジャネイロ', -3, '西経45度'], ['ニューヨーク', -5, '西経75度'],
+  ['ロサンゼルス', -8, '西経120度'], ['ホノルル', -10, '西経150度'], ['シドニー', 10, '東経150度'],
+];
+const hm = h => `${Math.floor(h)}:${String(Math.round((h % 1) * 60)).padStart(2, '0')}`;
+VIEWS.chizu = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '地図と時差', '地球上の位置は緯度・経度で表す。地球は24時間で360度回るので、経度15度ごとに1時間の時差が生まれる。'));
+  root.appendChild(points([
+    ['緯度と経度', '<p><b>緯度</b>：赤道を0度に、南北へ90度まで。<br><b>経度</b>：ロンドンの旧グリニッジ天文台を通る<mark>本初子午線</mark>を0度に、東西へ180度まで。</p>'],
+    ['時差の計算', '<p>360度 ÷ 24時間 ＝ <mark>経度15度で1時間</mark>。<br>東にある地点ほど時刻が進んでいる。日本の標準時子午線は東経135度（兵庫県明石市）。</p>'],
+    ['日付変更線', '<p>ほぼ経度180度にそって引かれた線。<br>西から東へ越える（日本 → ハワイ）ときは日付を<b>1日戻し</b>、東から西へ越えるときは<b>1日進める</b>。</p>'],
+    ['おもな図法', '<p><b>メルカトル図法</b>：角度が正しい（等角航路が直線）。高緯度ほど面積が拡大。<br><b>正距方位図法</b>：中心からの距離と方位が正しい。<br><b>モルワイデ図法</b>：面積が正しい（分布図向き）。</p>'],
+  ]));
+
+  /* --- 時差 --- */
+  const td = labCard('実験', '時差を計算する', '出発地の時刻を動かすと、もう一方の都市の時刻が出る（標準時で計算）');
+  const opt = (sel) => CITIES.map((c, i) => `<option value="${i}" ${i === sel ? 'selected' : ''}>${c[0]}（UTC${c[1] >= 0 ? '+' : '−'}${Math.abs(c[1])}）</option>`).join('');
+  td.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl" for="tda">都市 A<select id="tda">${opt(0)}</select></label><label class="ctl" for="tdb">都市 B<select id="tdb">${opt(8)}</select></label>${slider('tdh', 'A の時刻（1月1日）', 0, 23.5, 0.5, 9)}</div>
+    <div class="grid2"><div class="res"><span class="small muted" id="tdan"></span><b class="big-num tnum" id="tdat"></b></div><div class="res ok"><span class="small muted" id="tdbn"></span><b class="big-num tnum" id="tdbt"></b></div></div>
+    <ol class="steps" id="tds"></ol>`);
+  root.appendChild(td);
+  function drawTd() {
+    const a = CITIES[+$('#tda').value], b = CITIES[+$('#tdb').value], t = +$('#tdh').value;
+    $('#tdh-v').textContent = hm(t);
+    const diff = b[1] - a[1], tb = t + diff, day = tb < 0 ? '12月31日' : tb >= 24 ? '1月2日' : '1月1日', tt = ((tb % 24) + 24) % 24;
+    $('#tdan').textContent = `${a[0]}（標準時子午線 ${a[2]}）`; $('#tdat').textContent = `1月1日 ${hm(t)}`;
+    $('#tdbn').textContent = `${b[0]}（標準時子午線 ${b[2]}）`; $('#tdbt').textContent = `${day} ${hm(tt)}`;
+    $('#tds').innerHTML = `<li><span>標準時のずれ：${a[0]} は UTC${a[1] >= 0 ? '+' : '−'}${Math.abs(a[1])}、${b[0]} は UTC${b[1] >= 0 ? '+' : '−'}${Math.abs(b[1])}<span class="why">経度差 ÷ 15 ＝ 時差。UTC はロンドン（経度0度）の時刻</span></span></li>
+      <li><span>時差は <b>${Math.abs(diff)} 時間</b>。${b[0]} は ${a[0]} より${diff > 0 ? '東にあるので<b>進んでいる</b>' : diff < 0 ? '西にあるので<b>遅れている</b>' : '同じ時刻'}<span class="why">東にあるほど時刻が進んでいる</span></span></li>
+      <li><span>${hm(t)} ${diff >= 0 ? '＋' : '−'} ${Math.abs(diff)} 時間 ＝ <mark>${day} ${hm(tt)}</mark>${day !== '1月1日' ? '<span class="why">24時をこえる・0時より前になるときは日付が変わる</span>' : ''}</span></li>`;
+  }
+  ['#tda', '#tdb'].forEach(i => $(i, td).onchange = drawTd); $('#tdh', td).oninput = drawTd; drawTd();
+  root.appendChild(trap('ニューデリー（UTC+5.5）のように、30分ずれた標準時を使う国もある。また、国土が東西に広いアメリカやロシアは<b>複数の標準時</b>をもつ。'));
+
+  /* --- 地形図 --- */
+  const sc = labCard('実験', '地形図の縮尺と等高線', '地図上の長さから実際の距離を求める');
+  sc.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">縮尺${seg('scs', [['25000', '2万5千分の1'], ['50000', '5万分の1']], '25000')}</label>${slider('scl', '地図上の長さ [cm]', 0.5, 20, 0.5, 4)}</div>
+    <div class="grid2"><div class="res"><span class="small muted">実際の距離</span><b class="big-num tnum" id="scd"></b><span class="small" id="scf"></span></div><div class="res"><span class="small muted">地図上で 1 辺がこの長さの正方形の実際の面積</span><b class="big-num tnum" id="sca"></b></div></div>
+    <div class="scroll-x"><table class="tbl ctr"><thead><tr><th>等高線</th><th>2万5千分の1</th><th>5万分の1</th></tr></thead><tbody>
+    <tr><td><b>計曲線</b>（太い線）</td><td>50 m ごと</td><td>100 m ごと</td></tr><tr><td><b>主曲線</b>（細い線）</td><td>10 m ごと</td><td>20 m ごと</td></tr>
+    <tr><td>補助曲線（破線）</td><td>5 m・2.5 m ごと</td><td>10 m・5 m ごと</td></tr></tbody></table></div>
+    <div class="note small">等高線の間かくが<b>せまい</b>ところは傾斜が<b>急</b>、広いところはゆるやか。等高線が高い方へ食いこんでいるところは<b>谷</b>、低い方へ張り出しているところは<b>尾根</b>。</div>`);
+  root.appendChild(sc);
+  let scale = 25000;
+  function drawSc() {
+    const l = +$('#scl').value; $('#scl-v').textContent = l;
+    const m = l * scale / 100;
+    $('#scd').textContent = m >= 1000 ? `${fmt(m / 1000, 3)} km` : `${fmt(m, 1)} m`;
+    $('#scf').innerHTML = `${l} cm × ${scale.toLocaleString()} ＝ ${fmt(l * scale, 0)} cm ＝ ${fmt(m, 1)} m`;
+    const a = (m / 1000) ** 2; $('#sca').textContent = `${fmt(a, 4)} km²`;
+  }
+  bindSeg(sc, 'scs', v => { scale = +v; drawSc(); }); $('#scl', sc).oninput = drawSc; drawSc();
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('chizu'));
+};
+
+/* ===== 第2章 地形 ===== */
+const LANDS = [
+  ['vji', 'V字谷', '山地', '川が山地を深くけずってできた、断面が V 字形の谷。', '平地が少なく、林業などに使われる。'],
+  ['sencho', '扇状地（扇頂）', '谷の出口', '川が山地から平地に出るところ。扇状地のかなめの部分。', '谷口集落ができやすい。'],
+  ['senou', '扇状地（扇央）', '扇の中央', '粒の大きい砂やれきがたまり、水が地下にしみこむ。川が地下を流れる<b>水無川</b>になることも。', '水が得にくいので、<b>果樹園・畑・桑畑</b>に利用。'],
+  ['sentan', '扇状地（扇端）', '扇のすそ', '地下を流れた水が<b>わき水</b>（湧水）となって出てくる。', '水が得やすいので、<b>集落・水田</b>が並ぶ。'],
+  ['shizen', '自然堤防', '氾濫原', '洪水のときに川からあふれた土砂が、川ぞいに積もってできた微高地。', '水はけがよいので<b>集落・畑</b>。'],
+  ['kohai', '後背湿地', '氾濫原', '自然堤防の外側の、水はけの悪い低湿地。', '<b>水田</b>に利用。新しい住宅地では浸水や液状化に注意。'],
+  ['sankaku', '三角州', '河口', '川が運んだ細かい土砂が河口付近に積もってできた低平な土地。', '水田や都市に利用（広島など）。高潮・洪水に弱い。'],
+  ['rias', 'リアス海岸', '海岸', 'V字谷が沈んで（沈水して）できた、のこぎりの歯のような入り組んだ海岸。', '湾内は波がおだやかで養殖や漁港に向く。<b>津波</b>の被害が大きくなりやすい（三陸海岸など）。'],
+  ['fjord', 'フィヨルド', '海岸', '氷河がけずった U 字谷が沈水してできた、細長く深い入り江。', 'ノルウェーやチリ南部に見られる。'],
+];
+VIEWS.chikei = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '地形', '大きな地形はプレートの動き（内的営力）でつくられ、小さな地形は川・氷河・波などのはたらき（外的営力）でつくられる。地形は土地の使われ方や災害の起こりやすさと深く関係する。'));
+  root.appendChild(points([
+    ['プレートの境界', '<p><b>広がる境界</b>：海嶺・地溝帯（大西洋中央海嶺、アイスランド）<br><b>狭まる境界</b>：海溝・大山脈（日本列島、ヒマラヤ山脈）<br><b>ずれる境界</b>：横ずれ断層（サンアンドレアス断層）</p>'],
+    ['大地形', '<p><b>安定陸塊</b>：古く、なだらか。鉄鉱石が多い。<br><b>古期造山帯</b>：古い山脈で低くなだらか。石炭が多い（アパラチア山脈など）。<br><b>新期造山帯</b>：高くけわしい。地震・火山が多い（環太平洋、アルプス＝ヒマラヤ）。</p>'],
+    ['川がつくる地形', '<p>山から海へ：<mark>V字谷 → 扇状地 → 氾濫原（自然堤防・後背湿地）→ 三角州</mark>。下流ほど運ばれる土砂の粒が細かくなる。</p>'],
+    ['海岸・その他の地形', '<p><b>海岸段丘</b>：隆起でできた階段状の地形<br><b>カルスト地形</b>：石灰岩が雨水でとけてできる（秋吉台）<br><b>サンゴ礁</b>：裾礁 → 堡礁 → 環礁</p>'],
+  ]));
+
+  const lf = labCard('実験', '川のはたらきと土地利用', '図や地形名を押すと、その地形のでき方と土地利用が出る');
+  lf.insertAdjacentHTML('beforeend', `<svg class="plot" id="lfsvg" viewBox="0 0 560 230" role="img" aria-label="山から海までの地形の模式図"></svg>
+    <div class="pick-grid" id="lfp">${LANDS.map((l, i) => `<button data-i="${i}" aria-pressed="${i === 2}">${l[1]}<small>${l[2]}</small></button>`).join('')}</div><div class="res" id="lfr"></div>`);
+  root.appendChild(lf);
+  const AREA = { vji: [10, 90], sencho: [90, 140], senou: [140, 210], sentan: [210, 260], shizen: [260, 350], kohai: [260, 350], sankaku: [350, 430], rias: [430, 560], fjord: [430, 560] };
+  function drawLf(i) {
+    const l = LANDS[i], [a, b] = AREA[l[0]];
+    let s = `<rect x="${a}" y="10" width="${b - a}" height="190" style="fill:var(--marker)" opacity=".45"/>`;
+    s += `<path d="M10 40 L60 30 L90 110 L140 140 L260 170 L430 180 L560 180 L560 200 L10 200 Z" style="fill:var(--card-2);stroke:var(--ink);stroke-width:1.5"/>`;
+    s += `<path d="M430 182 L560 182 L560 200 L430 200 Z" style="fill:var(--cobalt-soft)"/>`;
+    s += `<path d="M90 110 L140 140 L210 157 L260 170" style="fill:none;stroke:var(--cobalt);stroke-width:3;stroke-dasharray:6 4"/><path d="M260 170 Q300 165 330 175 T420 178" style="fill:none;stroke:var(--cobalt);stroke-width:3"/>`;
+    s += `<path d="M285 168 q8 -10 16 0" style="fill:var(--good-soft);stroke:var(--good)"/><path d="M300 176 q20 4 40 0" style="fill:none;stroke:var(--muted);stroke-dasharray:3 3"/>`;
+    s += `<circle cx="215" cy="158" r="5" style="fill:var(--cobalt)"/><text class="tk" x="215" y="148" text-anchor="middle">湧水</text>`;
+    [['V字谷', 50], ['扇頂', 115], ['扇央', 175], ['扇端', 235], ['氾濫原', 305], ['三角州', 390], ['海', 495]].forEach(([t, x]) => s += `<text class="lbl" x="${x}" y="222" text-anchor="middle">${t}</text>`);
+    s += `<text class="tk" x="175" y="132" text-anchor="middle">水無川</text>`;
+    $('#lfsvg').innerHTML = s;
+    $('#lfr').innerHTML = `<b>${l[1]}</b><span>${l[3]}</span><span>土地利用：${l[4]}</span>`;
+  }
+  $$('#lfp button', lf).forEach(b => b.onclick = () => { $$('#lfp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawLf(+b.dataset.i); });
+  drawLf(2);
+  root.appendChild(trap('リアス海岸は<b>V字谷</b>（川がつくった谷）が沈水したもの、フィヨルドは<b>U字谷</b>（氷河がつくった谷）が沈水したもの。どちらも沈水海岸だが、もとの谷がちがう。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('chikei'));
+};
+
+/* ===== 第3章 気候 ===== */
+const KNAME = { Af: '熱帯雨林気候', Am: '熱帯モンスーン気候', Aw: 'サバナ気候', BS: 'ステップ気候', BW: '砂漠気候', Cs: '地中海性気候', Cw: '温暖冬季少雨気候', Cfa: '温暖湿潤気候', Cfb: '西岸海洋性気候', Df: '亜寒帯湿潤気候', Dw: '亜寒帯冬季少雨気候', ET: 'ツンドラ気候', EF: '氷雪気候' };
+const KNOTE = { Af: '一年中高温多雨。熱帯雨林が広がる。', Am: '短い乾季があるが、全体として雨が多い。', Aw: '雨季と乾季がはっきりしている。まばらな樹木と長い草の草原（サバナ）。', BS: '短い雨季がある乾燥気候。短い草の草原（ステップ）。肥えた黒土が分布する地域もある。', BW: '雨がほとんど降らない。オアシス以外では植物がほとんどない。', Cs: '夏は高温で乾燥、冬は温暖で雨が多い。オリーブ・ぶどうなどを栽培。', Cw: '夏は高温多雨、冬は乾燥。季節風（モンスーン）の影響。', Cfa: '夏は高温多雨、冬は寒い。四季の変化がはっきり（東京など）。', Cfb: '偏西風と暖流の影響で、夏はすずしく冬は高緯度のわりに温暖。年較差が小さい。', Df: '冬は寒さがきびしいが、年中降水がある。針葉樹林（タイガ）。', Dw: '冬は非常に寒く乾燥する。年較差がとても大きい（ユーラシア大陸東部）。', ET: '最暖月でも10℃未満。短い夏にこけ類や草が育つ。', EF: '一年中氷と雪におおわれる（南極大陸・グリーンランド内陸）。' };
+const KPRE = [['熱帯のモデル', 27, 2, 2400, 'even', 0.2], ['サバナのモデル', 26, 4, 1200, 'sum', 0.95], ['砂漠のモデル', 24, 18, 80, 'even', 0.3], ['地中海性のモデル', 17, 13, 650, 'win', 0.9], ['温暖湿潤のモデル', 15, 22, 1500, 'sum', 0.5], ['西岸海洋性のモデル', 10, 13, 750, 'even', 0.1], ['亜寒帯冬季少雨のモデル', -5, 45, 450, 'sum', 0.9], ['ツンドラのモデル', -8, 22, 250, 'sum', 0.4]];
+function climate(mean, range, total, pat, k) {
+  const T = [], P = [];
+  for (let m = 1; m <= 12; m++) {
+    const c = Math.cos(2 * Math.PI * (m - 7) / 12);
+    T.push(mean + range / 2 * c);
+    P.push(1 + k * (pat === 'sum' ? c : pat === 'win' ? -c : 0));
+  }
+  const sw = P.reduce((a, b) => a + b, 0); for (let i = 0; i < 12; i++) P[i] = P[i] / sw * total;
+  return { T, P };
+}
+function koppen(T, P) {
+  const t = T.reduce((a, b) => a + b) / 12, r = P.reduce((a, b) => a + b), tmax = Math.max(...T), tmin = Math.min(...T);
+  const sum = [3, 4, 5, 6, 7, 8], win = [9, 10, 11, 0, 1, 2]; // 北半球：夏 4〜9月
+  const ps = sum.reduce((a, i) => a + P[i], 0), pw = win.reduce((a, i) => a + P[i], 0);
+  const why = [];
+  if (tmax < 10) { why.push(`最暖月 ${fmt(tmax, 1)}℃ ＜ 10℃ → 樹木が育たない <b>E（寒帯）</b>`); return { code: tmax >= 0 ? 'ET' : 'EF', why: [...why, tmax >= 0 ? '最暖月が 0℃ 以上 → ET' : '最暖月が 0℃ 未満 → EF'] }; }
+  const R = ps >= 0.7 * r ? 20 * (t + 14) : pw >= 0.7 * r ? 20 * t : 20 * (t + 7);
+  if (r < R) { why.push(`年降水量 ${fmt(r, 0)} mm ＜ 乾燥限界 ${fmt(R, 0)} mm → <b>B（乾燥帯）</b>`); return { code: r < R / 2 ? 'BW' : 'BS', why: [...why, r < R / 2 ? '乾燥限界の半分より少ない → BW' : '乾燥限界の半分以上 → BS'] }; }
+  why.push(`年降水量 ${fmt(r, 0)} mm ≧ 乾燥限界 ${fmt(R, 0)} mm → 樹木が育つ`);
+  const dry = Math.min(...P), sdry = Math.min(...sum.map(i => P[i])), wdry = Math.min(...win.map(i => P[i])), swet = Math.max(...sum.map(i => P[i])), wwet = Math.max(...win.map(i => P[i]));
+  if (tmin >= 18) { why.push(`最寒月 ${fmt(tmin, 1)}℃ ≧ 18℃ → <b>A（熱帯）</b>`); return { code: dry >= 60 ? 'Af' : dry >= 100 - r / 25 ? 'Am' : 'Aw', why: [...why, dry >= 60 ? `最少雨月 ${fmt(dry, 0)} mm ≧ 60 mm → Af` : `最少雨月 ${fmt(dry, 0)} mm ＜ 60 mm（乾季がある）`] }; }
+  const sub = sdry < 30 && sdry < wwet / 3 ? 's' : wdry < swet / 10 ? 'w' : 'f';
+  const subWhy = sub === 's' ? '夏に乾燥（夏の最少雨月が冬の最多雨月の 1/3 未満）→ s' : sub === 'w' ? '冬に乾燥（冬の最少雨月が夏の最多雨月の 1/10 未満）→ w' : '年中降水がある → f';
+  if (tmin >= -3) { why.push(`最寒月 ${fmt(tmin, 1)}℃ は −3℃以上 18℃未満 → <b>C（温帯）</b>`, subWhy); const code = sub === 's' ? 'Cs' : sub === 'w' ? 'Cw' : tmax >= 22 ? 'Cfa' : 'Cfb'; if (sub === 'f') why.push(tmax >= 22 ? `最暖月 ${fmt(tmax, 1)}℃ ≧ 22℃ → a` : `最暖月 ${fmt(tmax, 1)}℃ ＜ 22℃ → b`); return { code, why }; }
+  why.push(`最寒月 ${fmt(tmin, 1)}℃ ＜ −3℃ → <b>D（亜寒帯）</b>`, sub === 'w' ? subWhy : '冬にも降水がある → f');
+  return { code: sub === 'w' ? 'Dw' : 'Df', why };
+}
+VIEWS.kiko = (root) => {
+  root.appendChild(sectionHead('UNIT 3', '気候', 'ケッペンは植生（樹木が育つかどうか）に注目して、気温と降水量で世界の気候を分けた。雨温図を読むときは、気温の線の高さと形、降水量の棒の季節変化を見る。'));
+  root.appendChild(points([
+    ['ケッペンの気候区分', '<p>樹木が育つ：<b>A</b> 熱帯（最寒月 18℃以上）、<b>C</b> 温帯（最寒月 −3〜18℃）、<b>D</b> 亜寒帯（最寒月 −3℃未満）<br>樹木が育たない：<b>B</b> 乾燥帯（降水が少ない）、<b>E</b> 寒帯（最暖月 10℃未満）</p>'],
+    ['小文字の意味', '<p><b>f</b>：年中湿潤　<b>w</b>：冬に乾燥　<b>s</b>：夏に乾燥<br><b>a</b>：夏が暑い（最暖月 22℃以上）　<b>b</b>：夏がすずしい</p>'],
+    ['大気の大循環', '<p>赤道付近は上昇気流で雨が多い（<mark>熱帯収束帯</mark>）。緯度 20〜30度付近は下降気流で乾燥（<mark>亜熱帯高圧帯</mark>、砂漠が多い）。中緯度は<mark>偏西風</mark>がふく。</p>'],
+    ['南半球の雨温図', '<p>南半球では 1月ごろが夏、7月ごろが冬。気温のグラフが「U字形」なら南半球と判断できる。</p>'],
+  ]));
+
+  const kc = labCard('実験', '雨温図をつくって気候区分を判定', 'スライダーで気温と降水量を変えると、雨温図とケッペンの判定が変わる（北半球のモデル）');
+  kc.insertAdjacentHTML('beforeend', `<div class="row" id="kcpre" style="gap:6px">${KPRE.map((p, i) => `<button class="btn ghost sm" data-i="${i}">${p[0]}</button>`).join('')}</div>
+    <div class="ctls">${slider('kct', '年平均気温 [℃]', -25, 30, 1, 15)}${slider('kcr', '気温の年較差 [℃]', 0, 50, 1, 22)}${slider('kcp', '年降水量 [mm]', 0, 3000, 10, 1500)}
+    <label class="ctl" for="kcs">雨の多い季節<select id="kcs"><option value="even">一年中</option><option value="sum">夏</option><option value="win">冬</option></select></label>${slider('kck', '季節のかたより', 0, 0.98, 0.02, 0.5)}</div>
+    <div class="lab-split"><svg class="plot" id="kcsvg" viewBox="0 0 520 330" role="img" aria-label="雨温図"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="big-num" id="kcc"></div><div class="res" id="kcn"></div><ol class="steps small" id="kcw"></ol></div></div>`);
+  root.appendChild(kc);
+  function drawKc() {
+    const t = +$('#kct').value, rg = +$('#kcr').value, p = +$('#kcp').value, pat = $('#kcs').value, k = +$('#kck').value;
+    $('#kct-v').textContent = t; $('#kcr-v').textContent = rg; $('#kcp-v').textContent = p; $('#kck-v').textContent = fmt(k);
+    const { T, P } = climate(t, rg, p, pat, k), res = koppen(T, P);
+    const X = m => 60 + m * 36, YT = v => 290 - (v + 40) / 80 * 270, YP = v => 290 - v / 600 * 270;
+    let s = '';
+    for (let v = -40; v <= 40; v += 10) s += `<line class="g" x1="56" y1="${YT(v)}" x2="490" y2="${YT(v)}"/><text class="tk" x="52" y="${YT(v) + 4}" text-anchor="end">${M(v)}</text>`;
+    for (let v = 0; v <= 600; v += 100) s += `<text class="tk" x="494" y="${YP(v) + 4}">${v}</text>`;
+    P.forEach((v, i) => s += `<rect x="${X(i) + 4}" y="${Math.max(YP(v), 20)}" width="28" height="${290 - Math.max(YP(v), 20)}" style="fill:var(--cobalt-soft);stroke:var(--cobalt)"/>`);
+    s += `<path class="cv" style="stroke:var(--accent)" d="${T.map((v, i) => (i ? 'L' : 'M') + (X(i) + 18) + ' ' + YT(v)).join('')}"/>`;
+    T.forEach((v, i) => s += `<circle cx="${X(i) + 18}" cy="${YT(v)}" r="3.5" style="fill:var(--accent)"/><text class="tk" x="${X(i) + 18}" y="308" text-anchor="middle">${i + 1}</text>`);
+    s += `<line x1="56" y1="${YT(0)}" x2="490" y2="${YT(0)}" style="stroke:var(--muted);stroke-width:1.2"/><text class="tk" x="20" y="14">気温 ℃</text><text class="tk" x="470" y="14">降水量 mm</text><text class="tk" x="275" y="326" text-anchor="middle">月</text>`;
+    $('#kcsvg').innerHTML = s;
+    $('#kcc').innerHTML = `${res.code} <span style="font-size:.5em">${KNAME[res.code]}</span>`;
+    $('#kcn').innerHTML = `<span>${KNOTE[res.code]}</span>`;
+    $('#kcw').innerHTML = res.why.map(w => `<li><span>${w}</span></li>`).join('');
+  }
+  $$('#kcpre button', kc).forEach(b => b.onclick = () => { const p = KPRE[+b.dataset.i]; $('#kct').value = p[1]; $('#kcr').value = p[2]; $('#kcp').value = p[3]; $('#kcs').value = p[4]; $('#kck').value = p[5]; drawKc(); });
+  ['#kct', '#kcr', '#kcp', '#kck'].forEach(i => $(i, kc).oninput = drawKc); $('#kcs', kc).onchange = drawKc; drawKc();
+  root.appendChild(h(`<div class="note small">乾燥限界（mm）の求め方：年平均気温を t として、夏に雨が多い地域は 20(t＋14)、冬に雨が多い地域は 20t、それ以外は 20(t＋7)。年降水量がこれより少なければ乾燥帯。</div>`));
+  root.appendChild(trap('地中海性気候（Cs）は<b>夏に乾燥</b>、温暖冬季少雨気候（Cw）は<b>冬に乾燥</b>。雨温図では、降水量の棒が少なくなる季節を気温の高い月・低い月と照らし合わせて判断する。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kiko'));
+};
+
+/* ===== 第4章 生活文化と産業 ===== */
+const RELIG = [
+  ['キリスト教', '世界宗教', 'ヨーロッパ・南北アメリカ・オセアニアなど', '日曜日に教会で礼拝。クリスマス・イースター。カトリック・プロテスタント・正教会に分かれる。'],
+  ['イスラーム（イスラム教）', '世界宗教', '西アジア・北アフリカ・中央アジア・東南アジア（インドネシアなど）', '聖地メッカに向かって1日5回の礼拝。ラマダーン（断食月）。豚肉や酒を口にしない。ハラール認証。'],
+  ['仏教', '世界宗教', '東アジア・東南アジア', '東南アジアの上座仏教では、男性が一時的に出家する習慣がある国も（タイなど）。'],
+  ['ヒンドゥー教', '民族宗教', 'インド・ネパール', '牛を神聖な動物とし、牛肉を食べない。ガンジス川での沐浴。'],
+  ['ユダヤ教', '民族宗教', 'イスラエル', 'エルサレムが聖地。食べてよいものに細かいきまりがある。'],
+];
+const FARM = [
+  ['遊牧', '乾燥地域・寒冷地域', '水や草を求めて家畜（羊・やぎ・らくだ・トナカイなど）とともに移動する。'],
+  ['焼畑農業', '熱帯', '森林を焼いてその灰を肥料にし、いも類などを栽培。数年で別の土地へ移る。'],
+  ['オアシス農業', '乾燥地域', 'わき水や地下水路（カナート）を利用して、なつめやしや小麦を栽培。'],
+  ['アジア式稲作農業', 'モンスーンアジア', '季節風による豊富な雨を利用した稲作。人手を多くかける集約的な農業。'],
+  ['地中海式農業', '地中海性気候の地域', '夏の乾燥に強いオリーブ・ぶどう・オレンジ（樹木作物）と、冬の雨を利用した小麦。'],
+  ['混合農業', 'ヨーロッパ中部など', '作物の栽培（小麦・飼料作物）と家畜の飼育（豚・牛）を組み合わせる。'],
+  ['酪農', '冷涼な地域・大都市の近く', '乳牛を飼育して牛乳・チーズ・バターなどを生産。'],
+  ['企業的穀物農業', 'アメリカ・カナダ・オーストラリアなど', '大型機械を使って広い農地で小麦などを大規模に生産し、輸出する。'],
+  ['プランテーション農業', '熱帯・亜熱帯', '植民地時代に始まった、輸出用の単一作物（コーヒー・天然ゴム・油やし・バナナなど）の大規模栽培。'],
+];
+VIEWS.bunka = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '生活文化と産業', '人々の衣食住や宗教、農業のしかたは、その土地の自然（気候・地形）と社会（歴史・経済）の条件に合わせて形づくられてきた。'));
+  root.appendChild(points([
+    ['気候と住居', '<p>熱帯：風通しをよくする<b>高床式</b>の住居<br>乾燥帯：<b>日干しれんが</b>の厚い壁と小さな窓<br>亜寒帯（シベリア）：建物の熱で<b>永久凍土</b>がとけないよう高床にする</p>'],
+    ['気候と衣服', '<p>乾燥帯では、強い日ざしや砂ぼこりを防ぐため、全身をおおう<b>ゆったりした長い衣服</b>を着る。<br>寒冷地では毛皮や重ね着。</p>'],
+    ['言語', '<p>旧植民地では、宗主国の言語が公用語になっている国が多い。<br>ブラジル → ポルトガル語、ラテンアメリカの多く → スペイン語、カナダ → 英語・フランス語。</p>'],
+    ['主食', '<p>米：モンスーンアジア、小麦：ヨーロッパ・西アジア・北アメリカなど、とうもろこし：中南米・アフリカ、いも類（キャッサバ・タロいも）：熱帯。</p>'],
+  ]));
+  const rl = labCard('整理', '世界のおもな宗教', '宗教を押すと、広がっている地域と生活のきまりが出る');
+  rl.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="rlp">${RELIG.map((r, i) => `<button data-i="${i}" aria-pressed="${i === 1}">${r[0]}<small>${r[1]}</small></button>`).join('')}</div><div class="res" id="rlr"></div>`);
+  root.appendChild(rl);
+  const drawRl = i => { const r = RELIG[i]; $('#rlr').innerHTML = `<b>${r[0]}（${r[1]}）</b><span>おもな地域：${r[2]}</span><span>${r[3]}</span>`; };
+  $$('#rlp button', rl).forEach(b => b.onclick = () => { $$('#rlp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawRl(+b.dataset.i); });
+  drawRl(1);
+
+  const fm = labCard('練習', 'どの農業？', '説明を読んで、あてはまる農業を選ぼう');
+  fm.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><b id="fmq" style="font-size:1.05rem"></b><span class="small muted tnum" id="fmn"></span></div><div class="pick-grid" id="fmc">${FARM.map(f => `<button data-k="${f[0]}">${f[0]}</button>`).join('')}</div><div class="res" id="fmr" hidden></div><div><button class="btn ghost sm" id="fmx">次の問題</button></div>`);
+  root.appendChild(fm);
+  let fq = shuffle(FARM), fi = 0;
+  const showFm = () => { $('#fmq').textContent = fq[fi][2]; $('#fmn').textContent = `${fi + 1} / ${fq.length}`; $('#fmr').hidden = true; $$('#fmc button').forEach(b => b.setAttribute('aria-pressed', 'false')); };
+  $$('#fmc button', fm).forEach(b => b.onclick = () => { const ok = b.dataset.k === fq[fi][0]; $$('#fmc button').forEach(x => x.setAttribute('aria-pressed', x === b)); const r = $('#fmr'); r.hidden = false; r.className = 'res ' + (ok ? 'ok' : 'ng'); r.innerHTML = `<b>${ok ? '正解！' : `正解は「${fq[fi][0]}」`}</b><span class="small">おもな地域：${fq[fi][1]}</span>`; });
+  $('#fmx', fm).onclick = () => { fi = (fi + 1) % fq.length; if (!fi) fq = shuffle(FARM); showFm(); };
+  showFm();
+  root.appendChild(trap('イスラームの人がすべて西アジアに住んでいるわけではない。信者がもっとも多い国は東南アジアの<b>インドネシア</b>。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('bunka'));
+};
+
+/* ===== 第5章 防災と地球的課題 ===== */
+VIEWS.bosai = (root) => {
+  root.appendChild(sectionHead('UNIT 5', '防災と地球的課題', '日本は地震・火山・豪雨などの自然災害が多い。自分の地域のリスクを知り、備えることが大切。世界では人口・食料・環境などの課題がつながり合っている。'));
+  root.appendChild(points([
+    ['ハザードマップ', '<p>自然災害による被害が予想される範囲や、避難場所・避難経路を示した地図。洪水・土砂災害・津波・高潮などの種類ごとに市区町村が作成している。</p>'],
+    ['警戒レベル', '<p>レベル3：高齢者等避難<br>レベル4：<mark>避難指示</mark>（危険な場所から全員避難）<br>レベル5：緊急安全確保（すでに災害が発生・切迫）</p>'],
+    ['自助・共助・公助', '<p><b>自助</b>：自分や家族の身を自分で守る<br><b>共助</b>：地域の人どうしで助け合う<br><b>公助</b>：国や自治体による救助・支援</p>'],
+    ['地球的課題', '<p>地球温暖化（温室効果ガス）、砂漠化（過放牧・過耕作）、酸性雨（硫黄酸化物・窒素酸化物）、人口爆発と少子高齢化、食料問題。<br><b>SDGs</b>：2015年に国連で採択された 17 の目標（2030年まで）。</p>'],
+  ]));
+
+  const py = labCard('実験', '人口ピラミッドの形', '出生と死亡のようすを変えると、人口ピラミッドの形と高齢化のようすが変わる（モデル）');
+  py.insertAdjacentHTML('beforeend', `<div class="row" id="pypre" style="gap:6px"><button class="btn ghost sm" data-p="40,55,0">富士山型</button><button class="btn ghost sm" data-p="13,75,0">つりがね型</button><button class="btn ghost sm" data-p="8,84,50">つぼ型</button></div>
+    <div class="ctls">${slider('pyb', '出生率（人口千人あたり）', 5, 45, 1, 8)}${slider('pyd', '平均寿命 [歳]', 40, 90, 1, 84)}${slider('pyf', '近年の出生の減り方 [%]', 0, 70, 1, 50)}</div>
+    <div class="lab-split"><svg class="plot" id="pysvg" viewBox="0 0 420 340" role="img" aria-label="人口ピラミッド"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="big-num" id="pyt"></div><div class="stat-grid" id="pyi"></div><div class="note" id="pyn"></div></div></div>`);
+  root.appendChild(py);
+  function drawPy() {
+    const bb = +$('#pyb').value, e0 = +$('#pyd').value, ff = +$('#pyf').value;
+    $('#pyb-v').textContent = bb; $('#pyd-v').textContent = e0; $('#pyf-v').textContent = ff;
+    // 安定人口のモデル：人口増加率 ≒ 出生率 − 死亡率（死亡率 ≒ 1000 / 平均寿命）
+    const r = (bb - 1000 / e0) / 1000, pop = [];
+    for (let g = 0; g < 21; g++) {
+      const age = g * 5 + 2.5;
+      const surv = 1 / (1 + Math.exp((age - e0) / 9));
+      const dec = age < 30 ? 1 - ff / 100 * (1 - age / 30) : 1;
+      pop.push(Math.exp(-r * age) * surv * dec);
+    }
+    const tot = pop.reduce((a, b) => a + b), young = pop.slice(0, 3).reduce((a, b) => a + b) / tot * 100, old = pop.slice(13).reduce((a, b) => a + b) / tot * 100;
+    const mx = Math.max(...pop), W = 180;
+    let s = '';
+    pop.forEach((v, g) => { const w = v / mx * W, y = 310 - (g + 1) * 14; const col = g < 3 ? '--good' : g >= 13 ? '--accent' : '--cobalt'; s += `<rect x="${210 - w}" y="${y}" width="${w}" height="12" style="fill:var(${col})" opacity=".85"/><rect x="210" y="${y}" width="${w}" height="12" style="fill:var(${col})" opacity=".55"/>`; if (g % 2 === 0) s += `<text class="tk" x="8" y="${y + 10}">${g * 5}</text>`; });
+    s += `<line x1="210" y1="14" x2="210" y2="312" style="stroke:var(--ink)"/><text class="tk" x="110" y="330" text-anchor="middle">男</text><text class="tk" x="310" y="330" text-anchor="middle">女</text><text class="tk" x="8" y="10">歳</text>`;
+    $('#pysvg').innerHTML = s;
+    const shape = young > 30 && old < 7 ? '富士山型（ピラミッド型）' : young < 15 ? 'つぼ型' : 'つりがね型';
+    $('#pyt').textContent = shape;
+    const c = (k, v, col) => `<div class="var"><div class="k" style="color:var(${col})">${k}</div><div class="v">${fmt(v, 1)} %</div></div>`;
+    $('#pyi').innerHTML = c('年少人口（0〜14歳）', young, '--good') + c('生産年齢人口（15〜64歳）', 100 - young - old, '--cobalt') + c('老年人口（65歳以上）', old, '--accent');
+    $('#pyn').innerHTML = (shape.startsWith('富士山') ? '多産多死。発展途上国に多い型。人口が急に増える（人口爆発）。' : shape === 'つぼ型' ? '少産少死が進み、子どもの数が減っている。日本など少子高齢化が進んだ国に多い型。将来は人口が減る。' : '少産少死で、人口の増減が小さい型。') +
+      `<br>老年人口の割合が 7% をこえると<b>高齢化社会</b>、14% をこえると<b>高齢社会</b>、21% をこえると<b>超高齢社会</b>。今のモデルは${old > 21 ? '超高齢社会' : old > 14 ? '高齢社会' : old > 7 ? '高齢化社会' : 'まだ高齢化社会ではない'}。`;
+  }
+  $$('#pypre button', py).forEach(b => b.onclick = () => { const [x, y, z] = b.dataset.p.split(','); $('#pyb').value = x; $('#pyd').value = y; $('#pyf').value = z; drawPy(); });
+  ['#pyb', '#pyd', '#pyf'].forEach(i => $(i, py).oninput = drawPy); drawPy();
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>自然災害と起こりやすい場所</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>災害</th><th>起こりやすい場所・ようす</th><th>備え</th></tr></thead><tbody>
+    <tr><td><b>洪水・内水氾濫</b></td><td>川ぞいの低地、後背湿地、都市部（下水があふれる）</td><td>洪水ハザードマップ、早めの避難</td></tr>
+    <tr><td><b>土砂災害</b></td><td>急な斜面、谷の出口（土石流）、扇状地</td><td>土砂災害警戒区域の確認</td></tr>
+    <tr><td><b>津波</b></td><td>海岸部、とくにリアス海岸の湾の奥</td><td>高い所へすぐ避難、津波避難ビル</td></tr>
+    <tr><td><b>液状化</b></td><td>埋立地、かつての川や沼（旧河道）</td><td>土地の成り立ちを地形図・古い地図で確認</td></tr>
+    <tr><td><b>高潮</b></td><td>台風が通る海岸の低地、三角州</td><td>高潮ハザードマップ</td></tr>
+    <tr><td><b>火山災害</b></td><td>火山の周辺（火砕流・噴石・火山灰）</td><td>火山ハザードマップ、噴火警戒レベル</td></tr></tbody></table></div></section>`));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('bosai'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から） ===== */
+const QUESTIONS = [
+/* ---------- 地図と時差 ---------- */
+{ id: 'c1', unit: 'chizu', type: '時差', lv: 1, inUnit: true,
+  stem: '<p>経度何度ごとに 1 時間の時差が生じるか。</p>', choices: ['10度', '15度', '20度', '30度'], ans: 1,
+  exp: '<p>地球は 24 時間で 360 度回るので、360 ÷ 24 ＝ <mark>15度</mark>で 1 時間。</p>' },
+{ id: 'c2', unit: 'chizu', type: '時差', lv: 2, inUnit: true,
+  stem: '<p>東京（東経135度を標準時子午線とする）とロンドン（経度0度）の時差は何時間か。</p>', choices: ['6時間', '8時間', '9時間', '12時間'], ans: 2,
+  exp: '<p>経度差 135 度 ÷ 15 ＝ <mark>9時間</mark>。東にある東京の方が 9 時間進んでいる。</p>' },
+{ id: 'c3', unit: 'chizu', type: '時差', lv: 3, inUnit: true,
+  stem: '<p>東京が 1月1日 午前9時のとき、ニューヨーク（西経75度を標準時子午線とする）は何月何日の何時か。</p>', choices: ['1月1日 午後11時', '12月31日 午後7時', '1月1日 午後7時', '12月31日 午前7時'], ans: 1,
+  exp: '<p>経度差は 135 ＋ 75 ＝ 210 度で、210 ÷ 15 ＝ 14 時間。ニューヨークは西にあるので 14 時間遅れ、<mark>12月31日 午後7時</mark>。</p>' },
+{ id: 'c4', unit: 'chizu', type: '図法', lv: 1, inUnit: true,
+  stem: '<p>メルカトル図法の特徴として正しいものはどれか。</p>', choices: ['面積が正しい', '中心からの距離と方位が正しい', '角度が正しく、等角航路が直線で表される', '高緯度ほど面積が小さく表される'], ans: 2,
+  exp: '<p>メルカトル図法は<mark>角度が正しく、等角航路が直線</mark>になるので航海図に使われた。高緯度ほど面積が<b>大きく</b>表される。</p>' },
+{ id: 'c5', unit: 'chizu', type: '地形図', lv: 2, inUnit: true,
+  stem: '<p>2万5千分の1の地形図で 4 cm の長さは、実際には何 km か。</p>', choices: ['0.1 km', '1 km', '2 km', '10 km'], ans: 1,
+  exp: '<p>4 cm × 25,000 ＝ 100,000 cm ＝ 1,000 m ＝ <mark>1 km</mark>。</p>' },
+{ id: 'c6', unit: 'chizu', type: '図法', lv: 1,
+  stem: '<p>中心からの距離と方位が正しく表され、航空図に使われる図法はどれか。</p>', choices: ['メルカトル図法', '正距方位図法', 'モルワイデ図法', 'サンソン図法'], ans: 1,
+  exp: '<p><mark>正距方位図法</mark>。中心と任意の地点を結ぶ直線が最短経路（大圏航路）になる。</p>' },
+{ id: 'c7', unit: 'chizu', type: '地形図', lv: 1,
+  stem: '<p>2万5千分の1地形図の<b>主曲線</b>は何 m ごとに引かれているか。</p>', choices: ['5 m', '10 m', '20 m', '50 m'], ans: 1,
+  exp: '<p>2万5千分の1では主曲線 <mark>10 m</mark>、計曲線 50 m ごと。5万分の1では主曲線 20 m、計曲線 100 m。</p>' },
+{ id: 'c8', unit: 'chizu', type: '日付変更線', lv: 2,
+  stem: '<p>日本からハワイへ、日付変更線を西から東へ越えるときはどうするか。</p>', choices: ['日付を1日進める', '日付を1日戻す', '時刻を12時間進める', '何もしない'], ans: 1,
+  exp: '<p>西から東へ越える（日本 → ハワイ）ときは日付を<mark>1日戻す</mark>。東から西へ越えるときは1日進める。</p>' },
+{ id: 'c9', unit: 'chizu', type: '対蹠点', lv: 3,
+  stem: '<p>北緯35度・東経140度の地点の、地球の正反対の地点（対蹠点）はどこか。</p>', choices: ['南緯35度・西経40度', '南緯35度・西経140度', '北緯35度・西経40度', '南緯55度・東経40度'], ans: 0,
+  exp: '<p>緯度は北と南を入れかえ（南緯35度）、経度は 180 − 140 ＝ 40 で東西を入れかえる（西経40度）。<mark>南緯35度・西経40度</mark>。</p>' },
+{ id: 'c10', unit: 'chizu', type: 'GIS', lv: 1,
+  stem: '<p>GIS（地理情報システム）の説明として正しいものはどれか。</p>', choices: ['人工衛星の電波で現在地を知るしくみ', '位置の情報をもつさまざまなデータを地図上に重ね合わせて分析するしくみ', '紙の地形図の正式名称', '気象衛星で雲を観測するしくみ'], ans: 1,
+  exp: '<p>GIS は<mark>位置情報をもつデータをコンピュータで地図上に重ねて分析・表示する</mark>しくみ。⓪ は GNSS（GPS など）、③ はリモートセンシングの一例。</p>' },
+{ id: 'c11', unit: 'chizu', type: '図法', lv: 2,
+  stem: '<p>世界の人口や森林の<b>分布</b>を表すのにもっとも適した図法はどれか。</p>', choices: ['メルカトル図法', '正距方位図法', 'モルワイデ図法', '心射図法'], ans: 2,
+  exp: '<p>分布図には面積が正しい<b>正積図法</b>を使う。<mark>モルワイデ図法</mark>は正積図法。</p>' },
+{ id: 'c12', unit: 'chizu', type: '本初子午線', lv: 1,
+  stem: '<p>経度0度の本初子午線が通る都市はどれか。</p>', choices: ['パリ', 'ロンドン', 'ローマ', 'ニューヨーク'], ans: 1,
+  exp: '<p>本初子午線は<mark>ロンドン</mark>の旧グリニッジ天文台を通る。</p>' },
+{ id: 'c13', unit: 'chizu', type: '地理情報', lv: 2,
+  stem: '<p>人工衛星や航空機から、地表のようすを離れたところから観測する技術を何というか。</p>', choices: ['GNSS', 'リモートセンシング', 'ハザードマップ', 'メッシュマップ'], ans: 1,
+  exp: '<p><mark>リモートセンシング</mark>（遠隔探査）。森林の減少や災害の被害の把握などに使われる。</p>' },
+
+/* ---------- 地形 ---------- */
+{ id: 'g1', unit: 'chikei', type: '扇状地', lv: 1, inUnit: true,
+  stem: '<p>扇状地の<b>扇央</b>の土地利用として、もっとも多いものはどれか。</p>', choices: ['水田', '果樹園・畑', '工業団地', '漁港'], ans: 1,
+  exp: '<p>扇央は砂やれきが厚く、水が地下にしみこんで得にくいので、<mark>果樹園・畑</mark>に利用される。</p>' },
+{ id: 'g2', unit: 'chikei', type: '扇状地', lv: 1, inUnit: true,
+  stem: '<p>扇状地の<b>扇端</b>に集落が多い理由として正しいものはどれか。</p>', choices: ['地下の水がわき出すから', '土地が高く洪水がないから', '川がもっとも深いから', '海に面しているから'], ans: 0,
+  exp: '<p>扇央で地下にしみこんだ水が、扇端で<mark>わき水（湧水）となって出てくる</mark>ので、集落や水田が並ぶ。</p>' },
+{ id: 'g3', unit: 'chikei', type: '氾濫原', lv: 2, inUnit: true,
+  stem: '<p>自然堤防と後背湿地の、伝統的な土地利用の組み合わせはどれか。</p>', choices: ['自然堤防：水田／後背湿地：集落', '自然堤防：集落・畑／後背湿地：水田', '自然堤防：果樹園／後背湿地：森林', 'どちらも水田'], ans: 1,
+  exp: '<p>水はけのよい微高地の自然堤防は<mark>集落・畑</mark>、水はけの悪い後背湿地は<mark>水田</mark>。</p>' },
+{ id: 'g4', unit: 'chikei', type: '海岸地形', lv: 1, inUnit: true,
+  stem: '<p>V字谷が沈水してできた、入り組んだ海岸を何というか。</p>', choices: ['フィヨルド', 'リアス海岸', '海岸段丘', '砂州'], ans: 1,
+  exp: '<p><mark>リアス海岸</mark>（三陸海岸・志摩半島など）。フィヨルドは氷河がつくった U字谷が沈水したもの。</p>' },
+{ id: 'g5', unit: 'chikei', type: 'プレート', lv: 2, inUnit: true,
+  stem: '<p>日本列島が位置するプレートの境界の種類はどれか。</p>', choices: ['広がる境界', '狭まる境界', 'ずれる境界', 'プレートの内部'], ans: 1,
+  exp: '<p>日本列島は複数のプレートがぶつかる<mark>狭まる境界</mark>にあり、海溝・地震・火山が多い。</p>' },
+{ id: 'g6', unit: 'chikei', type: '大地形', lv: 2,
+  stem: '<p>新期造山帯にふくまれる山脈はどれか。</p>', choices: ['アパラチア山脈', 'ウラル山脈', 'ヒマラヤ山脈', 'スカンディナヴィア山脈'], ans: 2,
+  exp: '<p><mark>ヒマラヤ山脈</mark>はアルプス＝ヒマラヤ造山帯（新期造山帯）。アパラチア・ウラル・スカンディナヴィアは古期造山帯で、なだらか。</p>' },
+{ id: 'g7', unit: 'chikei', type: '大地形', lv: 2,
+  stem: '<p>安定陸塊の特徴として正しいものはどれか。</p>', choices: ['高くけわしい山脈が多い', '地震や火山の活動が活発', '長い間の侵食で平らになり、鉄鉱石が多く産出する', '石炭が多く産出する低い山地が多い'], ans: 2,
+  exp: '<p>安定陸塊は古い時代から大きな変動がなく、<mark>侵食で平らになった土地が広がり、鉄鉱石が多い</mark>。③ は古期造山帯の特徴。</p>' },
+{ id: 'g8', unit: 'chikei', type: '小地形', lv: 1,
+  stem: '<p>石灰岩が雨水や地下水にとけてできる地形を何というか。</p>', choices: ['カルスト地形', '氷河地形', '扇状地', '三角州'], ans: 0,
+  exp: '<p><mark>カルスト地形</mark>。鍾乳洞やドリーネ（すりばち状のくぼ地）が見られる（山口県の秋吉台など）。</p>' },
+{ id: 'g9', unit: 'chikei', type: '海岸地形', lv: 2,
+  stem: '<p>海岸段丘ができるおもな原因はどれか。</p>', choices: ['土地の隆起', '土地の沈降', '氷河の侵食', '火山の噴火'], ans: 0,
+  exp: '<p>波がけずった平らな面が<mark>隆起</mark>して、階段状の地形になる。</p>' },
+{ id: 'g10', unit: 'chikei', type: '三角州', lv: 1,
+  stem: '<p>川が運んだ細かい土砂が河口付近に積もってできた低い平地を何というか。</p>', choices: ['扇状地', '三角州', '河岸段丘', 'V字谷'], ans: 1,
+  exp: '<p><mark>三角州</mark>。水田や都市に利用されるが、標高が低く洪水や高潮の被害を受けやすい。</p>' },
+{ id: 'g11', unit: 'chikei', type: 'プレート', lv: 2,
+  stem: '<p>プレートが<b>広がる境界</b>の例はどれか。</p>', choices: ['日本海溝', 'ヒマラヤ山脈', '大西洋中央海嶺', 'サンアンドレアス断層'], ans: 2,
+  exp: '<p><mark>大西洋中央海嶺</mark>はプレートが生まれて両側へ広がる境界。アイスランドは海嶺が陸上にあらわれたところ。</p>' },
+{ id: 'g12', unit: 'chikei', type: 'サンゴ礁', lv: 3,
+  stem: '<p>島をとりまくサンゴ礁で、島が沈んで礁だけが輪のように残ったものを何というか。</p>', choices: ['裾礁', '堡礁', '環礁', '砂嘴'], ans: 2,
+  exp: '<p>サンゴ礁は 裾礁 → 堡礁 → <mark>環礁</mark> と変化する。環礁はモルディブなどに見られる。</p>' },
+{ id: 'g13', unit: 'chikei', type: '氷河地形', lv: 2,
+  stem: '<p>フィヨルドが見られる国として適当なものはどれか。</p>', choices: ['ノルウェー', 'エジプト', 'タイ', 'ブラジル'], ans: 0,
+  exp: '<p>フィヨルドはかつて氷河におおわれていた高緯度の海岸に見られる。<mark>ノルウェー</mark>、チリ南部、ニュージーランド南部など。</p>' },
+
+/* ---------- 気候 ---------- */
+{ id: 'k1', unit: 'kiko', type: '気候区分', lv: 1, inUnit: true,
+  stem: '<p>ケッペンの気候区分で、熱帯（A）の条件はどれか。</p>', choices: ['最暖月の平均気温が 22℃以上', '最寒月の平均気温が 18℃以上', '年平均気温が 25℃以上', '最寒月の平均気温が 0℃以上'], ans: 1,
+  exp: '<p>熱帯は<mark>最寒月の平均気温が 18℃以上</mark>。一年中暑い。</p>' },
+{ id: 'k2', unit: 'kiko', type: '気候区分', lv: 1, inUnit: true,
+  stem: '<p>夏に乾燥し、冬に雨が多い気候はどれか。</p>', choices: ['西岸海洋性気候（Cfb）', '地中海性気候（Cs）', '温暖冬季少雨気候（Cw）', 'サバナ気候（Aw）'], ans: 1,
+  exp: '<p><mark>地中海性気候（Cs）</mark>。夏の乾燥に強いオリーブ・ぶどう・コルクがしなどを栽培する。</p>' },
+{ id: 'k3', unit: 'kiko', type: '気候と風', lv: 2, inUnit: true,
+  stem: '<p>西ヨーロッパが高緯度のわりに冬も温暖な理由として正しいものはどれか。</p>', choices: ['季節風（モンスーン）がふくから', '偏西風が暖流（北大西洋海流）の上を通ってふいてくるから', '赤道に近いから', '標高が低いから'], ans: 1,
+  exp: '<p><mark>偏西風が暖流の上を通って暖かい空気を運ぶ</mark>ため、西岸海洋性気候（Cfb）は年較差が小さい。</p>' },
+{ id: 'k4', unit: 'kiko', type: '大気大循環', lv: 2, inUnit: true,
+  stem: '<p>緯度 20〜30 度付近に砂漠が多い理由として正しいものはどれか。</p>', choices: ['熱帯収束帯で上昇気流が起こるから', '亜熱帯高圧帯で下降気流が起こり、雨雲ができにくいから', '偏西風が強いから', '寒流が流れていないから'], ans: 1,
+  exp: '<p>この緯度帯は<mark>亜熱帯高圧帯</mark>で下降気流が起こり、雲ができにくい。サハラ砂漠・アラビア半島など。</p>' },
+{ id: 'k5', unit: 'kiko', type: '気候区分', lv: 2, inUnit: true,
+  stem: '<p>雨季と乾季がはっきりしていて、まばらな樹木と長い草の草原が広がる気候はどれか。</p>', choices: ['熱帯雨林気候（Af）', 'サバナ気候（Aw）', 'ステップ気候（BS）', '砂漠気候（BW）'], ans: 1,
+  exp: '<p><mark>サバナ気候（Aw）</mark>。その草原もサバナとよばれる。ステップ気候は短い草の草原。</p>' },
+{ id: 'k6', unit: 'kiko', type: '気候区分', lv: 1,
+  stem: '<p>東京の気候区分はどれか。</p>', choices: ['温暖湿潤気候（Cfa）', '西岸海洋性気候（Cfb）', '地中海性気候（Cs）', '亜寒帯湿潤気候（Df）'], ans: 0,
+  exp: '<p>夏は高温多雨、冬は乾燥しやや寒い。日本の大部分は<mark>温暖湿潤気候（Cfa）</mark>。北海道は亜寒帯湿潤気候（Df）。</p>' },
+{ id: 'k7', unit: 'kiko', type: '寒帯', lv: 2,
+  stem: '<p>ツンドラ気候（ET）の説明として正しいものはどれか。</p>', choices: ['一年中氷と雪におおわれる', '最暖月の平均気温が 0℃以上 10℃未満で、短い夏にこけ類が育つ', '針葉樹林（タイガ）が広がる', '一年中高温多雨'], ans: 1,
+  exp: '<p>ツンドラ気候は<mark>最暖月 0〜10℃</mark>。短い夏に地表の氷がとけ、こけ類や草が育つ。⓪ は氷雪気候（EF）、② は亜寒帯。</p>' },
+{ id: 'k8', unit: 'kiko', type: '亜寒帯', lv: 2,
+  stem: '<p>亜寒帯（D）について正しいものはどれか。</p>', choices: ['南半球にも広く分布する', '北半球にだけ分布し、針葉樹林（タイガ）が広がる', '最寒月が 18℃以上である', '樹木が育たない'], ans: 1,
+  exp: '<p>南半球には亜寒帯にあたる緯度に大陸がほとんどないので、<mark>亜寒帯は北半球だけ</mark>に分布する。</p>' },
+{ id: 'k9', unit: 'kiko', type: '土壌', lv: 3,
+  stem: '<p>ステップ気候の地域に分布し、肥えていて小麦の栽培に適した黒い土を何というか。</p>', choices: ['ラトソル', 'チェルノーゼム', 'ポドゾル', 'テラロッサ'], ans: 1,
+  exp: '<p>ウクライナからロシア南部の<mark>チェルノーゼム</mark>。ラトソルは熱帯の赤い土、ポドゾルは亜寒帯の灰白色の土、テラロッサは地中海沿岸の石灰岩が風化した土。</p>' },
+{ id: 'k10', unit: 'kiko', type: '季節風', lv: 2,
+  stem: '<p>東アジアの夏の季節風（モンスーン）の向きとして正しいものはどれか。</p>', choices: ['海から大陸へふく', '大陸から海へふく', '一年中西からふく', '風はふかない'], ans: 0,
+  exp: '<p>夏は大陸があたためられて気圧が下がるため、<mark>海から大陸へ</mark>湿った風がふき、雨が多くなる。冬は逆向き。</p>' },
+{ id: 'k11', unit: 'kiko', type: '雨温図', lv: 2,
+  stem: '<p>気温のグラフが、1月ごろが高く7月ごろが低い U 字形になっている雨温図から読みとれることはどれか。</p>', choices: ['南半球の地点である', '赤道直下の地点である', '標高が高い地点である', '砂漠の地点である'], ans: 0,
+  exp: '<p>南半球では季節が逆になり、1月ごろが夏。<mark>南半球の地点</mark>と判断できる。</p>' },
+{ id: 'k12', unit: 'kiko', type: '気候区分', lv: 3,
+  stem: '<p>年較差がもっとも大きくなりやすい気候区分はどれか。</p>', choices: ['熱帯雨林気候（Af）', '西岸海洋性気候（Cfb）', '亜寒帯冬季少雨気候（Dw）', '地中海性気候（Cs）'], ans: 2,
+  exp: '<p>ユーラシア大陸東部の<mark>亜寒帯冬季少雨気候（Dw）</mark>は、冬にシベリア高気圧の影響で非常に寒くなり、年較差が 50℃をこえる地点もある。</p>' },
+{ id: 'k13', unit: 'kiko', type: '乾燥帯', lv: 1,
+  stem: '<p>乾燥帯（B）の判定に使うものはどれか。</p>', choices: ['最寒月の平均気温だけ', '年降水量と、気温から求める乾燥限界', '最暖月の平均気温だけ', '標高'], ans: 1,
+  exp: '<p>年降水量が<mark>乾燥限界</mark>より少ないと乾燥帯。気温が高いほど蒸発が多いので、乾燥限界は気温で変わる。</p>' },
+
+/* ---------- 生活文化と産業 ---------- */
+{ id: 'b1', unit: 'bunka', type: '宗教', lv: 1, inUnit: true,
+  stem: '<p>イスラームの生活のきまりとして正しいものはどれか。</p>', choices: ['牛を神聖な動物として牛肉を食べない', '豚肉を食べず、ラマダーンの期間は日中に断食する', '日曜日に教会で礼拝する', '男性が一時的に出家する'], ans: 1,
+  exp: '<p>イスラームでは<mark>豚肉や酒を口にせず、ラマダーン（断食月）には日の出から日没まで断食</mark>する。⓪ はヒンドゥー教、② はキリスト教、③ は上座仏教の国の習慣。</p>' },
+{ id: 'b2', unit: 'bunka', type: '宗教', lv: 1, inUnit: true,
+  stem: '<p>ヒンドゥー教の信者がもっとも多い国はどれか。</p>', choices: ['インド', 'タイ', 'サウジアラビア', 'イタリア'], ans: 0,
+  exp: '<p>ヒンドゥー教は<mark>インド</mark>を中心とした民族宗教。</p>' },
+{ id: 'b3', unit: 'bunka', type: '住居', lv: 2, inUnit: true,
+  stem: '<p>乾燥地域で日干しれんがの家が多い理由として正しいものはどれか。</p>', choices: ['木材が豊富で加工しやすいから', '森林が少なく木材が得にくく、厚い壁が昼の暑さや夜の寒さをやわらげるから', '雨が多く、水に強いから', '地震が多く、ゆれに強いから'], ans: 1,
+  exp: '<p>乾燥地域は<mark>木材が得にくく、土をかためたれんがの厚い壁が暑さ・寒さを防ぐ</mark>。雨が少ないので土の家でもくずれにくい。</p>' },
+{ id: 'b4', unit: 'bunka', type: '農業', lv: 1, inUnit: true,
+  stem: '<p>夏にオリーブやぶどうを、冬に小麦を栽培する農業はどれか。</p>', choices: ['混合農業', '地中海式農業', '企業的穀物農業', '焼畑農業'], ans: 1,
+  exp: '<p>地中海性気候の夏の乾燥と冬の雨を利用した<mark>地中海式農業</mark>。</p>' },
+{ id: 'b5', unit: 'bunka', type: '農業', lv: 2, inUnit: true,
+  stem: '<p>プランテーション農業の説明として正しいものはどれか。</p>', choices: ['家畜とともに移動しながら暮らす', '森林を焼いて灰を肥料にする', '植民地時代に始まった、輸出用作物の大規模な単一栽培', '作物栽培と家畜飼育を組み合わせる'], ans: 2,
+  exp: '<p>熱帯・亜熱帯で、<mark>コーヒー・天然ゴム・油やし・バナナなどを輸出用に大規模栽培</mark>する。</p>' },
+{ id: 'b6', unit: 'bunka', type: '言語', lv: 1,
+  stem: '<p>ブラジルの公用語はどれか。</p>', choices: ['スペイン語', 'ポルトガル語', '英語', 'フランス語'], ans: 1,
+  exp: '<p>ブラジルは旧ポルトガル植民地なので<mark>ポルトガル語</mark>。ほかの多くのラテンアメリカの国はスペイン語。</p>' },
+{ id: 'b7', unit: 'bunka', type: '言語', lv: 1,
+  stem: '<p>英語とフランス語の両方を公用語としている国はどれか。</p>', choices: ['カナダ', 'オーストラリア', 'アメリカ合衆国', 'メキシコ'], ans: 0,
+  exp: '<p><mark>カナダ</mark>。ケベック州ではフランス語を話す人が多い。</p>' },
+{ id: 'b8', unit: 'bunka', type: '住居', lv: 3,
+  stem: '<p>シベリアで高床の建物が見られる理由として正しいものはどれか。</p>', choices: ['洪水を防ぐため', '風通しをよくして暑さを防ぐため', '建物の熱で永久凍土がとけ、建物がかたむくのを防ぐため', '動物から食料を守るため'], ans: 2,
+  exp: '<p>暖房の熱が地面に伝わると<mark>永久凍土がとけて地盤がゆるみ、建物がかたむく</mark>。それを防ぐために高床にする。</p>' },
+{ id: 'b9', unit: 'bunka', type: '農業', lv: 2,
+  stem: '<p>遊牧の説明として正しいものはどれか。</p>', choices: ['水や草を求めて家畜とともに移動する', '大型機械で小麦を大規模に生産する', '地下水路で水を引いてなつめやしを栽培する', '乳牛を飼って乳製品をつくる'], ans: 0,
+  exp: '<p><mark>遊牧</mark>は乾燥地域や寒冷地域で、羊・やぎ・らくだ・トナカイなどとともに移動する牧畜。</p>' },
+{ id: 'b10', unit: 'bunka', type: '宗教', lv: 2,
+  stem: '<p>イスラームの信者がもっとも多い国はどれか。</p>', choices: ['サウジアラビア', 'インドネシア', 'エジプト', 'トルコ'], ans: 1,
+  exp: '<p>東南アジアの<mark>インドネシア</mark>。人口が多く、その大部分がイスラームを信仰している。</p>' },
+{ id: 'b11', unit: 'bunka', type: '農業', lv: 2,
+  stem: '<p>アメリカ合衆国やカナダで行われる、大型機械を使って小麦などを大規模に生産する農業はどれか。</p>', choices: ['アジア式稲作農業', '企業的穀物農業', 'オアシス農業', '酪農'], ans: 1,
+  exp: '<p><mark>企業的穀物農業</mark>。生産した小麦の多くを輸出する。</p>' },
+{ id: 'b12', unit: 'bunka', type: '主食', lv: 1,
+  stem: '<p>季節風（モンスーン）の影響で雨の多い東アジア・東南アジア・南アジアで、主食として多く食べられている穀物はどれか。</p>', choices: ['米', '小麦', 'とうもろこし', 'ライ麦'], ans: 0,
+  exp: '<p>高温多雨を好む稲の栽培に適しているので<mark>米</mark>が主食の地域が多い。</p>' },
+{ id: 'b13', unit: 'bunka', type: '農業', lv: 3,
+  stem: '<p>混合農業の説明として正しいものはどれか。</p>', choices: ['作物の栽培と家畜の飼育を組み合わせる', '複数の国の企業が共同で経営する', '熱帯で輸出用作物を栽培する', '森林を焼いて畑にする'], ans: 0,
+  exp: '<p><mark>小麦や飼料作物の栽培と、豚や牛の飼育を組み合わせる</mark>農業。ヨーロッパ中部などで行われる。</p>' },
+
+/* ---------- 防災と地球的課題 ---------- */
+{ id: 'p1', unit: 'bosai', type: 'ハザードマップ', lv: 1, inUnit: true,
+  stem: '<p>ハザードマップの説明として正しいものはどれか。</p>', choices: ['過去の災害の写真を集めた地図', '自然災害による被害が予想される範囲や避難場所などを示した地図', '観光地を紹介する地図', '土地の値段を示した地図'], ans: 1,
+  exp: '<p>ハザードマップは<mark>被害の予想範囲や避難場所・避難経路を示した地図</mark>。市区町村が災害の種類ごとに作成している。</p>' },
+{ id: 'p2', unit: 'bosai', type: '人口', lv: 1, inUnit: true,
+  stem: '<p>人口ピラミッドが「つぼ型」の国の特徴として正しいものはどれか。</p>', choices: ['多産多死で人口が急増している', '少子高齢化が進み、将来は人口が減る', '若い世代が多く、高齢者が少ない', '出生と死亡がともに非常に多い'], ans: 1,
+  exp: '<p>つぼ型は子どもの数が少なく、<mark>少子高齢化が進んだ国</mark>の型（日本など）。</p>' },
+{ id: 'p3', unit: 'bosai', type: '人口', lv: 2, inUnit: true,
+  stem: '<p>老年人口（65歳以上）の割合が 21% をこえた社会を何というか。</p>', choices: ['高齢化社会', '高齢社会', '超高齢社会', '人口減少社会'], ans: 2,
+  exp: '<p>7%をこえると高齢化社会、14%で高齢社会、21%で<mark>超高齢社会</mark>。日本は 2007 年に超高齢社会になった。</p>' },
+{ id: 'p4', unit: 'bosai', type: '災害', lv: 2, inUnit: true,
+  stem: '<p>地震のとき、埋立地やかつての川・沼のあとで起こりやすい現象はどれか。</p>', choices: ['液状化', '高潮', '火砕流', 'ヒートアイランド'], ans: 0,
+  exp: '<p>水を多くふくんだ砂の地盤が、ゆれで液体のようになる<mark>液状化</mark>。建物がかたむいたり、マンホールがうき上がったりする。</p>' },
+{ id: 'p5', unit: 'bosai', type: '避難情報', lv: 2, inUnit: true,
+  stem: '<p>警戒レベル4で出される避難情報はどれか。</p>', choices: ['高齢者等避難', '避難指示', '緊急安全確保', '早期注意情報'], ans: 1,
+  exp: '<p>警戒レベル4は<mark>避難指示</mark>で、危険な場所にいる人は全員避難する。レベル3 は高齢者等避難、レベル5 は緊急安全確保。</p>' },
+{ id: 'p6', unit: 'bosai', type: '防災', lv: 1,
+  stem: '<p>「自助」の例として正しいものはどれか。</p>', choices: ['自宅に水や食料を備蓄する', '自治会で避難訓練を行う', '国が堤防を整備する', '自衛隊が救助活動を行う'], ans: 0,
+  exp: '<p>自分や家族の身を自分で守るのが自助。<mark>家庭での備蓄</mark>はその例。① は共助、②・③ は公助。</p>' },
+{ id: 'p7', unit: 'bosai', type: '環境問題', lv: 1,
+  stem: '<p>地球温暖化のおもな原因とされるものはどれか。</p>', choices: ['二酸化炭素などの温室効果ガスの増加', 'オゾン層の拡大', '酸性雨', '火山の噴火の減少'], ans: 0,
+  exp: '<p>化石燃料の燃焼などで<mark>二酸化炭素などの温室効果ガスが増えた</mark>ことがおもな原因とされる。</p>' },
+{ id: 'p8', unit: 'bosai', type: 'SDGs', lv: 1,
+  stem: '<p>SDGs（持続可能な開発目標）について正しいものはどれか。</p>', choices: ['2015年に国連で採択され、2030年までの17の目標からなる', '日本政府だけが決めた目標である', '環境問題だけをあつかう', '2000年に始まり、すでに終了した'], ans: 0,
+  exp: '<p>SDGs は<mark>2015年に国連で採択された、2030年までの17の目標</mark>。貧困・教育・ジェンダー・環境など幅広い。2000年に始まったのは MDGs。</p>' },
+{ id: 'p9', unit: 'bosai', type: '環境問題', lv: 2,
+  stem: '<p>サハラ砂漠の南の縁（サヘル）で砂漠化が進んだ人為的な原因として正しいものはどれか。</p>', choices: ['過放牧・過耕作や燃料用の樹木の伐採', '工場の排煙', 'フロンガスの使用', '原子力発電'], ans: 0,
+  exp: '<p>人口増加にともなう<mark>過放牧・過耕作・薪の採りすぎ</mark>で植生が失われた。干ばつなどの自然の要因も重なる。</p>' },
+{ id: 'p10', unit: 'bosai', type: '環境問題', lv: 2,
+  stem: '<p>酸性雨の原因となる物質はどれか。</p>', choices: ['硫黄酸化物・窒素酸化物', 'フロン', 'メタン', '二酸化炭素'], ans: 0,
+  exp: '<p>化石燃料の燃焼で出る<mark>硫黄酸化物・窒素酸化物</mark>が雨にとけて酸性雨になる。フロンはオゾン層の破壊の原因。</p>' },
+{ id: 'p11', unit: 'bosai', type: '都市問題', lv: 2,
+  stem: '<p>都市の中心部の気温が、周辺の地域よりも高くなる現象を何というか。</p>', choices: ['ヒートアイランド現象', 'エルニーニョ現象', 'ドーナツ化現象', 'フェーン現象'], ans: 0,
+  exp: '<p><mark>ヒートアイランド現象</mark>。アスファルトやコンクリート、エアコンなどの排熱が原因。</p>' },
+{ id: 'p12', unit: 'bosai', type: '人口', lv: 2,
+  stem: '<p>20世紀後半以降、急激な人口増加（人口爆発）が見られた地域としてもっとも適当なものはどれか。</p>', choices: ['アジア・アフリカの発展途上国', '西ヨーロッパ', '日本', '北アメリカ'], ans: 0,
+  exp: '<p>医療の普及で死亡率が下がる一方、出生率が高いままだった<mark>アジア・アフリカの発展途上国</mark>で人口が急増した。</p>' },
+{ id: 'p13', unit: 'bosai', type: '災害', lv: 3,
+  stem: '<p>リアス海岸の湾の奥で津波の被害が大きくなりやすい理由として正しいものはどれか。</p>', choices: ['湾が奥に向かってせまくなるため、波が集まって高くなるから', '海岸が遠浅で波が弱まるから', '川の水が少ないから', '湾の奥は標高が高いから'], ans: 0,
+  exp: '<p>V字形の湾では、<mark>奥に行くほど幅がせまくなり、津波のエネルギーが集中して波が高くなる</mark>。</p>' },
+];
+
+/* ===== 暗記カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['chizu', '時差の計算', '経度差 ÷ 15 ＝ 時差（時間）。東ほど時刻が進んでいる'],
+  ['chizu', '日本の標準時子午線', '東経135度（兵庫県明石市）'],
+  ['chizu', 'メルカトル図法の特徴', '角度が正しい。等角航路が直線。高緯度ほど面積が拡大'],
+  ['chizu', '正距方位図法の特徴', '中心からの距離と方位が正しい'],
+  ['chizu', 'モルワイデ図法の特徴', '面積が正しい（正積図法）。分布図に向く'],
+  ['chizu', '2万5千分の1地形図の等高線', '主曲線 10 m、計曲線 50 m ごと'],
+  ['chizu', '5万分の1地形図の等高線', '主曲線 20 m、計曲線 100 m ごと'],
+  ['chizu', 'GIS', '地理情報システム。位置情報をもつデータを地図上で重ねて分析'],
+  ['chikei', '扇央の土地利用', '果樹園・畑（水が得にくい）'],
+  ['chikei', '扇端の土地利用', '集落・水田（わき水がある）'],
+  ['chikei', '自然堤防と後背湿地', '自然堤防：集落・畑／後背湿地：水田'],
+  ['chikei', 'リアス海岸とフィヨルド', 'リアス：V字谷が沈水／フィヨルド：U字谷（氷河）が沈水'],
+  ['chikei', '新期造山帯（2つ）', '環太平洋造山帯、アルプス＝ヒマラヤ造山帯'],
+  ['chikei', '安定陸塊で多い資源', '鉄鉱石'],
+  ['chikei', '古期造山帯で多い資源', '石炭'],
+  ['kiko', 'Af', '熱帯雨林気候'], ['kiko', 'Aw', 'サバナ気候'], ['kiko', 'BS', 'ステップ気候'], ['kiko', 'BW', '砂漠気候'],
+  ['kiko', 'Cs', '地中海性気候（夏に乾燥）'], ['kiko', 'Cw', '温暖冬季少雨気候'], ['kiko', 'Cfa', '温暖湿潤気候'], ['kiko', 'Cfb', '西岸海洋性気候'],
+  ['kiko', 'Df・Dw', '亜寒帯湿潤気候・亜寒帯冬季少雨気候'], ['kiko', 'ET・EF', 'ツンドラ気候・氷雪気候'],
+  ['kiko', 'A・C・D の境目（最寒月）', '18℃以上 → A、−3〜18℃ → C、−3℃未満 → D'],
+  ['kiko', 'E の条件', '最暖月の平均気温 10℃未満'],
+  ['kiko', '熱帯の土・ステップの土', 'ラトソル（赤色）・チェルノーゼム（黒土）'],
+  ['bunka', '三大宗教（世界宗教）', 'キリスト教・イスラーム・仏教'],
+  ['bunka', 'イスラームのきまり', '1日5回の礼拝、ラマダーンの断食、豚肉・酒を口にしない'],
+  ['bunka', 'ヒンドゥー教', 'インドの民族宗教。牛を神聖視'],
+  ['bunka', '地中海式農業', '夏：オリーブ・ぶどう／冬：小麦'],
+  ['bunka', 'プランテーション農業', '熱帯で輸出用の単一作物を大規模栽培（コーヒー・天然ゴム・油やしなど）'],
+  ['bosai', '警戒レベル4', '避難指示（危険な場所から全員避難）'],
+  ['bosai', '自助・共助・公助', '自分で守る・地域で助け合う・国や自治体の支援'],
+  ['bosai', '高齢化社会・高齢社会・超高齢社会', '老年人口の割合 7%・14%・21% をこえる'],
+  ['bosai', '人口ピラミッドの3つの型', '富士山型（多産多死）→ つりがね型 → つぼ型（少子高齢化）'],
+  ['bosai', 'SDGs', '2015年に国連で採択。2030年までの 17 の目標'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['緯度', 'いど', 'chizu', '赤道を0度とし、南北をそれぞれ90度に分けた座標。'],
+  ['経度', 'けいど', 'chizu', '本初子午線を0度とし、東西をそれぞれ180度に分けた座標。'],
+  ['本初子午線', 'ほんしょしごせん', 'chizu', 'ロンドンの旧グリニッジ天文台を通る経度0度の線。'],
+  ['標準時', 'ひょうじゅんじ', 'chizu', 'その国や地域で共通に使う時刻。日本は東経135度が基準。'],
+  ['日付変更線', 'ひづけへんこうせん', 'chizu', 'ほぼ経度180度にそって引かれた、日付を調整する線。'],
+  ['対蹠点', 'たいせきてん', 'chizu', '地球の中心をはさんで正反対にある地点。'],
+  ['メルカトル図法', 'めるかとるずほう', 'chizu', '角度が正しく表される図法。高緯度ほど面積が拡大する。'],
+  ['正距方位図法', 'せいきょほういずほう', 'chizu', '中心からの距離と方位が正しく表される図法。'],
+  ['正積図法', 'せいせきずほう', 'chizu', '面積が正しく表される図法。モルワイデ図法など。'],
+  ['縮尺', 'しゅくしゃく', 'chizu', '実際の距離を地図上でどれだけ縮めたかを表す割合。'],
+  ['等高線', 'とうこうせん', 'chizu', '同じ高さの地点を結んだ線。主曲線・計曲線などがある。'],
+  ['GIS', 'じーあいえす', 'chizu', '地理情報システム。位置情報をもつデータを地図上で重ねて分析する。'],
+  ['GNSS', 'じーえぬえすえす', 'chizu', '人工衛星の電波で位置を知るしくみ。GPS など。'],
+  ['リモートセンシング', 'りもーとせんしんぐ', 'chizu', '人工衛星などから地表を離れたところから観測する技術。'],
+  ['プレート', 'ぷれーと', 'chikei', '地球の表面をおおう、厚さ100kmほどの岩盤。'],
+  ['安定陸塊', 'あんていりくかい', 'chikei', '古い時代から大きな地殻変動がない、平らな地域。'],
+  ['古期造山帯', 'こきぞうざんたい', 'chikei', '古い時代に造山運動を受けた、低くなだらかな山地。'],
+  ['新期造山帯', 'しんきぞうざんたい', 'chikei', '新しい時代の造山運動による、高くけわしい山地。地震・火山が多い。'],
+  ['扇状地', 'せんじょうち', 'chikei', '川が山地から平地に出るところに、土砂が扇形に積もった地形。'],
+  ['水無川', 'みずなしがわ', 'chikei', '扇央などで、水が地下にしみこんで地表に水のない川。'],
+  ['氾濫原', 'はんらんげん', 'chikei', '洪水のときに川の水があふれる範囲の平地。'],
+  ['自然堤防', 'しぜんていぼう', 'chikei', '川ぞいに土砂が積もってできた微高地。'],
+  ['後背湿地', 'こうはいしっち', 'chikei', '自然堤防の背後にある、水はけの悪い低湿地。'],
+  ['三角州', 'さんかくす', 'chikei', '河口付近に細かい土砂が積もってできた低平な土地。'],
+  ['リアス海岸', 'りあすかいがん', 'chikei', 'V字谷が沈水してできた、入り組んだ海岸。'],
+  ['フィヨルド', 'ふぃよるど', 'chikei', '氷河がけずったU字谷が沈水してできた細長い入り江。'],
+  ['海岸段丘', 'かいがんだんきゅう', 'chikei', '海岸の平らな面が隆起してできた階段状の地形。'],
+  ['カルスト地形', 'かるすとちけい', 'chikei', '石灰岩が雨水などにとけてできる地形。'],
+  ['ケッペンの気候区分', 'けっぺんのきこうくぶん', 'kiko', '植生に注目し、気温と降水量で気候を分けた区分。'],
+  ['雨温図', 'うおんず', 'kiko', '月ごとの平均気温（折れ線）と降水量（棒）を表したグラフ。'],
+  ['年較差', 'ねんかくさ', 'kiko', '最暖月と最寒月の平均気温の差。'],
+  ['乾燥限界', 'かんそうげんかい', 'kiko', '樹木が育つのに必要な最低限の年降水量。気温から計算する。'],
+  ['偏西風', 'へんせいふう', 'kiko', '中緯度の上空を一年中西からふく風。'],
+  ['貿易風', 'ぼうえきふう', 'kiko', '亜熱帯高圧帯から赤道に向かって東寄りにふく風。'],
+  ['季節風', 'きせつふう', 'kiko', '夏と冬で向きが変わる風。モンスーン。'],
+  ['熱帯収束帯', 'ねったいしゅうそくたい', 'kiko', '赤道付近の、上昇気流が起こり雨が多い地帯。'],
+  ['亜熱帯高圧帯', 'あねったいこうあつたい', 'kiko', '緯度20〜30度付近の、下降気流が起こり乾燥する地帯。'],
+  ['タイガ', 'たいが', 'kiko', '亜寒帯に広がる針葉樹林。'],
+  ['永久凍土', 'えいきゅうとうど', 'kiko', '一年中こおったままの土。シベリアなどに広がる。'],
+  ['世界宗教', 'せかいしゅうきょう', 'bunka', '民族をこえて広まった宗教。キリスト教・イスラーム・仏教。'],
+  ['民族宗教', 'みんぞくしゅうきょう', 'bunka', '特定の民族と結びついた宗教。ヒンドゥー教・ユダヤ教など。'],
+  ['ハラール', 'はらーる', 'bunka', 'イスラームのきまりで許されているもの。ハラール認証の食品など。'],
+  ['公用語', 'こうようご', 'bunka', '国や地域が公的な場で使うと定めた言語。'],
+  ['遊牧', 'ゆうぼく', 'bunka', '水や草を求めて家畜とともに移動する牧畜。'],
+  ['焼畑農業', 'やきはたのうぎょう', 'bunka', '森林を焼いて灰を肥料にし、作物を育てる農業。'],
+  ['プランテーション', 'ぷらんてーしょん', 'bunka', '熱帯で輸出用の作物を大規模に栽培する農園。'],
+  ['混合農業', 'こんごうのうぎょう', 'bunka', '作物栽培と家畜飼育を組み合わせた農業。'],
+  ['ハザードマップ', 'はざーどまっぷ', 'bosai', '自然災害の被害予想範囲や避難場所などを示した地図。'],
+  ['液状化', 'えきじょうか', 'bosai', '地震のゆれで、水をふくんだ砂の地盤が液体のようになる現象。'],
+  ['高潮', 'たかしお', 'bosai', '台風などで海面が異常に高くなり、海水が陸に流れこむ現象。'],
+  ['自助・共助・公助', 'じじょ・きょうじょ・こうじょ', 'bosai', '自分で守る・地域で助け合う・国や自治体が支援する、という防災の考え方。'],
+  ['人口ピラミッド', 'じんこうぴらみっど', 'bosai', '年齢別・男女別の人口を表したグラフ。'],
+  ['少子高齢化', 'しょうしこうれいか', 'bosai', '子どもの割合が減り、高齢者の割合が増えること。'],
+  ['人口爆発', 'じんこうばくはつ', 'bosai', '発展途上国などで人口が急激に増加すること。'],
+  ['地球温暖化', 'ちきゅうおんだんか', 'bosai', '温室効果ガスの増加で地球の平均気温が上がること。'],
+  ['砂漠化', 'さばくか', 'bosai', '乾燥地域で植生が失われ、土地が不毛になること。'],
+  ['酸性雨', 'さんせいう', 'bosai', '硫黄酸化物・窒素酸化物がとけこんだ酸性の強い雨。'],
+  ['ヒートアイランド現象', 'ひーとあいらんどげんしょう', 'bosai', '都市の中心部の気温が周辺より高くなる現象。'],
+  ['SDGs', 'えすでぃーじーず', 'bosai', '持続可能な開発目標。2015年に国連で採択された17の目標。'],
+];
+/* ===== ホーム ===== */
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">${SITE.eyebrow}</div>
+      <h1 class="hero-title">${SITE.heroTitle}</h1>
+      <p class="lead">${SITE.lead}</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">${SITE.bubble}</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>${SITE.subject}の地図</h3><span class="muted small">${SITE.stations.length}つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${SITE.stations.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">${SITE.links.map(([t, b]) => `<div class="point"><h4>${t}</h4><p class="small">${b}</p></div>`).join('')}</div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', `各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、覚えることは「暗記カード」で。`));
+  const st = h('<div class="stations"></div>');
+  SITE.stations.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.entries(S.ans).filter(([id, v]) => v === true && QUESTIONS.some(q => q.id === id)).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と暗記カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = shuffle(p).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 暗記カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">暗記カード</span><h3>フラッシュカード</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const sg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; sg.appendChild(b); });
+  function build() {
+    deck = shuffle(CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok')));
+    ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div style="font-size:1.05rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+  if (SITE.cardsExtra) SITE.cardsExtra(root);
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="${SITE.glossHint}" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const sg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    sg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    [`単元ページ（${SITE.stations.length}つ）`, `<p>上のタブの「${SITE.stations[0].tab || SITE.stations[0].name}」〜「${SITE.stations.at(-1).tab || SITE.stations.at(-1).name}」。<br>① <b>要点</b>：その単元の大事なところ<br>② <b>実験</b>：押したり動かしたりして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>`],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['暗記カード', `<p>表に問い、裏に答え。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。${SITE.cardsNote || ''}</p>`],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>覚えることがあやふや</td><td>暗記カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+
+/* ===== 起動 ===== */
+// 正解の位置がかたよらないよう、選択肢の順番を入れかえる（毎回同じ順。解説の ⓪〜③ も合わせて書きかえる。数値の選択肢は小さい順のまま）
+QUESTIONS.forEach(q => {
+  if (q.fixed || q.choices.every(c => /^[−+\-]?[0-9０-９.]/.test(c.replace(/<[^>]+>/g, '')))) return;
+  let sd = 7; for (const ch of q.id + STORE_KEY) sd = (sd * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = rng(sd), idx = q.choices.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  q.choices = idx.map(i => q.choices[i]); q.ans = idx.indexOf(q.ans);
+  q.exp = q.exp.replace(/[⓪①②③④]/g, c => MARK[idx.indexOf(MARK.indexOf(c))]);
+});
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+updateXP();
+route();
+</script>
+</body></html>

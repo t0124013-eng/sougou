@@ -1,0 +1,1677 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>英文法 ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+.ot-ans{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ot-w{appearance:none;border:1.5px solid var(--ink);background:var(--card);border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:1rem;font-family:var(--f-body)}
+.ot-w.on{background:var(--ink);color:var(--paper)}
+.ot-w:hover{filter:brightness(1.1)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pick-grid button{appearance:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;font-weight:700;line-height:1.4}
+.pick-grid button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pick-grid button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tl{display:grid;gap:0;position:relative;padding-left:18px;border-left:3px solid var(--line)}
+.tl-row{position:relative;padding:8px 0 8px 12px}
+.tl-row::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+.tl-era{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+.big-kana{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.3}
+.kanbun{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font-family:var(--f-display)}
+.kb-c{display:grid;justify-items:center;min-width:46px;padding:4px 2px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);position:relative}
+.kb-c .k{font-size:1.9rem;font-weight:700;line-height:1.1}
+.kb-c .mk{font-size:.85rem;color:var(--accent);font-weight:700;min-height:1.2em}
+.kb-c .ok{font-size:.75rem;color:var(--muted);min-height:1.2em}
+.kb-c .no{position:absolute;top:-10px;right:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.72rem;min-width:20px;height:20px;display:grid;place-items:center;font-family:var(--f-code)}
+.kb-c.cur{border-color:var(--accent);background:var(--marker)}
+.kb-c.done{border-color:var(--good);background:var(--good-soft)}
+.kb-c.oki{opacity:.55}
+.conj td,.conj th{text-align:center;white-space:nowrap}
+.conj td b{color:var(--accent)}
+</style>
+</head><body>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>英文法 ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">…</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題と例文はすべてこの教材のためのオリジナルです。範囲は高等学校学習指導要領（平成30年告示）の「英語コミュニケーションⅠ」「論理表現Ⅰ」で扱う文法事項にそろえています。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+const SITE = {
+  key: 'eigo-lab-v1', subject: '英文法',
+  eyebrow: '高校1年「英語コミュニケーションⅠ・論理表現Ⅰ」文法の実験室',
+  heroTitle: '動かしてわかる、<br><span class="hl">英文法</span>',
+  lead: '文型の役割をタップで当てる、時制をタイムラインで見る、語句を並べて英文を組み立てる。ルールを読むだけでなく、手を動かして英文の形を身につける教材。授業の予習・復習やテスト前に使おう。',
+  bubble: '英文法、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。',
+  ranks: [[0, 'Beginner'], [5, 'Word Builder'], [15, 'Sentence Builder'], [30, 'Grammar Explorer'], [50, 'Grammar Rider'], [75, 'Grammar Master'], [100, '英文法 免許皆伝']],
+  rankNotes: ['英文法のスタートライン', '単語をつなげられる', '5文型で文が組み立てられる', '時制を使い分けられる', '準動詞を使いこなせる', '関係詞・仮定法もばっちり', '全問正解！'],
+  courses: { bunkei: '文の構造', jisei: '時制', jodo: '助動詞・受動態', jun: '準動詞', kankei: '関係詞・比較・仮定法' },
+  stations: [
+    { id: 'bunkei', code: 'Unit 1', name: '文の構造（5文型）', tab: '文の構造', desc: 'S・V・O・C を見つけて文型を判断する。品詞と、他動詞・自動詞' },
+    { id: 'jisei', code: 'Unit 2', name: '時制', desc: '現在・過去・未来、進行形、完了形をタイムラインで見比べる' },
+    { id: 'jodo', code: 'Unit 3', name: '助動詞・受動態', desc: 'must と have to のちがい。能動態から受動態への書きかえ' },
+    { id: 'jun', code: 'Unit 4', name: '不定詞・動名詞・分詞', tab: '準動詞', desc: 'to do と doing の使い分け。名詞を説明する分詞' },
+    { id: 'kankei', code: 'Unit 5', name: '関係詞・比較・仮定法', tab: '関係詞ほか', desc: '関係代名詞・関係副詞、比較級と最上級、事実と反対の仮定' },
+  ],
+  links: [
+    ['つながり①', '5文型がわかると、長い文でも「どれが S で、どれが V か」を見失わない。'],
+    ['つながり②', '時制と助動詞は受動態や仮定法の形の土台。be動詞の形がそのまま使える。'],
+    ['つながり③', '不定詞・分詞・関係詞は、どれも「名詞を後ろから説明する」はたらきをもつ。'],
+  ],
+  tips: {
+    bunkei: 'まず動詞（V）を見つけよう。<br>その前が主語（S）、後ろに何があるかで文型が決まるよ！',
+    jisei: 'タイムラインで「いつの話か」を見よう。<br>完了形は「過去から今までのつながり」！',
+    jodo: '受動態は「be ＋ 過去分詞」。<br>be動詞の形で時制を表すよ。',
+    jun: 'to do は「これから」、doing は「すでに・いつも」のイメージ。<br>remember や forget で比べてみよう！',
+    kankei: '関係代名詞は、2つの文を1つにつなぐ「のり」。<br>先行詞が人か物かを最初に確認！',
+    drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+    cards: '不規則動詞は声に出して覚えよう。<br>「まだ」だけを何周もするのが近道！',
+    glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+  },
+  glossHint: '例：現在完了、げんざいかんりょう、関係代名詞',
+  cardsNote: '不規則動詞の変化や、まぎらわしい表現が入っている。',
+};
+/* ===== 共通部品（数学Ⅰ ラボと同じ仕組み） ===== */
+const RANKS = SITE.ranks, RANK_NOTE = SITE.rankNotes, COURSE_NAME = SITE.courses, TIPS = SITE.tips, STORE_KEY = SITE.key;
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const PRAISE = SITE.praise || ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const M = (s) => String(s).replace(/-/g, '−');
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const UNITS = [{ id: 'home', name: 'ホーム' }, ...SITE.stations.map(s => ({ id: s.id, name: s.tab || s.name })),
+  { id: 'drill', name: '問題ドリル' }, { id: 'cards', name: '暗記カード' }, { id: 'glossary', name: '用語集' }];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}のページへ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+function seg(id, items, cur) { // items: [[value,label],...]
+  return `<div class="seg" id="${id}">${items.map(([v, l]) => `<button aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join('')}</div>`;
+}
+function bindSeg(root, id, fn) {
+  $$(`#${id} button`, root).forEach(b => b.onclick = () => { $$(`#${id} button`, root).forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+}
+/* 並べ替え問題：words を押して文を組み立てる */
+function orderTask(root, items, opts = {}) {
+  // items: [{ja, ans:[tokens], extra?:[], note}]
+  let k = 0, picked = [];
+  const box = h(`<div style="display:grid;gap:12px"><div class="row" style="justify-content:space-between"><b class="ot-q"></b><span class="small muted tnum ot-n"></span></div>
+    <div class="ot-ans" aria-live="polite"></div><div class="ot-pool row" style="gap:8px"></div>
+    <div class="row"><button class="btn ot-chk">答え合わせ</button><button class="btn ghost sm ot-clr">やり直す</button><button class="btn ghost sm ot-next">次の問題</button></div><div class="res ot-res" hidden></div></div>`);
+  root.appendChild(box);
+  let pool = [];
+  function load() {
+    const it = items[k]; picked = [];
+    pool = shuffle([...it.ans, ...(it.extra || [])].map((w, i) => ({ w, i })));
+    $('.ot-q', box).innerHTML = it.ja; $('.ot-n', box).textContent = `${k + 1} / ${items.length}`;
+    $('.ot-res', box).hidden = true; draw();
+  }
+  function draw() {
+    $('.ot-ans', box).innerHTML = picked.length ? picked.map((p, j) => `<button class="ot-w on" data-j="${j}">${p.w}</button>`).join('') : `<span class="small muted">${opts.hint || '下の語句を正しい順に押そう。押した語句をもう一度押すと戻せる。'}</span>`;
+    $('.ot-pool', box).innerHTML = pool.filter(p => !picked.includes(p)).map(p => `<button class="ot-w" data-i="${p.i}">${p.w}</button>`).join('');
+    $$('.ot-ans [data-j]', box).forEach(b => b.onclick = () => { picked.splice(+b.dataset.j, 1); draw(); });
+    $$('.ot-pool [data-i]', box).forEach(b => b.onclick = () => { picked.push(pool.find(p => p.i === +b.dataset.i)); draw(); });
+  }
+  $('.ot-chk', box).onclick = () => {
+    const it = items[k], got = picked.map(p => p.w), ok = got.join(' ') === it.ans.join(' ');
+    const r = $('.ot-res', box); r.hidden = false; r.className = 'res ot-res ' + (ok ? 'ok' : 'ng');
+    r.innerHTML = `<b>${ok ? '正解！' : 'おしい。正しい順は…'}</b><span class="fx" style="font-size:1.05rem">${(opts.join ? it.ans.join(opts.join) : it.ans.join(' '))}${opts.end || ''}</span>${it.note ? `<span class="small">${it.note}</span>` : ''}`;
+  };
+  $('.ot-clr', box).onclick = () => { picked = []; $('.ot-res', box).hidden = true; draw(); };
+  $('.ot-next', box).onclick = () => { k = (k + 1) % items.length; load(); };
+  load();
+}
+/* ===== Unit 1 文の構造 ===== */
+const ROLES = ['S', 'V', 'O', 'C', 'M'];
+const ROLE_JA = { S: '主語', V: '動詞', O: '目的語', C: '補語', M: '修飾語' };
+const PATTERNS = [ // [語句], [役割], 文型, 訳
+  [['The baby', 'slept', 'in the bed.'], ['S', 'V', 'M'], 1, '赤ちゃんはベッドで眠った。'],
+  [['She', 'became', 'a doctor.'], ['S', 'V', 'C'], 2, '彼女は医者になった。'],
+  [['He', 'looks', 'happy', 'today.'], ['S', 'V', 'C', 'M'], 2, '彼は今日うれしそうに見える。'],
+  [['I', 'read', 'the book', 'last night.'], ['S', 'V', 'O', 'M'], 3, '私は昨夜その本を読んだ。'],
+  [['My father', 'gave', 'me', 'a watch.'], ['S', 'V', 'O', 'O'], 4, '父は私に腕時計をくれた。'],
+  [['We', 'call', 'the dog', 'Max.'], ['S', 'V', 'O', 'C'], 5, '私たちはその犬をマックスと呼ぶ。'],
+  [['The news', 'made', 'her', 'sad.'], ['S', 'V', 'O', 'C'], 5, 'その知らせは彼女を悲しませた。'],
+  [['The leaves', 'turned', 'red', 'in October.'], ['S', 'V', 'C', 'M'], 2, '10月に木の葉が赤くなった。'],
+  [['He', 'showed', 'us', 'some pictures.'], ['S', 'V', 'O', 'O'], 4, '彼は私たちに何枚かの写真を見せた。'],
+  [['Birds', 'fly', 'in the sky.'], ['S', 'V', 'M'], 1, '鳥は空を飛ぶ。'],
+  [['I', 'found', 'the question', 'easy.'], ['S', 'V', 'O', 'C'], 5, '私はその問題が簡単だとわかった。'],
+];
+const BK_NOTE = { 1: '第1文型 S V：「S が V する」。後ろの語句は修飾語（M）。', 2: '第2文型 S V C：S ＝ C の関係（She ＝ a doctor）。become・look・turn・seem など。', 3: '第3文型 S V O：「S が O を V する」。', 4: '第4文型 S V O O：「S が O₁ に O₂ を V する」。give・show・tell・buy など。', 5: '第5文型 S V O C：O ＝ C の関係（the dog ＝ Max）。call・make・find・keep など。' };
+VIEWS.bunkei = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '文の構造（5文型）', '英文は「主語 S」「動詞 V」「目的語 O」「補語 C」の組み合わせで5つの型に分けられる。修飾語 M はどの文型にも加えられるが、文型には数えない。'));
+  root.appendChild(points([
+    ['5つの文型', '<p>第1文型 <b>S V</b><br>第2文型 <b>S V C</b>（S ＝ C）<br>第3文型 <b>S V O</b><br>第4文型 <b>S V O O</b>（O₁ に O₂ を）<br>第5文型 <b>S V O C</b>（O ＝ C）</p>'],
+    ['補語 C と目的語 O', '<p><mark>補語</mark>は主語や目的語が「何か・どんな状態か」を説明する（イコールの関係）。<br><mark>目的語</mark>は動作の対象（「〜を」「〜に」）。</p>'],
+    ['自動詞と他動詞', '<p>目的語をとらない<b>自動詞</b>（go, arrive）と、目的語をとる<b>他動詞</b>（discuss, enter, reach）。<br>discuss <s>about</s> the problem のように、前置詞をつけないものに注意。</p>'],
+    ['第4文型の書きかえ', '<p>give / show / tell / send → <b>to</b>：He gave a book to me.<br>buy / make / cook / get → <b>for</b>：She bought a bag for me.</p>'],
+  ]));
+
+  const bk = labCard('練習', 'S・V・O・C・M を当てる', '語句を押すたびに役割が S → V → O → C → M と変わる。そろえたら「答え合わせ」');
+  bk.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><span class="small muted" id="bkja"></span><span class="small muted tnum" id="bkn"></span></div>
+    <div class="row" id="bkw" style="gap:10px;align-items:flex-start"></div>
+    <div class="row"><button class="btn" id="bkc">答え合わせ</button><button class="btn ghost sm" id="bks">答えを見る</button><button class="btn ghost sm" id="bkx">次の文</button></div><div class="res" id="bkr" hidden></div>`);
+  root.appendChild(bk);
+  let bq = shuffle(PATTERNS), bi = 0, cur = [];
+  function showBk() {
+    const p = bq[bi]; cur = p[0].map(() => -1);
+    $('#bkja').textContent = p[3]; $('#bkn').textContent = `${bi + 1} / ${bq.length}`; $('#bkr').hidden = true; drawBk();
+  }
+  function drawBk(reveal) {
+    const p = bq[bi];
+    $('#bkw').innerHTML = p[0].map((w, i) => { const r = reveal ? p[1][i] : cur[i] >= 0 ? ROLES[cur[i]] : '？'; return `<button class="ot-w ${r !== '？' ? 'on' : ''}" data-i="${i}" style="display:grid;justify-items:center;gap:2px;min-width:70px"><span style="font-family:var(--f-code);font-size:1.1rem">${r}</span><span style="font-weight:500">${w}</span></button>`; }).join('');
+    $$('#bkw [data-i]').forEach(b => b.onclick = () => { const i = +b.dataset.i; cur[i] = (cur[i] + 1) % ROLES.length; drawBk(); });
+  }
+  const verdict = (ok) => { const p = bq[bi], r = $('#bkr'); r.hidden = false; r.className = 'res ' + (ok === true ? 'ok' : ok === false ? 'ng' : '');
+    r.innerHTML = `<b>${ok === true ? '正解！' : ok === false ? 'おしい。正しくは…' : ''}${p[1].join(' ')}　→ 第${p[2]}文型</b><span class="small">${BK_NOTE[p[2]]}</span>`; };
+  $('#bkc', bk).onclick = () => { const p = bq[bi]; const ok = p[1].every((r, i) => ROLES[cur[i]] === r); if (!ok) drawBk(true); verdict(ok); };
+  $('#bks', bk).onclick = () => { drawBk(true); verdict(null); };
+  $('#bkx', bk).onclick = () => { bi = (bi + 1) % bq.length; if (!bi) bq = shuffle(PATTERNS); showBk(); };
+  showBk();
+  root.appendChild(trap('「He looks <b>happy</b>.」の happy は補語なので形容詞。「He looks <s>happily</s>.」は誤り。look・smell・sound・taste・feel のあとは形容詞がくる。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('bunkei'));
+};
+
+/* ===== Unit 2 時制 ===== */
+const VB = { play: ['plays', 'played', 'played', 'playing', 'tennis', 'テニスをする'], study: ['studies', 'studied', 'studied', 'studying', 'English', '英語を勉強する'], write: ['writes', 'wrote', 'written', 'writing', 'a letter', '手紙を書く'], eat: ['eats', 'ate', 'eaten', 'eating', 'lunch', '昼食を食べる'], read: ['reads', 'read', 'read', 'reading', 'a book', '本を読む'] };
+const TENSES = [
+  ['pres', '現在形', 'いつもくり返すこと・習慣・不変の真理'], ['past', '過去形', '過去のある時点のこと'], ['fut', '未来（will）', 'これから先のこと'],
+  ['presP', '現在進行形', '今まさにしている途中'], ['pastP', '過去進行形', '過去のある時点でしている途中'],
+  ['presPf', '現在完了形', '過去から今までのつながり（完了・経験・継続）'], ['pastPf', '過去完了形', '過去のある時点までのつながり'], ['futPf', '未来完了形', '未来のある時点までに完了している'],
+  ['presPfP', '現在完了進行形', '過去から今までずっとし続けている'],
+];
+function conj(subj, v, t) {
+  const f = VB[v], he = subj === 'He', I = subj === 'I';
+  const be = I ? 'am' : he ? 'is' : 'are', was = I || he ? 'was' : 'were', has = he ? 'has' : 'have';
+  return { pres: he ? f[0] : v, past: f[1], fut: 'will ' + v, presP: be + ' ' + f[3], pastP: was + ' ' + f[3], presPf: has + ' ' + f[2], pastPf: 'had ' + f[2], futPf: 'will have ' + f[2], presPfP: has + ' been ' + f[3] }[t];
+}
+const TIME = { pres: 'every day', past: 'yesterday', fut: 'tomorrow', presP: 'now', pastP: 'at that time', presPf: 'already', pastPf: 'before he came', futPf: 'by tomorrow', presPfP: 'for two hours' };
+VIEWS.jisei = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '時制', '英語は「いつのことか」を動詞の形で表す。日本語の「〜た」がいつも過去形になるわけではないので、タイムラインで考えよう。'));
+  root.appendChild(points([
+    ['現在完了の3つの用法', '<p><b>完了・結果</b>：I have just finished it.（ちょうど終えた）<br><b>経験</b>：I have been to Kyoto twice.（2回行ったことがある）<br><b>継続</b>：I have lived here for ten years.（10年住んでいる）</p>'],
+    ['現在完了と使えない語', '<p>yesterday・last year・〜 ago・When 〜? など、<mark>過去のはっきりした時</mark>を表す語とは使えない。→ 過去形を使う。</p>'],
+    ['時・条件の副詞節', '<p>when・if・until などで始まる「時・条件」の節では、未来のことでも<mark>現在形</mark>を使う。<br>I will call you when he <b>comes</b> home.</p>'],
+    ['進行形にしない動詞', '<p>know・like・want・belong・have（持っている）など、<b>状態</b>を表す動詞はふつう進行形にしない。<br>継続は have known のように現在完了で表す。</p>'],
+  ]));
+
+  const tl = labCard('実験', '時制タイムライン', '主語・動詞・時制を選ぶと、英文とタイムラインが変わる');
+  tl.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">主語${seg('tls', [['I', 'I'], ['He', 'He'], ['They', 'They']], 'He')}</label><label class="ctl" for="tlv">動詞<select id="tlv">${Object.keys(VB).map(v => `<option>${v}</option>`).join('')}</select></label></div>
+    <div class="pick-grid" id="tlt">${TENSES.map((t, i) => `<button data-t="${t[0]}" aria-pressed="${i === 5}">${t[1]}</button>`).join('')}</div>
+    <div class="fx big" id="tlfx"></div><svg class="plot" id="tlsvg" viewBox="0 0 560 120" role="img" aria-label="タイムライン"></svg><div class="note" id="tln"></div>`);
+  root.appendChild(tl);
+  let ts = 'He', tt = 'presPf';
+  bindSeg(tl, 'tls', v => { ts = v; drawTl(); });
+  $$('#tlt button', tl).forEach(b => b.onclick = () => { tt = b.dataset.t; $$('#tlt button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawTl(); });
+  $('#tlv', tl).onchange = drawTl;
+  function drawTl() {
+    const v = $('#tlv').value, f = VB[v], form = conj(ts, v, tt);
+    $('#tlfx').innerHTML = `${ts} <mark>${form}</mark> ${f[4]} ${TIME[tt]}.`;
+    const X = { past: 140, now: 300, fut: 460 }, y = 70;
+    let s = `<line class="ax" x1="30" y1="${y}" x2="540" y2="${y}"/><path d="M540 ${y} l-10 -6 v12 z" style="fill:var(--muted)"/>`;
+    [['過去', X.past], ['今', X.now], ['未来', X.fut]].forEach(([l, x]) => s += `<line class="ax" x1="${x}" y1="${y - 8}" x2="${x}" y2="${y + 8}"/><text class="tk" x="${x}" y="${y + 26}" text-anchor="middle" style="font-size:13px">${l}</text>`);
+    const dot = (x, c = '--accent') => `<circle cx="${x}" cy="${y}" r="9" style="fill:var(${c})"/>`;
+    const span = (a, b, c = '--accent') => `<line x1="${a}" y1="${y}" x2="${b}" y2="${y}" style="stroke:var(${c});stroke-width:8;stroke-linecap:round"/>`;
+    const arrow = (a, b) => `<line x1="${a}" y1="${y - 24}" x2="${b - 8}" y2="${y - 24}" style="stroke:var(--cobalt);stroke-width:3"/><path d="M${b} ${y - 24} l-10 -6 v12 z" style="fill:var(--cobalt)"/>`;
+    s += { pres: [100, 180, 260, 340, 420].map(x => dot(x, '--accent')).join(''), past: dot(X.past), fut: dot(X.fut), presP: span(X.now - 40, X.now + 40), pastP: span(X.past - 40, X.past + 40),
+      presPf: arrow(X.past - 60, X.now) + dot(X.now), pastPf: arrow(60, X.past) + dot(X.past) + `<text class="tk" x="${X.past}" y="${y - 34}" text-anchor="middle">基準の過去</text>`,
+      futPf: arrow(X.now, X.fut) + dot(X.fut), presPfP: span(X.past - 60, X.now) + arrow(X.past - 60, X.now) }[tt];
+    $('#tlsvg').innerHTML = s;
+    const t = TENSES.find(x => x[0] === tt);
+    $('#tln').innerHTML = `<b>${t[1]}</b>：${t[2]}。<br>形：${{ pres: `主語が3人称単数（He）のときは -s をつける（${f[0]}）`, past: `過去形 ${f[1]}`, fut: 'will ＋ 動詞の原形', presP: 'am / is / are ＋ -ing', pastP: 'was / were ＋ -ing', presPf: `have / has ＋ 過去分詞（${f[2]}）`, pastPf: `had ＋ 過去分詞（${f[2]}）`, futPf: `will have ＋ 過去分詞（${f[2]}）`, presPfP: 'have / has been ＋ -ing' }[tt]}`;
+  }
+  drawTl();
+  root.appendChild(trap('「彼はアメリカへ<b>行ってしまった</b>（今はいない）」は He has <b>gone</b> to America. 「行ったことがある」は I have <b>been</b> to America. gone と been を取りちがえないこと。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('jisei'));
+};
+
+/* ===== Unit 3 助動詞・受動態 ===== */
+const PASSIVE = [
+  ['Tom wrote this letter.', 'This letter was written by Tom.', 'wrote（過去）→ was written。'],
+  ['Many people love this song.', 'This song is loved by many people.', '主語 This song（単数・現在）→ is loved。'],
+  ['They will build a new bridge.', 'A new bridge will be built (by them).', '助動詞があるときは「助動詞 ＋ be ＋ 過去分詞」。by them は一般の人なので省略することが多い。'],
+  ['My mother is making a cake.', 'A cake is being made by my mother.', '進行形の受動態は「be being ＋ 過去分詞」。'],
+  ['Someone has stolen my bike.', 'My bike has been stolen.', '完了形の受動態は「have / has been ＋ 過去分詞」。by someone は省略。'],
+  ['Everyone laughed at him.', 'He was laughed at by everyone.', 'laugh at はひとまとまりの動詞。at を忘れずに残す。'],
+  ['They call the dog Max.', 'The dog is called Max (by them).', '第5文型の受動態。補語 Max はそのまま後ろに残る。'],
+];
+const MODALS = [
+  ['must', '〜しなければならない／〜にちがいない', 'You must finish it today.／He must be tired.'],
+  ['must not', '〜してはいけない（禁止）', 'You must not swim here.'],
+  ['have to', '〜しなければならない', 'I have to get up early.'],
+  ['don\'t have to', '〜する必要はない', 'You don\'t have to hurry.'],
+  ['can', '〜できる／〜してもよい／〜でありうる', 'Can I use your pen?'],
+  ['can\'t', '〜できない／〜のはずがない', 'It can\'t be true.'],
+  ['may', '〜してもよい／〜かもしれない', 'It may rain tomorrow.'],
+  ['should', '〜すべきだ／〜のはずだ', 'You should see a doctor.'],
+  ['should have ＋ 過去分詞', '〜すべきだったのに（しなかった）', 'I should have studied harder.'],
+  ['must have ＋ 過去分詞', '〜したにちがいない', 'She must have left already.'],
+  ['used to', '以前はよく〜した／以前は〜だった', 'I used to play soccer.'],
+  ['had better', '〜したほうがよい（強い忠告）', 'You had better go now.'],
+];
+VIEWS.jodo = (root) => {
+  root.appendChild(sectionHead('UNIT 3', '助動詞・受動態', '助動詞は動詞に「話し手の気持ち（義務・可能・推量など）」をそえる。受動態は「〜される」と、動作を受ける側を主語にした文。'));
+  root.appendChild(points([
+    ['助動詞のきまり', '<p>助動詞のあとは<mark>動詞の原形</mark>。主語が He でも -s はつかない（He can <b>swim</b>）。<br>助動詞は2つ重ねない（<s>will can</s> → will be able to）。</p>'],
+    ['must と have to の否定', '<p><b>must not</b>：〜してはいけない（禁止）<br><b>don\'t have to</b>：〜する必要はない<br>否定にすると意味が大きく変わる。</p>'],
+    ['受動態の形', '<p><mark>be ＋ 過去分詞</mark>（＋ by 〜）。<br>時制は be動詞で表す：is written / was written / will be written / has been written / is being written</p>'],
+    ['by 以外の前置詞', '<p>be interested <b>in</b>、be covered <b>with</b>、be surprised <b>at</b>、be known <b>to</b>（〜に知られている）、be made <b>of / from</b>（材料 / 原料）</p>'],
+  ]));
+
+  const ps = labCard('実験', '能動態 → 受動態', '「書きかえる」を押すと、1ステップずつ受動態に変わる');
+  ps.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="psp" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">${PASSIVE.map((p, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${p[0]}</button>`).join('')}</div>
+    <div class="grid2"><div class="res"><span class="small muted">能動態</span><b class="fx" id="psa"></b></div><div class="res ok"><span class="small muted">受動態</span><b class="fx" id="psb"></b></div></div>
+    <ol class="steps"><li><span>能動態の<b>目的語</b>を、受動態の<b>主語</b>にする</span></li><li><span>be動詞を、もとの文の<b>時制</b>と新しい主語に合わせる</span></li><li><span>動詞を<b>過去分詞</b>にする</span></li><li><span>もとの主語を <b>by 〜</b> で後ろに置く（だれがしたか重要でなければ省略）</span></li></ol>
+    <div class="note" id="psn"></div>`);
+  root.appendChild(ps);
+  function drawPs(i) { const p = PASSIVE[i]; $('#psa').textContent = p[0]; $('#psb').textContent = p[1]; $('#psn').innerHTML = p[2]; }
+  $$('#psp button', ps).forEach(b => b.onclick = () => { $$('#psp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawPs(+b.dataset.i); });
+  drawPs(0);
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>おもな助動詞と意味</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>形</th><th>意味</th><th>例</th></tr></thead><tbody>${MODALS.map(m => `<tr><td><b>${m[0]}</b></td><td>${m[1]}</td><td class="small" style="font-family:var(--f-code)">${m[2]}</td></tr>`).join('')}</tbody></table></div></section>`));
+  root.appendChild(trap('「助動詞 ＋ have ＋ 過去分詞」は<b>過去のこと</b>への推量や後悔。should have studied は「勉強すべきだった（のにしなかった）」。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('jodo'));
+};
+
+/* ===== Unit 4 準動詞 ===== */
+const ORDER_JUN = [
+  { ja: '英語を話すことは簡単ではない。', ans: ['Speaking', 'English', 'is', 'not', 'easy.'] },
+  { ja: '彼女は私に窓を開けるように頼んだ。', ans: ['She', 'asked', 'me', 'to', 'open', 'the window.'] },
+  { ja: '私はあなたに会うのを楽しみにしています。', ans: ['I', 'am', 'looking', 'forward', 'to', 'seeing', 'you.'], note: 'look forward to の to は前置詞なので、後ろは動名詞（seeing）。' },
+  { ja: '窓のそばに立っている少女は私の妹です。', ans: ['The girl', 'standing', 'by the window', 'is', 'my sister.'], note: '現在分詞 standing が後ろから The girl を説明している。' },
+  { ja: '私は何をすればよいかわからない。', ans: ['I', "don't", 'know', 'what', 'to', 'do.'], note: '疑問詞 ＋ to 不定詞：what to do（何をすべきか）。' },
+  { ja: 'これは日本で作られた車です。', ans: ['This', 'is', 'a car', 'made', 'in Japan.'], note: '過去分詞 made が後ろから a car を説明（〜された）。' },
+  { ja: '私にはするべき宿題がたくさんある。', ans: ['I', 'have', 'a lot of', 'homework', 'to', 'do.'], note: '不定詞の形容詞的用法：homework to do（するべき宿題）。' },
+];
+const GER = [
+  ['enjoy', 'doing', 'enjoy playing（〜して楽しむ）'], ['finish', 'doing', 'finish reading（〜し終える）'], ['stop', 'doing', 'stop talking（〜するのをやめる）※stop to do は「〜するために立ち止まる」'],
+  ['mind', 'doing', 'mind opening（〜するのを気にする）'], ['give up', 'doing', 'give up smoking（〜するのをあきらめる）'], ['avoid', 'doing', 'avoid eating（〜するのを避ける）'],
+  ['want', 'to do', 'want to go（〜したい）'], ['hope', 'to do', 'hope to see（〜することを望む）'], ['decide', 'to do', 'decide to study（〜することに決める）'],
+  ['plan', 'to do', 'plan to visit（〜する計画だ）'], ['promise', 'to do', 'promise to come（〜すると約束する）'], ['refuse', 'to do', 'refuse to answer（〜するのをこばむ）'],
+  ['remember', 'both', 'remember to do（忘れずに〜する）／remember doing（〜したことを覚えている）'], ['forget', 'both', 'forget to do（〜し忘れる）／forget doing（〜したことを忘れる）'], ['try', 'both', 'try to do（〜しようとする）／try doing（ためしに〜してみる）'],
+];
+VIEWS.jun = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '不定詞・動名詞・分詞', '動詞が形を変えて、名詞・形容詞・副詞のはたらきをするのが準動詞。to 不定詞・動名詞（-ing）・分詞（-ing / 過去分詞）の3種類。'));
+  root.appendChild(points([
+    ['不定詞の3用法', '<p><b>名詞的</b>：To read books is fun.（〜すること）<br><b>形容詞的</b>：something to drink（〜するための）<br><b>副詞的</b>：I went there to meet him.（〜するために）／I\'m glad to see you.（〜して）</p>'],
+    ['動名詞', '<p>-ing の形で「〜すること」。<br>前置詞のあとは動名詞：He is good at <b>swimming</b>.<br>look forward to <b>doing</b>、be used to <b>doing</b></p>'],
+    ['分詞の形容詞的用法', '<p><b>現在分詞</b>（-ing）：「〜している」a <b>sleeping</b> baby<br><b>過去分詞</b>：「〜された」a <b>broken</b> window<br>2語以上なら名詞の<mark>後ろ</mark>に置く：the boy <b>playing the piano</b></p>'],
+    ['It … for / of 人 to do', '<p>It is difficult <b>for</b> me to …（難しさは状況の性質）<br>It is kind <b>of</b> you to …（kind・nice・careless など、<mark>人の性質</mark>を表す語のときは of）</p>'],
+  ]));
+
+  const gr = labCard('練習', 'to do か doing か', '動詞を選ぶと、後ろに不定詞・動名詞のどちらが来るかが出る');
+  gr.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="grp">${GER.map((g, i) => `<button data-i="${i}" aria-pressed="${i === 12}">${g[0]}<small>${g[1] === 'both' ? '両方（意味が変わる）' : '？'}</small></button>`).join('')}</div><div class="res" id="grr"></div>
+    <div class="note small">覚え方：<b>to do は「これから先のこと」</b>（want・hope・decide）、<b>doing は「すでにしていること・現実のこと」</b>（enjoy・finish・stop）。</div>`);
+  root.appendChild(gr);
+  function drawGr(i) { const g = GER[i]; $('#grr').className = 'res ' + (g[1] === 'both' ? '' : 'ok'); $('#grr').innerHTML = `<b style="font-family:var(--f-code)">${g[0]} ＋ ${g[1] === 'both' ? 'to do ／ doing' : g[1]}</b><span>${g[2]}</span>`; }
+  $$('#grp button', gr).forEach(b => b.onclick = () => { $$('#grp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawGr(+b.dataset.i); });
+  drawGr(12);
+
+  const od = labCard('練習', '語句を並べて英文をつくる', '日本語に合うように、語句を正しい順に押そう');
+  root.appendChild(od);
+  orderTask(od, ORDER_JUN);
+  root.appendChild(trap('「こわれた窓」は a <b>broken</b> window（こわされた → 過去分詞）、「わくわくする試合」は an <b>exciting</b> game、「わくわくした観客」は <b>excited</b> fans。修飾される名詞が「する側」か「される側」かで決める。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('jun'));
+};
+
+/* ===== Unit 5 関係詞・比較・仮定法 ===== */
+const ADJ = [ // [原級, 比較級, 最上級, ルール]
+  ['tall', 'taller', 'tallest', 'ふつうは -er / -est'], ['large', 'larger', 'largest', '-e で終わる語は -r / -st'], ['big', 'bigger', 'biggest', '短母音 ＋ 子音字で終わる語は、子音字を重ねる'],
+  ['hot', 'hotter', 'hottest', '短母音 ＋ 子音字で終わる語は、子音字を重ねる'], ['happy', 'happier', 'happiest', '子音字 ＋ y で終わる語は y を i にかえる'], ['easy', 'easier', 'easiest', '子音字 ＋ y で終わる語は y を i にかえる'],
+  ['beautiful', 'more beautiful', 'most beautiful', '長い語（3音節以上など）は more / most'], ['important', 'more important', 'most important', '長い語は more / most'], ['interesting', 'more interesting', 'most interesting', '長い語は more / most'],
+  ['good / well', 'better', 'best', '不規則変化'], ['bad', 'worse', 'worst', '不規則変化'], ['many / much', 'more', 'most', '不規則変化'], ['little', 'less', 'least', '不規則変化'],
+];
+const IFS = [
+  ['直説法（ふつうの条件）', 'If it <mark>is</mark> sunny tomorrow, I <mark>will go</mark> hiking.', '明日晴れたら、ハイキングに行く。', '起こりうること。時・条件の副詞節なので未来でも現在形（is）。', 'real'],
+  ['仮定法過去', 'If I <mark>had</mark> enough money, I <mark>would buy</mark> that car.', 'もし十分なお金があれば、あの車を買うのに。', '<b>今の事実に反する</b>仮定。実際はお金がない。形は「If ＋ 過去形, ＋ would ＋ 原形」。be動詞は主語に関係なく were がふつう。', 'now'],
+  ['仮定法過去完了', 'If I <mark>had studied</mark> harder, I <mark>would have passed</mark> the test.', 'もしもっと勉強していたら、テストに合格していたのに。', '<b>過去の事実に反する</b>仮定。実際は勉強しなかった。「If ＋ had ＋ 過去分詞, ＋ would have ＋ 過去分詞」。', 'past'],
+  ['I wish ＋ 仮定法過去', 'I wish I <mark>were</mark> taller.', 'もっと背が高ければいいのに。', '今の事実と反対の願望。', 'now'],
+  ['I wish ＋ 仮定法過去完了', 'I wish I <mark>had gone</mark> to the concert.', 'コンサートに行っていればよかったのに。', '過去の事実と反対の願望（後悔）。', 'past'],
+  ['as if ＋ 仮定法', 'He talks <mark>as if</mark> he <mark>knew</mark> everything.', '彼はまるで何でも知っているかのように話す。', '実際は知らない。主節と同じ時のことは仮定法過去。', 'now'],
+];
+const ORDER_KAN = [
+  { ja: 'これは私が昨日買った本です。', ans: ['This', 'is', 'the book', 'which', 'I', 'bought', 'yesterday.'], note: '目的格の関係代名詞 which（省略もできる）。' },
+  { ja: '富士山は日本でいちばん高い山です。', ans: ['Mt. Fuji', 'is', 'the', 'highest', 'mountain', 'in', 'Japan.'] },
+  { ja: '彼は私の兄よりも背が高い。', ans: ['He', 'is', 'taller', 'than', 'my', 'brother.'] },
+  { ja: 'もし私が鳥なら、あなたのところへ飛んでいけるのに。', ans: ['If', 'I', 'were', 'a bird,', 'I', 'could', 'fly', 'to you.'], note: '仮定法過去。be動詞は were。' },
+  { ja: 'ここは私が生まれた町です。', ans: ['This', 'is', 'the town', 'where', 'I', 'was', 'born.'], note: '場所を表す先行詞 → 関係副詞 where。' },
+  { ja: '父が医者をしている友達がいる。', ans: ['I', 'have', 'a friend', 'whose', 'father', 'is', 'a doctor.'], note: '所有格の関係代名詞 whose（その人の〜）。' },
+];
+VIEWS.kankei = (root) => {
+  root.appendChild(sectionHead('UNIT 5', '関係詞・比較・仮定法', '関係詞は名詞を後ろから説明する文をつなぐ。比較は形容詞・副詞の変化、仮定法は「事実と反対」を動詞の時制を1つ過去にずらして表す。'));
+  root.appendChild(points([
+    ['関係代名詞の使い分け', '<p>先行詞が<b>人</b>：who（主格）・whom（目的格）・whose（所有格）<br>先行詞が<b>物・動物</b>：which・whose<br>that は人にも物にも使える（所有格はない）。<br><b>what</b> ＝ the thing(s) which（〜すること・もの）</p>'],
+    ['関係副詞', '<p>場所 → <b>where</b>、時 → <b>when</b>、理由 → <b>why</b>、方法 → <b>how</b>（the way と並べない）。<br>後ろが「文として完全」なら関係副詞、「名詞が欠けている」なら関係代名詞。</p>'],
+    ['比較の形', '<p>as 原級 as：同じくらい<br>比較級 than：〜より<br>the 最上級 in / of：いちばん<br>No other 〜 is 比較級 than A ＝ A がいちばん</p>'],
+    ['仮定法', '<p>今の事実に反する → <mark>過去形</mark>（仮定法過去）<br>過去の事実に反する → <mark>過去完了形</mark>（仮定法過去完了）<br>「1つ前の時制」にずらすのがポイント。</p>'],
+  ]));
+
+  const cp = labCard('実験', '比較級・最上級をつくる', '形容詞・副詞を選ぶと、変化のしかたとルールが出る');
+  cp.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="cpp">${ADJ.map((a, i) => `<button data-i="${i}" aria-pressed="${i === 2}">${a[0]}</button>`).join('')}</div>
+    <div class="scroll-x"><table class="tbl ctr" id="cpt"></table></div><div class="note" id="cpn"></div>`);
+  root.appendChild(cp);
+  function drawCp(i) { const a = ADJ[i]; $('#cpt').innerHTML = `<thead><tr><th>原級</th><th>比較級</th><th>最上級</th></tr></thead><tbody><tr>${a.slice(0, 3).map(x => `<td style="font-family:var(--f-code);font-weight:600;font-size:1.1rem">${x}</td>`).join('')}</tr></tbody>`; $('#cpn').innerHTML = `<b>ルール</b>：${a[3]}`; }
+  $$('#cpp button', cp).forEach(b => b.onclick = () => { $$('#cpp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawCp(+b.dataset.i); });
+  drawCp(2);
+
+  const sp = labCard('実験', '仮定法のタイムライン', '文の種類を選ぶと、どの時点の「事実と反対」かがタイムラインに出る');
+  sp.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="spp" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${IFS.map((f, i) => `<button data-i="${i}" aria-pressed="${i === 1}">${f[0]}</button>`).join('')}</div>
+    <div class="fx big" id="spe" style="font-family:var(--f-body)"></div><div class="small muted" id="spj"></div><svg class="plot" id="spsvg" viewBox="0 0 560 110" role="img" aria-label="タイムライン"></svg><div class="note" id="spn"></div>`);
+  root.appendChild(sp);
+  function drawSp(i) {
+    const f = IFS[i]; $('#spe').innerHTML = f[1]; $('#spj').textContent = f[2]; $('#spn').innerHTML = f[3];
+    const y = 60, X = { past: 150, now: 300, fut: 450 };
+    let s = `<line class="ax" x1="30" y1="${y}" x2="540" y2="${y}"/>`;
+    [['過去', X.past], ['今', X.now], ['未来', X.fut]].forEach(([l, x]) => s += `<line class="ax" x1="${x}" y1="${y - 8}" x2="${x}" y2="${y + 8}"/><text class="tk" x="${x}" y="${y + 26}" text-anchor="middle" style="font-size:13px">${l}</text>`);
+    const tgt = f[4] === 'real' ? X.fut : X[f[4]];
+    s += f[4] === 'real' ? `<circle cx="${tgt}" cy="${y}" r="10" style="fill:var(--good)"/><text class="lbl" x="${tgt}" y="${y - 18}" text-anchor="middle" style="fill:var(--good)">起こりうる</text>`
+      : `<circle cx="${tgt}" cy="${y}" r="10" style="fill:none;stroke:var(--accent);stroke-width:3"/><line x1="${tgt - 8}" y1="${y - 8}" x2="${tgt + 8}" y2="${y + 8}" style="stroke:var(--accent);stroke-width:3"/><line x1="${tgt + 8}" y1="${y - 8}" x2="${tgt - 8}" y2="${y + 8}" style="stroke:var(--accent);stroke-width:3"/><text class="lbl" x="${tgt}" y="${y - 18}" text-anchor="middle" style="fill:var(--accent)">事実と反対</text>`;
+    $('#spsvg').innerHTML = s;
+  }
+  $$('#spp button', sp).forEach(b => b.onclick = () => { $$('#spp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawSp(+b.dataset.i); });
+  drawSp(1);
+
+  const od = labCard('練習', '語句を並べて英文をつくる', '日本語に合うように、語句を正しい順に押そう');
+  root.appendChild(od);
+  orderTask(od, ORDER_KAN);
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kankei'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から） ===== */
+const B = '（　　　）';
+const QUESTIONS = [
+/* ---------- 文の構造 ---------- */
+{ id: 'a1', unit: 'bunkei', type: '文型', lv: 1, inUnit: true,
+  stem: '<p><b>She became a teacher.</b> の文型はどれか。</p>', choices: ['第1文型（S V）', '第2文型（S V C）', '第3文型（S V O）', '第4文型（S V O O）'], ans: 1,
+  exp: '<p>She ＝ a teacher の関係なので a teacher は補語。<mark>第2文型（S V C）</mark>。</p>' },
+{ id: 'a2', unit: 'bunkei', type: '文型', lv: 1, inUnit: true,
+  stem: '<p><b>He gave me a book.</b> の文型はどれか。</p>', choices: ['第2文型（S V C）', '第3文型（S V O）', '第4文型（S V O O）', '第5文型（S V O C）'], ans: 2,
+  exp: '<p>「私に（me）」「本を（a book）」と目的語が2つ。me ≠ a book なので<mark>第4文型（S V O O）</mark>。</p>' },
+{ id: 'a3', unit: 'bunkei', type: '文型', lv: 2, inUnit: true,
+  stem: '<p><b>They named the baby Ken.</b> の文型はどれか。</p>', choices: ['第3文型（S V O）', '第4文型（S V O O）', '第5文型（S V O C）', '第2文型（S V C）'], ans: 2,
+  exp: '<p>the baby ＝ Ken の関係なので Ken は補語。<mark>第5文型（S V O C）</mark>。「赤ちゃんをケンと名づけた」。</p>' },
+{ id: 'a4', unit: 'bunkei', type: '補語', lv: 2, inUnit: true,
+  stem: `<p>This milk smells ${B}.</p>`, choices: ['sour', 'sourly', 'to sour', 'soured by'], ans: 0,
+  exp: '<p>smell は「〜のにおいがする」で第2文型をつくる。補語には形容詞の <mark>sour</mark>（すっぱい）。副詞は補語にならない。</p>' },
+{ id: 'a5', unit: 'bunkei', type: '第4文型の書きかえ', lv: 2, inUnit: true,
+  stem: `<p>My mother bought me a new bag. ＝ My mother bought a new bag ${B} me.</p>`, choices: ['to', 'for', 'of', 'with'], ans: 1,
+  exp: '<p>buy・make・cook・get などは <mark>for</mark>（〜のために）。give・show・tell・send などは to。</p>' },
+{ id: 'a6', unit: 'bunkei', type: '他動詞', lv: 2,
+  stem: '<p>正しい英文はどれか。</p>', choices: ['We discussed about the problem.', 'We discussed the problem.', 'We discussed on the problem.', 'We discussed of the problem.'], ans: 1,
+  exp: '<p>discuss は他動詞なので、すぐ後ろに目的語を置く。<mark>We discussed the problem.</mark> 日本語の「〜について」につられて about をつけないこと。</p>' },
+{ id: 'a7', unit: 'bunkei', type: '第4文型の書きかえ', lv: 1,
+  stem: `<p>He showed me the photo. ＝ He showed the photo ${B} me.</p>`, choices: ['to', 'for', 'at', 'by'], ans: 0,
+  exp: '<p>show は <mark>to</mark>。相手がいないと成り立たない動作（見せる・渡す・教える）は to を使う。</p>' },
+{ id: 'a8', unit: 'bunkei', type: '第5文型', lv: 2,
+  stem: '<p><b>I found the book easy.</b> の意味として正しいものはどれか。</p>', choices: ['私はその本を簡単に見つけた。', '私はその本が簡単だとわかった。', '私は簡単な本を見つけた。', '私はその本を見つけるのが簡単だった。'], ans: 1,
+  exp: '<p>the book ＝ easy の関係（第5文型）で「O が C だとわかる」。<mark>その本が簡単だとわかった</mark>。「簡単に見つけた」なら I found the book easily.</p>' },
+{ id: 'a9', unit: 'bunkei', type: '品詞', lv: 1,
+  stem: '<p><b>She runs fast.</b> の fast の品詞はどれか。</p>', choices: ['名詞', '形容詞', '副詞', '動詞'], ans: 2,
+  exp: '<p>動詞 runs を修飾して「速く」なので<mark>副詞</mark>。a fast runner の fast は形容詞。</p>' },
+{ id: 'a10', unit: 'bunkei', type: '第5文型', lv: 1,
+  stem: `<p>Please keep the door ${B}.</p>`, choices: ['open', 'opening', 'openly', 'to open'], ans: 0,
+  exp: '<p>keep O C「O を C のままにしておく」。the door ＝ open（開いている）なので形容詞の <mark>open</mark>。</p>' },
+{ id: 'a11', unit: 'bunkei', type: 'There is', lv: 1,
+  stem: `<p>There ${B} some apples in the box.</p>`, choices: ['is', 'are', 'be', 'has'], ans: 1,
+  exp: '<p>There is / are の後ろの名詞が主語。some apples は複数なので <mark>are</mark>。</p>' },
+{ id: 'a12', unit: 'bunkei', type: '主語と動詞', lv: 2,
+  stem: '<p><b>The boy with a big dog is my brother.</b> の文の動詞（V）はどれか。</p>', choices: ['with', 'big', 'is', 'brother'], ans: 2,
+  exp: '<p>主語は The boy with a big dog（大きな犬を連れた少年）。動詞は <mark>is</mark>。主語が長くても、動詞を見つければ文の骨組みがわかる。</p>' },
+{ id: 'a13', unit: 'bunkei', type: '自動詞', lv: 2,
+  stem: `<p>We arrived ${B} the station at ten.</p>`, choices: ['at', 'to', '（何も入らない）', 'for'], ans: 0,
+  exp: '<p>arrive は自動詞なので前置詞が必要。駅のような地点には <mark>at</mark>、都市や国には in。reach なら他動詞なので reach the station。</p>' },
+
+/* ---------- 時制 ---------- */
+{ id: 't1', unit: 'jisei', type: '現在形', lv: 1, inUnit: true,
+  stem: `<p>Water ${B} at 100℃.</p>`, choices: ['boil', 'boils', 'is boiling', 'boiled'], ans: 1,
+  exp: '<p>いつでも成り立つ事実（不変の真理）は現在形。主語 Water は3人称単数なので <mark>boils</mark>。</p>' },
+{ id: 't2', unit: 'jisei', type: '過去進行形', lv: 1, inUnit: true,
+  stem: `<p>When I called him, he ${B} a bath.</p>`, choices: ['takes', 'took', 'was taking', 'has taken'], ans: 2,
+  exp: '<p>電話した過去のその時に「〜しているところだった」ので過去進行形 <mark>was taking</mark>。</p>' },
+{ id: 't3', unit: 'jisei', type: '現在完了（継続）', lv: 1, inUnit: true,
+  stem: `<p>I ${B} in Tokyo since 2020.</p>`, choices: ['live', 'lived', 'have lived', 'am living'], ans: 2,
+  exp: '<p>since 2020（2020年から今まで）は継続。<mark>have lived</mark>（現在完了）。</p>' },
+{ id: 't4', unit: 'jisei', type: '現在完了と過去', lv: 2, inUnit: true,
+  stem: `<p>I ${B} my wallet yesterday.</p>`, choices: ['lose', 'lost', 'have lost', 'have been losing'], ans: 1,
+  exp: '<p>yesterday（はっきりした過去の時）があるので現在完了は使えない。過去形 <mark>lost</mark>。</p>' },
+{ id: 't5', unit: 'jisei', type: '時・条件の副詞節', lv: 2, inUnit: true,
+  stem: `<p>I will call you when he ${B} home.</p>`, choices: ['come', 'comes', 'will come', 'came'], ans: 1,
+  exp: '<p>when（〜するとき）で始まる「時の副詞節」では、未来のことでも現在形。主語 he なので <mark>comes</mark>。</p>' },
+{ id: 't6', unit: 'jisei', type: '過去完了', lv: 2,
+  stem: `<p>When I got to the station, the train ${B}.</p>`, choices: ['already left', 'has already left', 'had already left', 'was already leaving'], ans: 2,
+  exp: '<p>駅に着いた（過去）時点ですでに完了していたことなので過去完了 <mark>had already left</mark>。</p>' },
+{ id: 't7', unit: 'jisei', type: '現在完了（経験）', lv: 1,
+  stem: `<p>${B} you ever been to Kyoto?</p>`, choices: ['Do', 'Did', 'Have', 'Are'], ans: 2,
+  exp: '<p>「今までに〜したことがありますか」は現在完了の経験。<mark>Have</mark> you ever been to 〜?</p>' },
+{ id: 't8', unit: 'jisei', type: '未来完了', lv: 3,
+  stem: `<p>By next spring, I ${B} English for five years.</p>`, choices: ['study', 'will study', 'will have studied', 'have studied'], ans: 2,
+  exp: '<p>「来年の春までに5年間勉強したことになる」は未来のある時点までの継続。未来完了 <mark>will have studied</mark>。</p>' },
+{ id: 't9', unit: 'jisei', type: '現在完了進行形', lv: 2,
+  stem: `<p>She ${B} TV for two hours.</p>`, choices: ['watches', 'is watching', 'has been watching', 'had watched'], ans: 2,
+  exp: '<p>2時間前から今までずっと見続けている（動作の継続）ので現在完了進行形 <mark>has been watching</mark>。</p>' },
+{ id: 't10', unit: 'jisei', type: '状態動詞', lv: 2,
+  stem: `<p>I ${B} him for ten years.</p>`, choices: ['know', 'am knowing', 'have known', 'have been knowing'], ans: 2,
+  exp: '<p>know は状態を表す動詞なので進行形にしない。継続は現在完了 <mark>have known</mark>。</p>' },
+{ id: 't11', unit: 'jisei', type: 'been と gone', lv: 2,
+  stem: '<p><b>He has gone to America.</b> の意味として正しいものはどれか。</p>', choices: ['彼はアメリカに行ったことがある。', '彼はアメリカに行ってしまった（今ここにいない）。', '彼はアメリカに行くところだ。', '彼はアメリカから帰ってきた。'], ans: 1,
+  exp: '<p>have gone to 〜は完了・結果で<mark>行ってしまって今ここにいない</mark>。「行ったことがある」は have been to 〜。</p>' },
+{ id: 't12', unit: 'jisei', type: '現在完了', lv: 3,
+  stem: '<p>誤りをふくむ英文はどれか。</p>', choices: ['I have just finished my homework.', 'When have you finished your homework?', 'I have never seen a panda.', 'She has been sick since last week.'], ans: 1,
+  exp: '<p>When（いつ）は過去の時をたずねるので、現在完了とは使えない。<mark>When did you finish your homework?</mark> が正しい。</p>' },
+{ id: 't13', unit: 'jisei', type: '現在進行形', lv: 1,
+  stem: `<p>Look! The children ${B} in the park.</p>`, choices: ['play', 'plays', 'are playing', 'played'], ans: 2,
+  exp: '<p>Look!（見て）があるので今まさにしている途中。現在進行形 <mark>are playing</mark>。</p>' },
+
+/* ---------- 助動詞・受動態 ---------- */
+{ id: 'j1', unit: 'jodo', type: '助動詞', lv: 1, inUnit: true,
+  stem: `<p>You ${B} swim in this river. It's dangerous.</p>`, choices: ['must not', "don't have to", 'need not', 'may'], ans: 0,
+  exp: '<p>危ないので「泳いではいけない」（禁止）。<mark>must not</mark>。don\'t have to は「〜する必要はない」。</p>' },
+{ id: 'j2', unit: 'jodo', type: '助動詞', lv: 2, inUnit: true,
+  stem: '<p><b>She must be tired.</b> の意味として正しいものはどれか。</p>', choices: ['彼女は疲れなければならない。', '彼女は疲れているにちがいない。', '彼女は疲れているかもしれない。', '彼女は疲れているはずがない。'], ans: 1,
+  exp: '<p>must be 〜は「〜にちがいない」（強い推量）。<mark>疲れているにちがいない</mark>。「はずがない」は can\'t be。</p>' },
+{ id: 'j3', unit: 'jodo', type: '受動態', lv: 1, inUnit: true,
+  stem: `<p>This letter ${B} by Tom last week.</p>`, choices: ['wrote', 'is written', 'was written', 'has written'], ans: 2,
+  exp: '<p>手紙は「書かれた」側。last week なので過去の受動態 <mark>was written</mark>。</p>' },
+{ id: 'j4', unit: 'jodo', type: '受動態', lv: 2, inUnit: true,
+  stem: `<p>A new bridge ${B} now.</p>`, choices: ['is building', 'is being built', 'has built', 'builds'], ans: 1,
+  exp: '<p>「今、建設されている途中」は進行形の受動態（be being ＋ 過去分詞）。<mark>is being built</mark>。</p>' },
+{ id: 'j5', unit: 'jodo', type: '助動詞＋完了形', lv: 2, inUnit: true,
+  stem: '<p><b>You should have studied harder.</b> の意味として正しいものはどれか。</p>', choices: ['もっと熱心に勉強すべきだ。', 'もっと熱心に勉強すべきだったのに。', 'もっと熱心に勉強したにちがいない。', 'もっと熱心に勉強したかもしれない。'], ans: 1,
+  exp: '<p>should have ＋ 過去分詞は「〜すべきだったのに（しなかった）」という過去への後悔・非難。</p>' },
+{ id: 'j6', unit: 'jodo', type: '助動詞', lv: 1,
+  stem: '<p><b>You don\'t have to come tomorrow.</b> の意味として正しいものはどれか。</p>', choices: ['明日来てはいけない。', '明日来る必要はない。', '明日来なければならない。', '明日来るかもしれない。'], ans: 1,
+  exp: '<p>don\'t have to は<mark>〜する必要はない</mark>。must not（禁止）と区別する。</p>' },
+{ id: 'j7', unit: 'jodo', type: '助動詞', lv: 2,
+  stem: '<p><b>It can\'t be true.</b> の意味として正しいものはどれか。</p>', choices: ['それは本当にちがいない。', 'それは本当のはずがない。', 'それは本当かもしれない。', 'それを本当にすることはできない。'], ans: 1,
+  exp: '<p>can\'t be 〜は「〜のはずがない」（強い否定の推量）。must be（〜にちがいない）の反対。</p>' },
+{ id: 'j8', unit: 'jodo', type: '受動態', lv: 2,
+  stem: `<p>My bike has ${B} stolen.</p>`, choices: ['be', 'been', 'being', 'was'], ans: 1,
+  exp: '<p>完了形の受動態は have / has <mark>been</mark> ＋ 過去分詞。</p>' },
+{ id: 'j9', unit: 'jodo', type: '受動態', lv: 2,
+  stem: `<p>He was laughed ${B} by everyone.</p>`, choices: ['（何も入らない）', 'at', 'to', 'with'], ans: 1,
+  exp: '<p>laugh at（〜を笑う）をひとまとまりの動詞として受動態にするので、<mark>at</mark> を残す（was laughed at by …）。</p>' },
+{ id: 'j10', unit: 'jodo', type: '受動態の前置詞', lv: 1,
+  stem: `<p>The top of the mountain is covered ${B} snow.</p>`, choices: ['by', 'with', 'in', 'of'], ans: 1,
+  exp: '<p>be covered <mark>with</mark> 〜（〜でおおわれている）。</p>' },
+{ id: 'j11', unit: 'jodo', type: '受動態の前置詞', lv: 1,
+  stem: `<p>I am interested ${B} Japanese history.</p>`, choices: ['at', 'in', 'on', 'for'], ans: 1,
+  exp: '<p>be interested <mark>in</mark> 〜（〜に興味がある）。</p>' },
+{ id: 'j12', unit: 'jodo', type: '助動詞', lv: 1,
+  stem: `<p>I ${B} play soccer every day when I was a child.</p>`, choices: ['used to', 'am used to', 'use to', 'was used'], ans: 0,
+  exp: '<p><mark>used to</mark> ＋ 原形で「以前はよく〜したものだ」。be used to 〜ing は「〜することに慣れている」。</p>' },
+{ id: 'j13', unit: 'jodo', type: '受動態', lv: 3,
+  stem: '<p><b>They call the cat Tama.</b> を受動態にしたものとして正しいものはどれか。</p>', choices: ['The cat is called Tama by them.', 'Tama is called the cat by them.', 'The cat is calling Tama.', 'The cat called Tama by them.'], ans: 0,
+  exp: '<p>第5文型の目的語 the cat を主語にし、補語 Tama は後ろに残す。<mark>The cat is called Tama (by them).</mark></p>' },
+
+/* ---------- 準動詞 ---------- */
+{ id: 'u1', unit: 'jun', type: '動名詞', lv: 1, inUnit: true,
+  stem: `<p>I enjoyed ${B} with you.</p>`, choices: ['talk', 'to talk', 'talking', 'talked'], ans: 2,
+  exp: '<p>enjoy の目的語は動名詞。<mark>talking</mark>。enjoy・finish・mind・give up・avoid は動名詞だけ。</p>' },
+{ id: 'u2', unit: 'jun', type: '不定詞', lv: 1, inUnit: true,
+  stem: `<p>I want ${B} a doctor in the future.</p>`, choices: ['be', 'to be', 'being', 'been'], ans: 1,
+  exp: '<p>want は不定詞を目的語にとる。<mark>to be</mark>。want・hope・decide・plan など「これから」の動詞は不定詞。</p>' },
+{ id: 'u3', unit: 'jun', type: 'remember', lv: 2, inUnit: true,
+  stem: `<p>Remember ${B} this letter tomorrow.</p>`, choices: ['to send', 'sending', 'send', 'sent'], ans: 0,
+  exp: '<p>tomorrow なので「これから忘れずに〜する」。remember <mark>to send</mark>。remember sending は「送ったことを覚えている」。</p>' },
+{ id: 'u4', unit: 'jun', type: '分詞', lv: 1, inUnit: true,
+  stem: `<p>This is a car ${B} in Japan.</p>`, choices: ['make', 'making', 'made', 'to make'], ans: 2,
+  exp: '<p>車は「作られた」側なので過去分詞 <mark>made</mark>。a car made in Japan（日本で作られた車）。</p>' },
+{ id: 'u5', unit: 'jun', type: 'It … of 人 to do', lv: 2, inUnit: true,
+  stem: `<p>It is kind ${B} you to help me.</p>`, choices: ['for', 'of', 'to', 'with'], ans: 1,
+  exp: '<p>kind（親切な）は人の性質を表す語なので <mark>of</mark>。It is difficult for me to … のように、ふつうは for。</p>' },
+{ id: 'u6', unit: 'jun', type: 'remember', lv: 2,
+  stem: `<p>I remember ${B} him at the party last year.</p>`, choices: ['to meet', 'meeting', 'meet', 'to have met'], ans: 1,
+  exp: '<p>last year のことを「覚えている」ので、過去にしたこと → <mark>meeting</mark>。</p>' },
+{ id: 'u7', unit: 'jun', type: '分詞', lv: 1,
+  stem: `<p>Look at the ${B} baby.</p>`, choices: ['sleep', 'sleeping', 'slept', 'to sleep'], ans: 1,
+  exp: '<p>赤ちゃんが「眠っている」ので現在分詞 <mark>sleeping</mark>。1語なら名詞の前に置く。</p>' },
+{ id: 'u8', unit: 'jun', type: '不定詞（形容詞的）', lv: 1,
+  stem: `<p>I have a lot of homework ${B}.</p>`, choices: ['do', 'to do', 'doing', 'done'], ans: 1,
+  exp: '<p>「するべき宿題」は不定詞の形容詞的用法 <mark>to do</mark>。</p>' },
+{ id: 'u9', unit: 'jun', type: '動名詞', lv: 2,
+  stem: `<p>I'm looking forward to ${B} you.</p>`, choices: ['see', 'seeing', 'seen', 'be seen'], ans: 1,
+  exp: '<p>look forward to の to は前置詞なので、後ろは動名詞 <mark>seeing</mark>。</p>' },
+{ id: 'u10', unit: 'jun', type: '知覚動詞', lv: 3,
+  stem: `<p>I heard my name ${B} in the crowd.</p>`, choices: ['call', 'calling', 'called', 'to call'], ans: 2,
+  exp: '<p>名前は「呼ばれる」側なので過去分詞 <mark>called</mark>。hear O ＋ 過去分詞「O が〜されるのを聞く」。</p>' },
+{ id: 'u11', unit: 'jun', type: '分詞構文', lv: 3,
+  stem: `<p>${B} from the hill, the town looks beautiful.</p>`, choices: ['See', 'Seeing', 'Seen', 'To see'], ans: 2,
+  exp: '<p>主語 the town は丘から「見られる」側なので、受け身の意味の分詞構文 <mark>Seen</mark>（＝ When it is seen …）。</p>' },
+{ id: 'u12', unit: 'jun', type: '感情の分詞', lv: 2,
+  stem: `<p>The game was very ${B}.</p>`, choices: ['excite', 'excited', 'exciting', 'excitement'], ans: 2,
+  exp: '<p>試合は人を「わくわくさせる」側なので <mark>exciting</mark>。人が「わくわくした」なら I was excited.</p>' },
+{ id: 'u13', unit: 'jun', type: '不定詞（副詞的）', lv: 1,
+  stem: '<p><b>She went to the library to study.</b> の to study の用法はどれか。</p>', choices: ['名詞的用法（〜すること）', '形容詞的用法（〜するための）', '副詞的用法（〜するために）', '動名詞'], ans: 2,
+  exp: '<p>図書館に行った目的を表すので<mark>副詞的用法（〜するために）</mark>。</p>' },
+
+/* ---------- 関係詞・比較・仮定法 ---------- */
+{ id: 'r1', unit: 'kankei', type: '関係代名詞', lv: 1, inUnit: true,
+  stem: `<p>I have a friend ${B} lives in London.</p>`, choices: ['who', 'which', 'whose', 'what'], ans: 0,
+  exp: '<p>先行詞 a friend は人で、後ろの lives の主語になる（主格）。<mark>who</mark>。</p>' },
+{ id: 'r2', unit: 'kankei', type: '関係代名詞', lv: 2, inUnit: true,
+  stem: `<p>I know a girl ${B} father is a pilot.</p>`, choices: ['who', 'which', 'whose', 'that'], ans: 2,
+  exp: '<p>「その少女の父親が」なので所有格 <mark>whose</mark>。</p>' },
+{ id: 'r3', unit: 'kankei', type: '関係副詞', lv: 2, inUnit: true,
+  stem: `<p>This is the house ${B} I was born.</p>`, choices: ['which', 'where', 'when', 'what'], ans: 1,
+  exp: '<p>後ろの I was born は名詞が欠けていない完全な文。場所の先行詞なので関係副詞 <mark>where</mark>。（in which でもよい）</p>' },
+{ id: 'r4', unit: 'kankei', type: '比較', lv: 1, inUnit: true,
+  stem: `<p>This is the ${B} interesting book I have ever read.</p>`, choices: ['more', 'most', 'much', 'very'], ans: 1,
+  exp: '<p>interesting は長い語なので最上級は the <mark>most</mark> interesting。</p>' },
+{ id: 'r5', unit: 'kankei', type: '仮定法過去', lv: 2, inUnit: true,
+  stem: `<p>If I ${B} rich, I would buy a big house.</p>`, choices: ['am', 'were', 'will be', 'have been'], ans: 1,
+  exp: '<p>今の事実に反する仮定（仮定法過去）。be動詞は主語に関係なく <mark>were</mark> がふつう。</p>' },
+{ id: 'r6', unit: 'kankei', type: '関係代名詞 what', lv: 2,
+  stem: `<p>${B} he said is true.</p>`, choices: ['That', 'Which', 'What', 'Who'], ans: 2,
+  exp: '<p>「彼が言ったこと」＝ the thing which he said。先行詞をふくむ <mark>What</mark>。</p>' },
+{ id: 'r7', unit: 'kankei', type: '関係代名詞', lv: 1,
+  stem: `<p>This is the book ${B} I bought yesterday.</p>`, choices: ['who', 'which', 'whose', 'where'], ans: 1,
+  exp: '<p>先行詞 the book は物で、bought の目的語にあたる（目的格）。<mark>which</mark>（that、または省略も可）。</p>' },
+{ id: 'r8', unit: 'kankei', type: '比較', lv: 1,
+  stem: `<p>She can run as ${B} as her brother.</p>`, choices: ['fast', 'faster', 'fastest', 'more fast'], ans: 0,
+  exp: '<p>as ＋ <b>原級</b> ＋ as（〜と同じくらい）。<mark>fast</mark>。</p>' },
+{ id: 'r9', unit: 'kankei', type: '比較', lv: 2,
+  stem: `<p>No other mountain in Japan is ${B} than Mt. Fuji.</p>`, choices: ['high', 'higher', 'highest', 'as high'], ans: 1,
+  exp: '<p>No other 〜 is ＋ 比較級 ＋ than A で「A ほど〜なものはない」＝ A がいちばん。<mark>higher</mark>。</p>' },
+{ id: 'r10', unit: 'kankei', type: '仮定法過去完了', lv: 3,
+  stem: `<p>If I had studied harder, I ${B} the exam.</p>`, choices: ['will pass', 'would pass', 'would have passed', 'had passed'], ans: 2,
+  exp: '<p>過去の事実に反する仮定（仮定法過去完了）。主節は would have ＋ 過去分詞 → <mark>would have passed</mark>。</p>' },
+{ id: 'r11', unit: 'kankei', type: 'I wish', lv: 2,
+  stem: `<p>I wish I ${B} speak French.</p>`, choices: ['can', 'could', 'will', 'am able'], ans: 1,
+  exp: '<p>今できないことへの願望は仮定法過去。<mark>could</mark>。</p>' },
+{ id: 'r12', unit: 'kankei', type: '比較', lv: 2,
+  stem: `<p>This box is ${B} heavier than that one.</p>`, choices: ['very', 'much', 'more', 'most'], ans: 1,
+  exp: '<p>比較級を強めるのは <mark>much</mark>（far・even なども可）。very は比較級を強められない。</p>' },
+{ id: 'r13', unit: 'kankei', type: '関係代名詞', lv: 3,
+  stem: '<p>関係代名詞 that が<b>使えない</b>ものはどれか。</p>', choices: ['This is the best movie ( ) I have ever seen.', 'Kyoto, ( ) is an old city, has many temples.', 'He is the only person ( ) knows the truth.', 'Look at the boy and the dog ( ) are running.'], ans: 1,
+  exp: '<p>カンマのあとで先行詞に説明を加える<b>非制限用法</b>では that は使えない。<mark>Kyoto, which is …</mark> とする。最上級・the only・「人と動物」のときはむしろ that がよく使われる。</p>' },
+];
+
+/* ===== 暗記カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['bunkei', '第2文型をつくるおもな動詞', 'be、become、get、look、seem、sound、smell、taste、feel、turn、keep'],
+  ['bunkei', '第4文型 → to を使う動詞', 'give、show、tell、send、teach、lend'],
+  ['bunkei', '第4文型 → for を使う動詞', 'buy、make、cook、get、find、choose'],
+  ['bunkei', '前置詞をつけない他動詞', 'discuss、enter、reach、marry、approach、resemble'],
+  ['jisei', '現在完了の3用法', '完了・結果／経験／継続'],
+  ['jisei', '現在完了と使えない語', 'yesterday、last 〜、〜 ago、when、just now'],
+  ['jisei', 'have been to と have gone to', 'been to：行ったことがある（経験）／gone to：行ってしまって今いない'],
+  ['jisei', '時・条件の副詞節のきまり', '未来のことでも現在形（when / if / until / before など）'],
+  ['jodo', 'must not と don\'t have to', 'must not：〜してはいけない／don\'t have to：〜する必要はない'],
+  ['jodo', 'must have ＋ 過去分詞', '〜したにちがいない'],
+  ['jodo', 'can\'t have ＋ 過去分詞', '〜したはずがない'],
+  ['jodo', 'should have ＋ 過去分詞', '〜すべきだったのに（しなかった）'],
+  ['jodo', 'used to ＋ 原形', '以前はよく〜した／以前は〜だった'],
+  ['jodo', 'be used to ＋ -ing', '〜することに慣れている'],
+  ['jodo', 'be made of と be made from', 'of：材料（見てわかる）／from：原料（見てわからない）'],
+  ['jun', '動名詞だけを目的語にとる動詞', 'enjoy、finish、mind、give up、avoid、stop、practice'],
+  ['jun', '不定詞だけを目的語にとる動詞', 'want、hope、decide、plan、promise、refuse、expect'],
+  ['jun', 'remember to do ／ remember doing', '忘れずに〜する ／ 〜したことを覚えている'],
+  ['jun', 'stop doing ／ stop to do', '〜するのをやめる ／ 〜するために立ち止まる'],
+  ['jun', 'It is 形容詞 of 人 to do の形容詞', 'kind、nice、careless、clever、foolish など人の性質'],
+  ['kankei', '関係代名詞（人）', 'who（主格）・whose（所有格）・whom（目的格）'],
+  ['kankei', '関係代名詞（物）', 'which（主格・目的格）・whose（所有格）'],
+  ['kankei', 'what の意味', 'the thing(s) which ＝ 〜すること・もの'],
+  ['kankei', '比較級を強める語', 'much、far、even、still（very は不可）'],
+  ['kankei', '仮定法過去の形', 'If S 過去形, S would / could ＋ 原形（今の事実に反する）'],
+  ['kankei', '仮定法過去完了の形', 'If S had 過去分詞, S would have 過去分詞（過去の事実に反する）'],
+  ['kankei', 'It is time S ＋ 過去形', 'もう〜してよいころだ'],
+  ['jisei', 'go の変化', 'go – went – gone'], ['jisei', 'see の変化', 'see – saw – seen'], ['jisei', 'write の変化', 'write – wrote – written'],
+  ['jisei', 'take の変化', 'take – took – taken'], ['jisei', 'give の変化', 'give – gave – given'], ['jisei', 'speak の変化', 'speak – spoke – spoken'],
+  ['jisei', 'break の変化', 'break – broke – broken'], ['jisei', 'begin の変化', 'begin – began – begun'], ['jisei', 'think の変化', 'think – thought – thought'],
+  ['jisei', 'catch の変化', 'catch – caught – caught'], ['jisei', 'lie（横になる）の変化', 'lie – lay – lain（「うそをつく」は lie – lied – lied）'], ['jisei', 'lay（横たえる）の変化', 'lay – laid – laid'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['主語', 'しゅご', 'bunkei', '文の中で「〜は・〜が」にあたる語。S。'],
+  ['動詞', 'どうし', 'bunkei', '動作や状態を表す語。V。'],
+  ['目的語', 'もくてきご', 'bunkei', '動作の対象になる語。「〜を・〜に」。O。'],
+  ['補語', 'ほご', 'bunkei', '主語や目的語が何であるか・どんな状態かを説明する語。C。'],
+  ['修飾語', 'しゅうしょくご', 'bunkei', 'ほかの語をくわしく説明する語句。文型には数えない。M。'],
+  ['5文型', 'ごぶんけい', 'bunkei', 'S V／S V C／S V O／S V O O／S V O C の5つの文の型。'],
+  ['自動詞', 'じどうし', 'bunkei', '目的語をとらない動詞。go、arrive など。'],
+  ['他動詞', 'たどうし', 'bunkei', '目的語をとる動詞。discuss、enter など。'],
+  ['品詞', 'ひんし', 'bunkei', '名詞・動詞・形容詞・副詞・前置詞・接続詞など、語のはたらきによる分類。'],
+  ['形容詞', 'けいようし', 'bunkei', '名詞を修飾したり、補語になったりする語。happy、tall など。'],
+  ['副詞', 'ふくし', 'bunkei', '動詞・形容詞・副詞・文全体を修飾する語。fast、very など。'],
+  ['不規則動詞', 'ふきそくどうし', 'bunkei', '過去形・過去分詞が -ed にならない動詞。go – went – gone など。'],
+  ['現在形', 'げんざいけい', 'jisei', '現在の状態、習慣、不変の真理を表す形。'],
+  ['過去形', 'かこけい', 'jisei', '過去のある時点の動作や状態を表す形。'],
+  ['進行形', 'しんこうけい', 'jisei', 'be ＋ -ing。ある時点で動作が進行中であることを表す。'],
+  ['現在完了形', 'げんざいかんりょうけい', 'jisei', 'have / has ＋ 過去分詞。過去から現在までのつながり（完了・経験・継続）。'],
+  ['過去完了形', 'かこかんりょうけい', 'jisei', 'had ＋ 過去分詞。過去のある時点までの完了・経験・継続。'],
+  ['未来完了形', 'みらいかんりょうけい', 'jisei', 'will have ＋ 過去分詞。未来のある時点までの完了・継続。'],
+  ['状態動詞', 'じょうたいどうし', 'jisei', 'know・like・belong など、状態を表しふつう進行形にしない動詞。'],
+  ['副詞節', 'ふくしせつ', 'jisei', '主語と動詞をふくみ、副詞のはたらきをする部分。時・条件の副詞節では未来も現在形。'],
+  ['助動詞', 'じょどうし', 'jodo', '動詞の前について、可能・義務・推量などの意味をそえる語。後ろは原形。'],
+  ['受動態', 'じゅどうたい', 'jodo', 'be ＋ 過去分詞。「〜される」と、動作を受ける側を主語にした形。'],
+  ['能動態', 'のうどうたい', 'jodo', '「〜する」と、動作をする側を主語にした形。'],
+  ['過去分詞', 'かこぶんし', 'jodo', '完了形・受動態に使う動詞の形。「〜された」の意味で名詞も修飾する。'],
+  ['原形', 'げんけい', 'jodo', '動詞のもとの形。助動詞や to のあとに置く。'],
+  ['準動詞', 'じゅんどうし', 'jun', '不定詞・動名詞・分詞のように、動詞がほかの品詞のはたらきをする形。'],
+  ['不定詞', 'ふていし', 'jun', 'to ＋ 動詞の原形。名詞的・形容詞的・副詞的用法がある。'],
+  ['動名詞', 'どうめいし', 'jun', '動詞の -ing 形で「〜すること」と名詞のはたらきをするもの。'],
+  ['現在分詞', 'げんざいぶんし', 'jun', '動詞の -ing 形で「〜している」と名詞を修飾したり、進行形をつくったりするもの。'],
+  ['分詞構文', 'ぶんしこうぶん', 'jun', '分詞で始まる語句が、時・理由・条件などを表して文全体を修飾する形。'],
+  ['知覚動詞', 'ちかくどうし', 'jun', 'see・hear・feel など。「O が〜するのを見る・聞く」の形をとる。'],
+  ['使役動詞', 'しえきどうし', 'jun', 'make・have・let など。「O に〜させる」の形をとる。後ろは原形。'],
+  ['関係代名詞', 'かんけいだいめいし', 'kankei', '先行詞を後ろから説明する節をつくり、節の中で代名詞のはたらきをする語。who・which・that など。'],
+  ['関係副詞', 'かんけいふくし', 'kankei', '先行詞を説明する節をつくり、節の中で副詞のはたらきをする語。where・when・why・how。'],
+  ['先行詞', 'せんこうし', 'kankei', '関係詞が説明する、前にある名詞。'],
+  ['非制限用法', 'ひせいげんようほう', 'kankei', '関係詞の前にカンマを置き、先行詞に説明を付け加える用法。that は使えない。'],
+  ['原級', 'げんきゅう', 'kankei', '比較変化していない形容詞・副詞のもとの形。'],
+  ['比較級', 'ひかくきゅう', 'kankei', '2つを比べて「より〜」を表す形。-er または more 〜。'],
+  ['最上級', 'さいじょうきゅう', 'kankei', '3つ以上の中で「いちばん〜」を表す形。-est または most 〜。'],
+  ['仮定法', 'かていほう', 'kankei', '事実と反することや、実現の可能性が低いことを、時制を1つ過去にずらして表す形。'],
+  ['直説法', 'ちょくせつほう', 'kankei', '事実や起こりうることを、そのまま述べる形。'],
+];
+/* ===== ホーム ===== */
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">${SITE.eyebrow}</div>
+      <h1 class="hero-title">${SITE.heroTitle}</h1>
+      <p class="lead">${SITE.lead}</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">${SITE.bubble}</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>${SITE.subject}の地図</h3><span class="muted small">${SITE.stations.length}つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${SITE.stations.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">${SITE.links.map(([t, b]) => `<div class="point"><h4>${t}</h4><p class="small">${b}</p></div>`).join('')}</div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', `各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、覚えることは「暗記カード」で。`));
+  const st = h('<div class="stations"></div>');
+  SITE.stations.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.entries(S.ans).filter(([id, v]) => v === true && QUESTIONS.some(q => q.id === id)).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と暗記カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = shuffle(p).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 暗記カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">暗記カード</span><h3>フラッシュカード</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const sg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; sg.appendChild(b); });
+  function build() {
+    deck = shuffle(CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok')));
+    ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div style="font-size:1.05rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+  if (SITE.cardsExtra) SITE.cardsExtra(root);
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="${SITE.glossHint}" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const sg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    sg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    [`単元ページ（${SITE.stations.length}つ）`, `<p>上のタブの「${SITE.stations[0].tab || SITE.stations[0].name}」〜「${SITE.stations.at(-1).tab || SITE.stations.at(-1).name}」。<br>① <b>要点</b>：その単元の大事なところ<br>② <b>実験</b>：押したり動かしたりして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>`],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['暗記カード', `<p>表に問い、裏に答え。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。${SITE.cardsNote || ''}</p>`],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>覚えることがあやふや</td><td>暗記カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+
+/* ===== 起動 ===== */
+// 正解の位置がかたよらないよう、選択肢の順番を入れかえる（毎回同じ順。解説の ⓪〜③ も合わせて書きかえる。数値の選択肢は小さい順のまま）
+QUESTIONS.forEach(q => {
+  if (q.fixed || q.choices.every(c => /^[−+\-]?[0-9０-９.]/.test(c.replace(/<[^>]+>/g, '')))) return;
+  let sd = 7; for (const ch of q.id + STORE_KEY) sd = (sd * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = rng(sd), idx = q.choices.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  q.choices = idx.map(i => q.choices[i]); q.ans = idx.indexOf(q.ans);
+  q.exp = q.exp.replace(/[⓪①②③④]/g, c => MARK[idx.indexOf(MARK.indexOf(c))]);
+});
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+updateXP();
+route();
+</script>
+</body></html>

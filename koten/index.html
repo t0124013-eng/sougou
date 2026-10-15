@@ -1,0 +1,1792 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>言語文化 ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+.ot-ans{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ot-w{appearance:none;border:1.5px solid var(--ink);background:var(--card);border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:1rem;font-family:var(--f-body)}
+.ot-w.on{background:var(--ink);color:var(--paper)}
+.ot-w:hover{filter:brightness(1.1)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pick-grid button{appearance:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;font-weight:700;line-height:1.4}
+.pick-grid button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pick-grid button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tl{display:grid;gap:0;position:relative;padding-left:18px;border-left:3px solid var(--line)}
+.tl-row{position:relative;padding:8px 0 8px 12px}
+.tl-row::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+.tl-era{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+.big-kana{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.3}
+.kanbun{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font-family:var(--f-display)}
+.kb-c{display:grid;justify-items:center;min-width:46px;padding:4px 2px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);position:relative}
+.kb-c .k{font-size:1.9rem;font-weight:700;line-height:1.1}
+.kb-c .mk{font-size:.85rem;color:var(--accent);font-weight:700;min-height:1.2em}
+.kb-c .ok{font-size:.75rem;color:var(--muted);min-height:1.2em}
+.kb-c .no{position:absolute;top:-10px;right:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.72rem;min-width:20px;height:20px;display:grid;place-items:center;font-family:var(--f-code)}
+.kb-c.cur{border-color:var(--accent);background:var(--marker)}
+.kb-c.done{border-color:var(--good);background:var(--good-soft)}
+.kb-c.oki{opacity:.55}
+.conj td,.conj th{text-align:center;white-space:nowrap}
+.conj td b{color:var(--accent)}
+</style>
+</head><body>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>言語文化 ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">…</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題はすべてこの教材のためのオリジナル問題です。範囲は高等学校学習指導要領（平成30年告示）の「言語文化」の古文・漢文にそろえています。</p><p>引用している古典の本文は、教科書で広く読まれている作品の冒頭などの短い一節です。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+const SITE = {
+  key: 'koten-lab-v1', subject: '言語文化',
+  eyebrow: '高校1年「言語文化」古文・漢文の実験室',
+  heroTitle: '動かしてわかる、<br><span class="hl">古文・漢文</span>',
+  lead: '歴史的仮名遣いを読みかえる、動詞を活用させる、返り点の順に漢文を読む。古典のきまりを、押して確かめながら身につける教材。授業の予習・復習やテスト前に使おう。',
+  bubble: '古文・漢文、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。',
+  ranks: [[0, '筆はじめ'], [5, 'かな使い'], [15, '古語使い'], [30, '活用使い'], [50, '助動詞使い'], [75, '返り点マスター'], [100, '言語文化 免許皆伝']],
+  rankNotes: ['古典の世界へようこそ', '歴史的仮名遣いが読める', '古語の意味がわかる', '動詞の活用が見分けられる', '助動詞の意味がとれる', '漢文をすらすら書き下せる', '全問正解！'],
+  courses: { kiso: '古文の基礎', katsuyo: '用言の活用', jodoshi: '助動詞', kanbun: '漢文の基礎', bungaku: '文学史' },
+  stations: [
+    { id: 'kiso', code: '第1章', name: '古文の基礎', desc: '歴史的仮名遣いの読み方、大事な古語、係り結びの法則' },
+    { id: 'katsuyo', code: '第2章', name: '用言の活用', desc: '動詞9種類・形容詞・形容動詞。「ず」をつけて活用の種類を見分ける' },
+    { id: 'jodoshi', code: '第3章', name: '助動詞', desc: '接続・意味を表で整理。「なり」「ぬ」「る」の識別も' },
+    { id: 'kanbun', code: '第4章', name: '漢文の基礎', desc: '返り点の順に1字ずつ読む。置き字・再読文字・句法' },
+    { id: 'bungaku', code: '第5章', name: '文学史', desc: '奈良から江戸までの作品と作者。成立順の並べかえ' },
+  ],
+  links: [
+    ['つながり①', '「活用形」がわかると、係り結びや助動詞の接続（何形につくか）が読みとれる。'],
+    ['つながり②', '漢文の書き下し文は歴史的仮名遣いと古文の文法で書く。古文の力がそのまま使える。'],
+    ['つながり③', '文学史で作品の時代やジャンルを知っておくと、初めて読む文章でも内容の見当がつく。'],
+  ],
+  tips: {
+    kiso: '歴史的仮名遣いは、ルールが少しだけ。<br>声に出して読みながら覚えよう！',
+    katsuyo: '動詞に「ず」をつけて、直前の音を聞くのがコツ。<br>ア段なら四段、イ段なら上二段、エ段なら下二段！',
+    jodoshi: '助動詞は「接続」「意味」「活用」の3点セット。<br>まずは接続（何形につくか）から覚えよう。',
+    kanbun: '返り点は「下から上に返る」しるし。<br>ボタンで1字ずつ進めて、読む順番を体で覚えよう！',
+    bungaku: '作品は「時代」「ジャンル」「作者」をセットで。<br>冒頭の一文もいっしょに覚えると強いよ。',
+    drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+    cards: '古語や句法は「覚えた」「まだ」で仕分けよう。<br>「まだ」だけを何周もするのが近道！',
+    glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+  },
+  glossHint: '例：係り結び、かかりむすび、再読文字',
+  cardsNote: '大事な古語・句法・再読文字が入っている。',
+};
+/* ===== 共通部品（数学Ⅰ ラボと同じ仕組み） ===== */
+const RANKS = SITE.ranks, RANK_NOTE = SITE.rankNotes, COURSE_NAME = SITE.courses, TIPS = SITE.tips, STORE_KEY = SITE.key;
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const PRAISE = SITE.praise || ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const M = (s) => String(s).replace(/-/g, '−');
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const UNITS = [{ id: 'home', name: 'ホーム' }, ...SITE.stations.map(s => ({ id: s.id, name: s.tab || s.name })),
+  { id: 'drill', name: '問題ドリル' }, { id: 'cards', name: '暗記カード' }, { id: 'glossary', name: '用語集' }];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}のページへ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+function seg(id, items, cur) { // items: [[value,label],...]
+  return `<div class="seg" id="${id}">${items.map(([v, l]) => `<button aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join('')}</div>`;
+}
+function bindSeg(root, id, fn) {
+  $$(`#${id} button`, root).forEach(b => b.onclick = () => { $$(`#${id} button`, root).forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+}
+/* 並べ替え問題：words を押して文を組み立てる */
+function orderTask(root, items, opts = {}) {
+  // items: [{ja, ans:[tokens], extra?:[], note}]
+  let k = 0, picked = [];
+  const box = h(`<div style="display:grid;gap:12px"><div class="row" style="justify-content:space-between"><b class="ot-q"></b><span class="small muted tnum ot-n"></span></div>
+    <div class="ot-ans" aria-live="polite"></div><div class="ot-pool row" style="gap:8px"></div>
+    <div class="row"><button class="btn ot-chk">答え合わせ</button><button class="btn ghost sm ot-clr">やり直す</button><button class="btn ghost sm ot-next">次の問題</button></div><div class="res ot-res" hidden></div></div>`);
+  root.appendChild(box);
+  let pool = [];
+  function load() {
+    const it = items[k]; picked = [];
+    pool = shuffle([...it.ans, ...(it.extra || [])].map((w, i) => ({ w, i })));
+    $('.ot-q', box).innerHTML = it.ja; $('.ot-n', box).textContent = `${k + 1} / ${items.length}`;
+    $('.ot-res', box).hidden = true; draw();
+  }
+  function draw() {
+    $('.ot-ans', box).innerHTML = picked.length ? picked.map((p, j) => `<button class="ot-w on" data-j="${j}">${p.w}</button>`).join('') : `<span class="small muted">${opts.hint || '下の語句を正しい順に押そう。押した語句をもう一度押すと戻せる。'}</span>`;
+    $('.ot-pool', box).innerHTML = pool.filter(p => !picked.includes(p)).map(p => `<button class="ot-w" data-i="${p.i}">${p.w}</button>`).join('');
+    $$('.ot-ans [data-j]', box).forEach(b => b.onclick = () => { picked.splice(+b.dataset.j, 1); draw(); });
+    $$('.ot-pool [data-i]', box).forEach(b => b.onclick = () => { picked.push(pool.find(p => p.i === +b.dataset.i)); draw(); });
+  }
+  $('.ot-chk', box).onclick = () => {
+    const it = items[k], got = picked.map(p => p.w), ok = got.join(' ') === it.ans.join(' ');
+    const r = $('.ot-res', box); r.hidden = false; r.className = 'res ot-res ' + (ok ? 'ok' : 'ng');
+    r.innerHTML = `<b>${ok ? '正解！' : 'おしい。正しい順は…'}</b><span class="fx" style="font-size:1.05rem">${(opts.join ? it.ans.join(opts.join) : it.ans.join(' '))}${opts.end || ''}</span>${it.note ? `<span class="small">${it.note}</span>` : ''}`;
+  };
+  $('.ot-clr', box).onclick = () => { picked = []; $('.ot-res', box).hidden = true; draw(); };
+  $('.ot-next', box).onclick = () => { k = (k + 1) % items.length; load(); };
+  load();
+}
+/* ===== 第1章 古文の基礎 ===== */
+const KANA_RULES = [
+  ['語頭以外の「は・ひ・ふ・へ・ほ」→「わ・い・う・え・お」', 'いふ → いう、かは → かわ'],
+  ['「ゐ・ゑ・を」→「い・え・お」（助詞の「を」はそのまま）', 'ゐなか → いなか、こゑ → こえ'],
+  ['「ぢ・づ」→「じ・ず」', 'はぢ → はじ、いづこ → いずこ'],
+  ['「くわ・ぐわ」→「か・が」', 'くわし（菓子）→ かし'],
+  ['「あう（au）」→「おう（ô）」', 'やうやう → ようよう、かうべ → こうべ'],
+  ['「いう（iu）」→「ゆう（yû）」', 'うつくしう → うつくしゅう'],
+  ['「えう（eu）」→「よう（yô）」', 'けふ → けう → きょう'],
+  ['助動詞などの「む」→「ん」', '行かむ → 行かん'],
+];
+const KANA_WORDS = [
+  ['いふ', 'いう', [0]], ['あはれ', 'あわれ', [0]], ['なほ', 'なお', [0]], ['かほ（顔）', 'かお', [0]], ['おもふ', 'おもう', [0]],
+  ['をとこ', 'おとこ', [1]], ['ゐなか', 'いなか', [1]], ['こゑ', 'こえ', [1]], ['をかし', 'おかし', [1]], ['まゐる', 'まいる', [1]], ['ゆゑ', 'ゆえ', [1]],
+  ['はぢ', 'はじ', [2]], ['いづこ', 'いずこ', [2]], ['くわし（菓子）', 'かし', [3]], ['ぐわんじつ（元日）', 'がんじつ', [3]],
+  ['やうやう', 'ようよう', [4]], ['かうべ（頭）', 'こうべ', [4]], ['あふぎ（扇）', 'おうぎ', [0, 4]], ['まうす（申す）', 'もうす', [4]],
+  ['うつくしう', 'うつくしゅう', [5]], ['いうなり（優なり）', 'ゆうなり', [5]],
+  ['けふ（今日）', 'きょう', [0, 6]], ['てふてふ（蝶）', 'ちょうちょう', [0, 6]], ['行かむ', '行かん', [7]],
+];
+const KAKARI = [ // [主語, 終止形の述語, 連体形, 已然形, 説明]
+  ['花', '咲く', '咲く', '咲け', '四段動詞「咲く」'], ['月', '明かし', '明かき', '明かけれ', '形容詞「明かし」'],
+  ['春', '来ぬ', '来ぬる', '来ぬれ', '完了の助動詞「ぬ」'], ['人', '見たり', '見たる', '見たれ', '完了の助動詞「たり」'],
+  ['山', '高し', '高き', '高けれ', '形容詞「高し」'], ['水', '清げなり', '清げなる', '清げなれ', '形容動詞「清げなり」'],
+];
+VIEWS.kiso = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '古文の基礎', '古文は昔の仮名遣いで書かれ、今とは意味のちがう言葉も多い。まずは読み方と、文の終わり方を変える「係り結び」から。'));
+  root.appendChild(points([
+    ['歴史的仮名遣い', '<p>平安時代ごろの発音にもとづく書き方。読むときは<mark>現代仮名遣い</mark>に直す。<br>いちばん多いのは「語頭以外のハ行 → ワ行」（いふ → いう）。</p>'],
+    ['係り結びの法則', '<p>文中に<mark>ぞ・なむ・や・か</mark>があると文末が<b>連体形</b>、<mark>こそ</mark>があると<b>已然形</b>になる。<br>ぞ・なむ・こそ は強意、や・か は疑問・反語。</p>'],
+    ['古今異義語', '<p>今もある言葉で意味がちがうもの。<br>あはれ（しみじみとした趣）、おどろく（目を覚ます）、うつくし（かわいらしい）、ありがたし（めったにない）。</p>'],
+    ['古語の読み方のコツ', '<p>主語は省略されることが多い。敬語（尊敬語・謙譲語）や、文の流れから「だれが」を補って読む。</p>'],
+  ]));
+
+  /* --- 仮名遣い --- */
+  const kn = labCard('練習', '歴史的仮名遣いを読む', '現代仮名遣いに直して入力しよう（ひらがな）。どのルールを使ったかも出る');
+  kn.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="big-kana" id="knw"></div><span class="small muted tnum" id="knn"></span></div>
+    <div class="row"><input type="text" id="kni" placeholder="現代仮名遣いで" style="font-family:var(--f-body);font-size:1.1rem;flex:1 1 200px" aria-label="現代仮名遣い"><button class="btn" id="knc">答え合わせ</button><button class="btn ghost sm" id="kns">答えを見る</button><button class="btn ghost sm" id="knx">次へ</button></div>
+    <div class="res" id="knr" hidden></div>
+    <details><summary class="small" style="cursor:pointer;font-weight:700">読み方のルール 8つを見る</summary><ol class="steps" style="margin-top:8px">${KANA_RULES.map(([a, b]) => `<li><span>${a}<span class="why">${b}</span></span></li>`).join('')}</ol></details>`);
+  root.appendChild(kn);
+  let kq = shuffle(KANA_WORDS), ki = 0, ks = 0;
+  const showKn = () => { $('#knw').textContent = kq[ki][0]; $('#knn').textContent = `${ki + 1} / ${kq.length}　正解 ${ks}`; $('#kni').value = ''; $('#knr').hidden = true; };
+  const reveal = (ok) => { const [w, a, rs] = kq[ki]; const r = $('#knr'); r.hidden = false; r.className = 'res ' + (ok === true ? 'ok' : ok === false ? 'ng' : '');
+    r.innerHTML = `<b>${ok === true ? '正解！' : ok === false ? 'おしい。' : ''}${w.replace(/（.*）/, '')} → ${a}</b>${rs.map(i => `<span class="small">ルール${i + 1}：${KANA_RULES[i][0]}</span>`).join('')}`; };
+  $('#knc', kn).onclick = () => { const v = $('#kni').value.trim(), ok = v === kq[ki][1]; if (ok && $('#knr').hidden) ks++; reveal(ok); $('#knn').textContent = `${ki + 1} / ${kq.length}　正解 ${ks}`; };
+  $('#kni', kn).onkeydown = e => { if (e.key === 'Enter') $('#knc').click(); };
+  $('#kns', kn).onclick = () => reveal(null);
+  $('#knx', kn).onclick = () => { ki = (ki + 1) % kq.length; if (!ki) { kq = shuffle(KANA_WORDS); ks = 0; } showKn(); };
+  showKn();
+
+  /* --- 係り結び --- */
+  const kk = labCard('実験', '係り結びで文末が変わる', '係助詞を選ぶと、文の終わりの形が変わる');
+  kk.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">文<select id="kks">${KAKARI.map((k, i) => `<option value="${i}">${k[0]}${k[0] === '人' || k[0] === '春' ? 'は' : ''}${k[1]}。</option>`).join('')}</select></label>
+    <label class="ctl">係助詞${seg('kkp', [['', 'なし'], ['ぞ', 'ぞ'], ['なむ', 'なむ'], ['や', 'や'], ['か', 'か'], ['こそ', 'こそ']], 'こそ')}</label></div>
+    <div class="big-kana" id="kkout" style="font-size:clamp(1.8rem,7vw,2.8rem)"></div><div class="note" id="kkn"></div>`);
+  root.appendChild(kk);
+  let kp = 'こそ';
+  function drawKk() {
+    const k = KAKARI[+$('#kks').value];
+    const pred = !kp ? k[1] : kp === 'こそ' ? k[3] : k[2];
+    $('#kkout').innerHTML = `${k[0]}${kp ? `<mark>${kp}</mark>` : (k[0] === '人' || k[0] === '春' ? 'は' : '')}<span style="color:var(--accent)">${pred}</span>${kp === 'や' || kp === 'か' ? '。' : '。'}`;
+    $('#kkn').innerHTML = !kp ? `係助詞がないので、文末はふつうの<b>終止形</b>「${k[1]}」。` :
+      `「${kp}」は${kp === 'こそ' ? '<b>已然形</b>' : '<b>連体形</b>'}で結ぶ → ${k[4]}の${kp === 'こそ' ? '已然形' : '連体形'}「${pred}」。<br>意味：${kp === 'や' || kp === 'か' ? '<b>疑問・反語</b>（〜か。／〜か、いや〜ない。）' : '<b>強意</b>（訳には出さないことが多い）'}${pred === k[1] ? '<br><span class="small">四段動詞は終止形と連体形が同じ形なので、見た目は変わらない。</span>' : ''}`;
+  }
+  $('#kks', kk).onchange = drawKk; bindSeg(kk, 'kkp', v => { kp = v; drawKk(); }); drawKk();
+  root.appendChild(trap('係り結びは、結びの語に接続助詞（ば・ど・に など）がついて文が続くと成立しない（<b>結びの消滅・流れ</b>）。「こそ〜已然形、」の形で文が続くと逆接（〜けれども）になる。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kiso'));
+};
+
+/* ===== 第2章 用言の活用 ===== */
+const FORMS = ['未然形', '連用形', '終止形', '連体形', '已然形', '命令形'];
+const FOLLOW = ['ず・む', 'たり・て', '。（言い切り）', 'とき・こと', 'ど・ども', '。（命令）'];
+const VERBS = [ // [語, 語幹, [活用語尾6つ], 種類, 行, 例]
+  ['書く', '書', ['か', 'き', 'く', 'く', 'け', 'け'], '四段活用', 'カ行'],
+  ['起く', '起', ['き', 'き', 'く', 'くる', 'くれ', 'きよ'], '上二段活用', 'カ行'],
+  ['受く', '受', ['け', 'け', 'く', 'くる', 'くれ', 'けよ'], '下二段活用', 'カ行'],
+  ['見る', '（見）', ['み', 'み', 'みる', 'みる', 'みれ', 'みよ'], '上一段活用', 'マ行'],
+  ['蹴る', '（蹴）', ['け', 'け', 'ける', 'ける', 'けれ', 'けよ'], '下一段活用', 'カ行'],
+  ['来', '（来）', ['こ', 'き', 'く', 'くる', 'くれ', 'こ（こよ）'], 'カ行変格活用', 'カ行'],
+  ['す', '（す）', ['せ', 'し', 'す', 'する', 'すれ', 'せよ'], 'サ行変格活用', 'サ行'],
+  ['死ぬ', '死', ['な', 'に', 'ぬ', 'ぬる', 'ぬれ', 'ね'], 'ナ行変格活用', 'ナ行'],
+  ['あり', 'あ', ['ら', 'り', 'り', 'る', 'れ', 'れ'], 'ラ行変格活用', 'ラ行'],
+  ['よし', 'よ', ['く・から', 'く・かり', 'し', 'き・かる', 'けれ', 'かれ'], '形容詞 ク活用', ''],
+  ['美し', '美', ['しく・しから', 'しく・しかり', 'し', 'しき・しかる', 'しけれ', 'しかれ'], '形容詞 シク活用', ''],
+  ['静かなり', '静か', ['なら', 'なり・に', 'なり', 'なる', 'なれ', 'なれ'], '形容動詞 ナリ活用', ''],
+  ['堂々たり', '堂々', ['たら', 'たり・と', 'たり', 'たる', 'たれ', 'たれ'], '形容動詞 タリ活用', ''],
+];
+const KINDS = ['四段', '上二段', '下二段', '上一段', '下一段', 'カ変', 'サ変', 'ナ変', 'ラ変'];
+const JUDGE = [ // [動詞, 種類, 「ず」をつけた形, 一言]
+  ['咲く', '四段', '咲かず', 'ア段（か）→ 四段'], ['言ふ', '四段', '言はず', 'ア段（は）→ 四段'], ['思ふ', '四段', '思はず', 'ア段（は）→ 四段'],
+  ['過ぐ', '上二段', '過ぎず', 'イ段（ぎ）→ 上二段'], ['落つ', '上二段', '落ちず', 'イ段（ち）→ 上二段'], ['恥づ', '上二段', '恥ぢず', 'イ段（ぢ）→ 上二段'],
+  ['老ゆ', '上二段', '老いず', 'ヤ行のイ段（い）→ 上二段。ヤ行上二段は「老ゆ・悔ゆ・報ゆ」'], ['恨む', '上二段', '恨みず', 'イ段（み）→ 上二段。現代語の「恨まない」につられて四段にしないこと'],
+  ['求む', '下二段', '求めず', 'エ段（め）→ 下二段'], ['見ゆ', '下二段', '見えず', 'ヤ行のエ段（え）→ 下二段'], ['植う', '下二段', '植ゑず', 'ワ行のエ段（ゑ）→ 下二段。ワ行下二段は「植う・飢う・据う」'],
+  ['得', '下二段', '得ず', 'ア行下二段は「得・心得・所得」だけ'],
+  ['着る', '上一段', '着ず', '上一段は「ひ・い・き・に・み・ゐ」＋る（干る・射る・着る・似る・見る・居る など）'], ['似る', '上一段', '似ず', '上一段（ひいきにみゐる）'], ['居る', '上一段', '居ず', 'ワ行上一段「ゐる」'],
+  ['蹴る', '下一段', '蹴ず', '下一段は「蹴る」1語だけ'], ['来', 'カ変', '来ず（こず）', 'カ変は「来（く）」1語'], ['おはす', 'サ変', 'おはせず', 'サ変は「す・おはす」と「〜す（念ず など）」'],
+  ['往ぬ', 'ナ変', '往なず', 'ナ変は「死ぬ・往ぬ（去ぬ）」の2語'], ['をり', 'ラ変', 'をらず', 'ラ変は「あり・をり・侍り・いまそかり」'], ['侍り', 'ラ変', '侍らず', 'ラ変（あり・をり・侍り・いまそかり）'],
+];
+VIEWS.katsuyo = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '用言の活用', '動詞・形容詞・形容動詞（用言）は、あとに続く言葉によって形を変える（活用）。動詞は9種類。少数の決まった語を覚えて、残りは「ず」で見分ける。'));
+  root.appendChild(points([
+    ['活用形は6つ', `<p>${FORMS.map((f, i) => `<b>${f}</b>（${FOLLOW[i]}）`).join('、')}</p>`],
+    ['覚えておく動詞', '<p><b>上一段</b>：ひいきにみゐる（干る・射る・着る・似る・煮る・見る・居る・率る など）<br><b>下一段</b>：蹴る　<b>カ変</b>：来　<b>サ変</b>：す・おはす<br><b>ナ変</b>：死ぬ・往ぬ　<b>ラ変</b>：あり・をり・侍り・いまそかり</p>'],
+    ['残りは「ず」で見分ける', '<p>「ず」をつけて、直前の音が<br><mark>ア段</mark> → 四段（書か-ず）<br><mark>イ段</mark> → 上二段（起き-ず）<br><mark>エ段</mark> → 下二段（受け-ず）</p>'],
+    ['形容詞・形容動詞', '<p>形容詞は「〜し」で終わる：<b>ク活用</b>（よし → よくなる）と<b>シク活用</b>（美し → 美しくなる）。<br>形容動詞は「〜なり」「〜たり」で終わる。</p>'],
+  ]));
+
+  /* --- 活用表 --- */
+  const kt = labCard('実験', '活用表をつくる', '語を選ぶと、6つの活用形が出る（赤い部分が活用語尾）');
+  kt.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="ktp">${VERBS.map((v, i) => `<button data-i="${i}" aria-pressed="${i === 1}">${v[0]}<small>${v[3]}</small></button>`).join('')}</div>
+    <div class="scroll-x" id="ktt"></div><div class="note" id="ktn"></div>`);
+  root.appendChild(kt);
+  function drawKt(i) {
+    const v = VERBS[i];
+    $('#ktt').innerHTML = `<table class="tbl conj"><thead><tr><th>語</th><th>語幹</th>${FORMS.map(f => `<th>${f}</th>`).join('')}</tr></thead><tbody><tr><td><b>${v[0]}</b></td><td>${v[1]}</td>${v[2].map(e => `<td><b>${e}</b></td>`).join('')}</tr><tr><td colspan="2" class="small muted">続く言葉</td>${FOLLOW.map(f => `<td class="small muted">${f}</td>`).join('')}</tr></tbody></table>`;
+    const note = {
+      '四段活用': 'ア・イ・ウ・ウ・エ・エ の4つの段にわたって活用する。終止形と連体形が同じ形。',
+      '上二段活用': 'イ・イ・ウ・ウる・ウれ・イよ。ウ段の上（イ段）とウ段の2段を使う。',
+      '下二段活用': 'エ・エ・ウ・ウる・ウれ・エよ。ウ段の下（エ段）とウ段の2段を使う。',
+      '上一段活用': 'イ段の1段だけで活用。語幹と語尾の区別がない。',
+      '下一段活用': 'エ段の1段だけで活用。「蹴る」1語だけ。',
+      'カ行変格活用': '「来」1語。こ・き・く・くる・くれ・こ（こよ）。漢字だけだと読み方に注意。',
+      'サ行変格活用': '「す」「おはす」と、「念ず」「具す」など「〜す（ず）」の複合語。',
+      'ナ行変格活用': '「死ぬ」「往ぬ（去ぬ）」の2語。な・に・ぬ・ぬる・ぬれ・ね。',
+      'ラ行変格活用': '「あり・をり・侍り・いまそかり」。終止形が「り」（イ段）で終わるのが特徴。',
+    }[v[3]] || (v[3].includes('形容詞') ? '右側（から・かり・かる・かれ）は<b>補助活用</b>（カリ活用）。おもに助動詞が下につくときに使う。' : 'ナリ活用は「〜なり」、タリ活用は「〜たり」。漢語（堂々・漫々など）はタリ活用が多い。');
+    $('#ktn').innerHTML = `<b>${v[3]}</b>${v[4] ? `（${v[4]}）` : ''}　${note}`;
+  }
+  $$('#ktp button', kt).forEach(b => b.onclick = () => { $$('#ktp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawKt(+b.dataset.i); });
+  drawKt(1);
+
+  /* --- 判別ゲーム --- */
+  const jg = labCard('練習', '活用の種類を見分ける', '動詞の活用の種類を選ぼう');
+  jg.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="big-kana" id="jgw"></div><span class="small muted tnum" id="jgn"></span></div>
+    <div class="pick-grid" id="jgc">${KINDS.map(k => `<button data-k="${k}">${k}</button>`).join('')}</div><div class="res" id="jgr">「ず」をつけて読んでみよう。</div><div><button class="btn ghost sm" id="jgx">次の動詞</button></div>`);
+  root.appendChild(jg);
+  let jq = shuffle(JUDGE), ji = 0, js2 = 0, jdone = false;
+  const showJg = () => { $('#jgw').textContent = jq[ji][0]; $('#jgn').textContent = `${ji + 1} / ${jq.length}　正解 ${js2}`; $('#jgr').className = 'res'; $('#jgr').textContent = '「ず」をつけて読んでみよう。'; jdone = false; $$('#jgc button').forEach(b => b.setAttribute('aria-pressed', 'false')); };
+  $$('#jgc button', jg).forEach(b => b.onclick = () => {
+    const [w, k, z, n] = jq[ji], ok = b.dataset.k === k; if (ok && !jdone) js2++; jdone = true;
+    $$('#jgc button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    $('#jgr').className = 'res ' + (ok ? 'ok' : 'ng'); $('#jgr').innerHTML = `<b>${ok ? '正解！' : `正解は ${k}`}</b><span>「${z}」　${n}</span>`;
+    $('#jgn').textContent = `${ji + 1} / ${jq.length}　正解 ${js2}`;
+  });
+  $('#jgx', jg).onclick = () => { ji = (ji + 1) % jq.length; if (!ji) { jq = shuffle(JUDGE); js2 = 0; } showJg(); };
+  showJg();
+  root.appendChild(trap('「恨む」は現代語では「恨まない」だが、古語では「恨みず」で<b>上二段</b>。「飽く」も古語では四段（飽かず）。現代語の感覚にたよらず、古語の形で判断する。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('katsuyo'));
+};
+
+/* ===== 第3章 助動詞 ===== */
+const JODO = [ // [語, 接続, 意味, 覚え方・例]
+  ['る・らる', '未然形', '受身・尊敬・自発・可能', '四段・ナ変・ラ変には「る」、それ以外には「らる」。自発は心情語（思ふ・しのぶ など）につく'],
+  ['す・さす', '未然形', '使役・尊敬', '「せ給ふ」のように尊敬語と重なると尊敬のことが多い'],
+  ['しむ', '未然形', '使役・尊敬', 'おもに漢文訓読調の文で使う'],
+  ['ず', '未然形', '打消', '「〜ない」'],
+  ['む（ん）', '未然形', '推量・意志・適当・勧誘・仮定・婉曲', '主語が一人称なら意志、文中の連体形なら仮定・婉曲（すいかかてえ）'],
+  ['むず（んず）', '未然形', '推量・意志・適当・勧誘・仮定・婉曲', '「む」とほぼ同じ意味'],
+  ['じ', '未然形', '打消推量・打消意志', '「む」の打消'],
+  ['まし', '未然形', '反実仮想・ためらいの意志・推量', '「〜ましかば…まし」で「もし〜だったら…だろうに」'],
+  ['まほし', '未然形', '希望', '「〜たい」'],
+  ['き', '連用形', '過去（直接経験）', '自分が経験した過去。連体形「し」・已然形「しか」'],
+  ['けり', '連用形', '過去（伝聞）・詠嘆', '人から聞いた過去。和歌や会話文では詠嘆が多い'],
+  ['つ', '連用形', '完了・強意', '「〜てしまった」。下に推量の助動詞がつくと強意'],
+  ['ぬ', '連用形', '完了・強意', '「〜てしまった」。「なむ」「ぬべし」の「な・ぬ」は強意'],
+  ['たり', '連用形', '完了・存続', '「〜た」「〜ている」'],
+  ['けむ（けん）', '連用形', '過去推量・過去の原因推量・過去の伝聞婉曲', '「〜ただろう」'],
+  ['たし', '連用形', '希望', '「〜たい」'],
+  ['らむ（らん）', '終止形（ラ変型は連体形）', '現在推量・現在の原因推量・現在の伝聞婉曲', '「今ごろ〜しているだろう」'],
+  ['べし', '終止形（ラ変型は連体形）', '推量・意志・可能・当然・命令・適当', '「すいかとめて」と覚える'],
+  ['まじ', '終止形（ラ変型は連体形）', '打消推量・打消意志・不可能・打消当然・禁止・不適当', '「べし」の打消'],
+  ['らし', '終止形（ラ変型は連体形）', '推定', '根拠のある推定。和歌に多い'],
+  ['めり', '終止形（ラ変型は連体形）', '推定・婉曲', '目で見たことにもとづく推定（〜ように見える）'],
+  ['なり', '終止形（ラ変型は連体形）', '伝聞・推定', '耳で聞いたことにもとづく（〜そうだ・〜ようだ）'],
+  ['なり', '連体形・体言', '断定・存在', '「〜である」「〜にある」'],
+  ['たり', '体言', '断定', '「〜である」。おもに漢文訓読調'],
+  ['ごとし', '連体形・助詞「が」「の」', '比況・例示', '「〜のようだ」'],
+  ['り', 'サ変の未然形・四段の已然形', '完了・存続', '「さみしい（サ未・四已）り」と覚える'],
+];
+VIEWS.jodoshi = (root) => {
+  root.appendChild(sectionHead('UNIT 3', '助動詞', '助動詞は、動詞などについて意味をそえる言葉。古文の読み取りでいちばん差がつくところ。「何形につくか（接続）」から意味をしぼりこむ。'));
+  root.appendChild(points([
+    ['接続で分類', '<p><b>未然形</b>：る・らる・す・さす・しむ・ず・む・むず・じ・まし・まほし<br><b>連用形</b>：き・けり・つ・ぬ・たり・けむ・たし<br><b>終止形</b>：らむ・べし・まじ・らし・めり・なり（伝聞推定）</p>'],
+    ['「なり」の識別', '<p><mark>終止形</mark>＋なり → 伝聞・推定（「男もすなる」の「なる」）<br><mark>連体形・体言</mark>＋なり → 断定（「京なる人」は存在）<br>「静かなり」の「なり」は形容動詞の活用語尾。</p>'],
+    ['「ぬ」の識別', '<p>連用形＋ぬ → 完了「ぬ」の終止形（花咲きぬ）<br>未然形＋ぬ → 打消「ず」の連体形（花咲かぬ時）</p>'],
+    ['「る・らる」の意味', '<p>「〜に」がある → 受身<br>心情語につく → 自発<br>打消をともなう（平安時代）→ 可能<br>身分の高い人が主語 → 尊敬</p>'],
+  ]));
+
+  const jt = labCard('整理', '助動詞の一覧', '接続で絞りこめる。語・意味のことばでも検索できる');
+  jt.insertAdjacentHTML('beforeend', `<div class="row">${seg('jtf', [['all', 'すべて'], ['未然形', '未然形'], ['連用形', '連用形'], ['終止形', '終止形'], ['その他', 'その他']], 'all')}<input type="text" id="jtq" placeholder="例：推量、べし" style="font-family:var(--f-body);flex:1 1 160px" aria-label="助動詞を検索"></div>
+    <div class="scroll-x" id="jtt"></div>`);
+  root.appendChild(jt);
+  let jf = 'all';
+  function drawJt() {
+    const q = $('#jtq').value.trim();
+    const rows = JODO.filter(r => (jf === 'all' || (jf === 'その他' ? !/^(未然形|連用形|終止形)/.test(r[1]) : r[1].startsWith(jf))) && (!q || r.join(' ').includes(q)));
+    $('#jtt').innerHTML = `<table class="tbl"><thead><tr><th>助動詞</th><th>接続</th><th>意味</th><th>ポイント</th></tr></thead><tbody>${rows.map(r => `<tr><td><b style="font-size:1.1rem">${r[0]}</b></td><td class="small">${r[1]}</td><td>${r[2]}</td><td class="small muted">${r[3]}</td></tr>`).join('') || '<tr><td colspan="4">見つからなかった</td></tr>'}</tbody></table>`;
+  }
+  bindSeg(jt, 'jtf', v => { jf = v; drawJt(); }); $('#jtq', jt).oninput = drawJt; drawJt();
+
+  /* --- 識別 --- */
+  const ID = [
+    ['男もす<u>なる</u>日記といふものを', '伝聞・推定', '「す」はサ変の<b>終止形</b>。終止形＋なり は伝聞・推定（〜と聞いている）。『土佐日記』の冒頭。'],
+    ['駿河の国に<u>ある</u>山', '動詞', 'ラ変動詞「あり」の連体形。'],
+    ['京<u>なる</u>医師', '断定（存在）', '体言＋なり。場所を表す語につくと「〜にある」（存在）。'],
+    ['これは竜の<u>なり</u>けり', '断定', '体言（の＝準体格）＋なり は断定（〜である）。'],
+    ['月<u>ぞ</u>明かき', '係助詞', '強意の係助詞。文末が連体形「明かき」になる。'],
+    ['花咲き<u>ぬ</u>', '完了', '「咲き」は<b>連用形</b>。連用形＋ぬ は完了（咲いてしまった）。'],
+    ['花咲か<u>ぬ</u>里', '打消', '「咲か」は<b>未然形</b>。未然形＋ぬ は打消「ず」の連体形（咲かない里）。'],
+    ['ふるさと<u>ぞ</u>恋しく思ほゆる', '係助詞', '「ぞ」の結びで「思ほゆ」が連体形「思ほゆる」になっている。'],
+  ];
+  const id = labCard('練習', '傍線部の識別', '下線部の文法上の説明を選ぼう');
+  const IDC = ['伝聞・推定', '断定', '断定（存在）', '完了', '打消', '動詞', '係助詞'];
+  id.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="big-kana" id="idw" style="font-size:clamp(1.3rem,5vw,1.9rem)"></div><span class="small muted tnum" id="idn"></span></div>
+    <div class="pick-grid" id="idc">${IDC.map(k => `<button data-k="${k}">${k}</button>`).join('')}</div><div class="res" id="idr">下線部は何かな？</div><div><button class="btn ghost sm" id="idx">次の問題</button></div>`);
+  root.appendChild(id);
+  let ii = 0;
+  const showId = () => { $('#idw').innerHTML = ID[ii][0]; $('#idn').textContent = `${ii + 1} / ${ID.length}`; $('#idr').className = 'res'; $('#idr').textContent = '下線部は何かな？'; $$('#idc button').forEach(b => b.setAttribute('aria-pressed', 'false')); };
+  $$('#idc button', id).forEach(b => b.onclick = () => { const ok = b.dataset.k === ID[ii][1]; $$('#idc button').forEach(x => x.setAttribute('aria-pressed', x === b)); $('#idr').className = 'res ' + (ok ? 'ok' : 'ng'); $('#idr').innerHTML = `<b>${ok ? '正解！' : `正解は「${ID[ii][1]}」`}</b><span>${ID[ii][2]}</span>`; });
+  $('#idx', id).onclick = () => { ii = (ii + 1) % ID.length; showId(); };
+  showId();
+  root.appendChild(trap('「き」の連体形は「<b>し</b>」、已然形は「<b>しか</b>」。「見<b>し</b>人」「ありし日」の「し」を過去の助動詞と気づけるようにしよう。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('jodoshi'));
+};
+
+/* ===== 第4章 漢文の基礎 ===== */
+// [字, 返り点, 送り仮名(右下), 置き字?], order: 読む順の字の番号（再読は2回出す）
+const KB = [
+  { src: '論語', chars: [['学', '', 'ビテ'], ['而', '', '', 1], ['時', '', 'ニ'], ['習', 'レ', 'フ'], ['之', '', 'ヲ']], order: [0, 2, 4, 3], yomi: '学びて時に之を習ふ。', note: '「而」は<b>置き字</b>なので読まない（「て」などの送り仮名で表す）。「習」にレ点があるので、下の「之」を先に読んで上に返る。' },
+  { src: '論語', chars: [['有', 'レ', 'リ'], ['朋', '', ''], ['自', '二', 'リ'], ['遠', '', ''], ['方', '一', ''], ['来', '', 'タル']], order: [1, 0, 3, 4, 2, 5], yomi: '朋有り遠方より来たる。', note: 'レ点で「朋 → 有」。一二点で「遠方」を読んでから「自（より）」に返る。' },
+  { src: '論語', chars: [['己', '', 'ノ'], ['所', 'レ', 'ハ'], ['不', 'レ', 'ル'], ['欲', '', 'セ'], ['勿', 'レ', 'カレ'], ['施', '二', 'スコト'], ['於', '', '', 1], ['人', '一', 'ニ']], order: [0, 3, 2, 1, 7, 5, 4], yomi: '己の欲せざる所は、人に施すこと勿かれ。', note: 'レ点が続くときは、下から順に1字ずつ返る（欲 → 不 → 所）。「於」は置き字。「不」は助動詞なので書き下し文ではひらがな（ざる）にする。' },
+  { src: '孔子家語', chars: [['良', '', ''], ['薬', '', 'ハ'], ['苦', '二', 'シ'], ['於', '', '', 1], ['口', '一', 'ニ']], order: [0, 1, 4, 2], yomi: '良薬は口に苦し。', note: '「於」は置き字。一点の「口」を読んでから二点の「苦」に返る。' },
+  { src: '後漢書', chars: [['不', 'レ', 'ンバ'], ['入', '二', 'ラ'], ['虎', '', ''], ['穴', '一', 'ニ'], ['不', 'レ', 'ズ'], ['得', '二', ''], ['虎', '', ''], ['子', '一', 'ヲ']], order: [2, 3, 1, 0, 6, 7, 5, 4], yomi: '虎穴に入らずんば、虎子を得ず。', note: '一二点で「虎穴 → 入」と返り、続けてレ点で「不」に返る。後半も同じ形。「不」は打消の助動詞なので、書き下し文ではひらがな（ずんば・ず）にする。' },
+  { src: '朱熹（とされる）', chars: [['少', '', ''], ['年', '', ''], ['易', 'レ', 'ク'], ['老', '', 'イ'], ['学', '', ''], ['難', 'レ', 'シ'], ['成', '', 'リ']], order: [0, 1, 3, 2, 4, 6, 5], yomi: '少年老い易く学成り難し。', note: 'レ点が2か所。「老 → 易」「成 → 難」と1字ずつ返る。' },
+  { src: '論語', chars: [['未', 'レ', 'ダ'], ['知', 'レ', 'ラ'], ['生', '', 'ヲ']], order: [0, 2, 1, 0], yomi: '未だ生を知らず。', note: '「未」は<b>再読文字</b>。まず「いまだ」と読み、返ってきてもう一度「ず」と読む。', re: [0] },
+  { src: '論語', chars: [['過', '', 'ギタルハ'], ['猶', 'レ', 'ホ'], ['不', 'レ', 'ルガ'], ['及', '', 'バ']], order: [0, 1, 3, 2, 1], yomi: '過ぎたるは猶ほ及ばざるがごとし。', note: '「猶」は再読文字（なほ〜ごとし）。1回目は「なほ」、2回目は「ごとし」と読む。', re: [1] },
+];
+const KUHO = [
+  ['否定', '不・弗（ず）／非（あらず）／無・莫（なし）', '不知（知らず）'],
+  ['二重否定', '無不〜（〜ざるは無し）／非不〜（〜ざるに非ず）', '無不知（知らざるは無し）＝ だれでも知っている'],
+  ['部分否定', '不常〜（常には〜ず）', 'いつも〜するとは限らない'],
+  ['全部否定', '常不〜（常に〜ず）', 'いつも〜しない'],
+  ['疑問', '〜乎・〜哉・〜也（〜か・や）／何（なんぞ）', '是何也（是れ何ぞや）'],
+  ['反語', '豈〜哉（豈に〜んや）／安〜乎（安くんぞ〜んや）', '〜だろうか、いや〜ない'],
+  ['使役', '使・令・教・遣　A をして B せしむ', '使人読書（人をして書を読ましむ）'],
+  ['受身', '見・被・為・所　為 A 所 B（A の B する所と為る）', 'A に B される'],
+  ['比較', 'A 不如 B（A は B に如かず）', 'A は B に及ばない'],
+  ['限定', '唯・惟・只・但（ただ〜のみ）', 'ただ〜だけ'],
+  ['抑揚', 'A すら且つ B、況んや C をや', 'A でさえ B だ、まして C はなおさらだ'],
+];
+const SAIDOKU = [['未', 'いまだ〜ず', 'まだ〜ない'], ['将・且', 'まさに〜んとす', 'いまにも〜しようとする'], ['当', 'まさに〜べし', '当然〜すべきだ'], ['応', 'まさに〜べし', 'きっと〜だろう'], ['宜', 'よろしく〜べし', '〜するのがよい'], ['須', 'すべからく〜べし', 'ぜひ〜する必要がある'], ['猶・由', 'なほ〜ごとし', 'ちょうど〜のようだ'], ['盍', 'なんぞ〜ざる', 'どうして〜しないのか']];
+VIEWS.kanbun = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '漢文の基礎', '漢文は中国の古典の文章。返り点と送り仮名をつけて、日本語の語順で読む（訓読）。読んだとおりに漢字かな交じりで書いたものが書き下し文。'));
+  root.appendChild(points([
+    ['返り点', '<p><mark>レ点</mark>：すぐ上の1字に返る<br><mark>一・二点</mark>：2字以上はなれて返る（一 → 二 → 三）<br><mark>上・下点</mark>：一二点をはさんでさらに返る（上 → 中 → 下）</p>'],
+    ['書き下し文のきまり', '<p>歴史的仮名遣いで書く。<br>送り仮名はひらがなに。<br>日本語の助詞・助動詞にあたる字（不・也・之 など）はひらがなにする。<br>置き字（而・於・于・乎 など）は書かない。</p>'],
+    ['置き字', '<p>読まない字。「而」（順接・逆接）、「於・于・乎」（場所・対象・比較などを表す）、「矣・焉」（文末の強調）。</p>'],
+    ['再読文字', '<p>1字を2回読む字。1回目は副詞として返り点を無視して読み、2回目は返り点にしたがって助動詞・動詞として読む。未（いまだ〜ず）など。</p>'],
+  ]));
+
+  const kb = labCard('実験', '返り点の順に読む', '「1字進む」を押すと、読む順番に字が光る。置き字はうすく表示');
+  kb.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="kbp">${KB.map((k, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${k.chars.map(c => c[0]).join('')}<small>${k.src}</small></button>`).join('')}</div>
+    <div class="kanbun" id="kbs" aria-label="漢文"></div>
+    <div class="row"><button class="btn" id="kbn">1字進む</button><button class="btn ghost sm" id="kba">最後まで</button><button class="btn ghost sm" id="kbr">最初から</button></div>
+    <div class="res" id="kby"></div><div class="note" id="kbnote"></div>`);
+  root.appendChild(kb);
+  let kbi = 0, step = 0;
+  function drawKb() {
+    const k = KB[kbi];
+    const seen = k.order.slice(0, step), cur = step ? k.order[step - 1] : -1;
+    $('#kbs').innerHTML = k.chars.map((c, i) => {
+      const nos = k.order.map((o, j) => o === i && j < step ? j + 1 : null).filter(x => x).join('・');
+      return `<div class="kb-c ${c[3] ? 'oki' : ''} ${i === cur ? 'cur' : seen.includes(i) ? 'done' : ''}">${nos ? `<span class="no">${nos}</span>` : ''}<span class="k">${c[0]}</span><span class="mk">${c[1] || ''}</span><span class="ok">${c[2] || (c[3] ? '置き字' : '')}</span></div>`;
+    }).join('');
+    const reading = k.order.slice(0, step).map(i => k.chars[i][0]).join(' → ');
+    $('#kby').innerHTML = step >= k.order.length ? `<b>書き下し文：${k.yomi}</b><span class="small">読む順：${reading}</span>` : `<span>読む順：${reading || '（まだ読んでいない）'}</span>`;
+    $('#kbnote').innerHTML = step >= k.order.length ? k.note : '返り点のない字は上から順に読む。返り点のある字は、いったん飛ばして下を先に読む。';
+    $('#kbn').disabled = step >= k.order.length;
+  }
+  $$('#kbp button', kb).forEach(b => b.onclick = () => { kbi = +b.dataset.i; step = 0; $$('#kbp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawKb(); });
+  $('#kbn', kb).onclick = () => { step++; drawKb(); };
+  $('#kba', kb).onclick = () => { step = KB[kbi].order.length; drawKb(); };
+  $('#kbr', kb).onclick = () => { step = 0; drawKb(); };
+  drawKb();
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>再読文字</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>字</th><th>読み</th><th>意味</th></tr></thead><tbody>${SAIDOKU.map(r => `<tr><td><b style="font-size:1.3rem">${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>おもな句法</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>句法</th><th>形</th><th>例・意味</th></tr></thead><tbody>${KUHO.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td class="small">${r[2]}</td></tr>`).join('')}</tbody></table></div></section>`));
+  root.appendChild(trap('「不常〜」（<b>部分否定</b>：いつも〜とは限らない）と「常不〜」（<b>全部否定</b>：いつも〜しない）は、字の順番で意味が変わる。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kanbun'));
+};
+
+/* ===== 第5章 文学史 ===== */
+const WORKS = [ // [作品, 時代, ジャンル, 作者・編者, 冒頭など, 並び順]
+  ['古事記', '奈良', '歴史書', '太安万侶（稗田阿礼の誦習を筆録）', '現存する日本最古の歴史書（712年）', 1],
+  ['万葉集', '奈良', '和歌集', '大伴家持らが編纂にかかわったとされる', '現存最古の和歌集。素朴で力強い歌風（ますらをぶり）', 2],
+  ['竹取物語', '平安', '作り物語', '作者未詳', '「今は昔、竹取の翁といふものありけり。」物語の出で来はじめの祖', 3],
+  ['伊勢物語', '平安', '歌物語', '作者未詳', '「昔、男ありけり。」在原業平がモデルとされる', 4],
+  ['古今和歌集', '平安', '和歌集', '紀貫之ら', '最初の勅撰和歌集（905年ごろ）。優美・繊細な歌風', 5],
+  ['土佐日記', '平安', '日記', '紀貫之', '「男もすなる日記といふものを、女もしてみむとてするなり。」', 6],
+  ['蜻蛉日記', '平安', '日記', '藤原道綱母', '夫・藤原兼家との結婚生活の苦悩をつづる', 7],
+  ['枕草子', '平安', '随筆', '清少納言', '「春はあけぼの。」「をかし」の文学', 8],
+  ['源氏物語', '平安', '作り物語', '紫式部', '「いづれの御時にか、」光源氏の生涯。「もののあはれ」', 9],
+  ['更級日記', '平安', '日記', '菅原孝標女', '「あづま路の道の果てよりも、なほ奥つ方に生ひ出でたる人」物語にあこがれた少女時代', 10],
+  ['今昔物語集', '平安', '説話集', '編者未詳', '「今は昔」で始まる説話を集めた日本最大の説話集', 11],
+  ['方丈記', '鎌倉', '随筆', '鴨長明', '「ゆく河の流れは絶えずして、しかももとの水にあらず。」無常観（1212年）', 13],
+  ['新古今和歌集', '鎌倉', '和歌集', '藤原定家ら（後鳥羽院の命）', '8番目の勅撰和歌集（1205年）。余情・幽玄の歌風', 12],
+  ['宇治拾遺物語', '鎌倉', '説話集', '編者未詳', '「こぶとりじいさん」など、ユーモアのある説話', 14],
+  ['平家物語', '鎌倉', '軍記物語', '作者未詳（琵琶法師が語り広めた）', '「祇園精舎の鐘の声、諸行無常の響きあり。」', 15],
+  ['徒然草', '鎌倉', '随筆', '兼好法師', '「つれづれなるままに、日暮らし硯に向かひて、」', 16],
+  ['風姿花伝', '室町', '能楽論', '世阿弥', '「秘すれば花なり」能の理論書', 17],
+  ['好色一代男', '江戸', '浮世草子', '井原西鶴', '町人の生活を描いた浮世草子の最初の作品', 18],
+  ['曽根崎心中', '江戸', '人形浄瑠璃', '近松門左衛門', '実際の心中事件をもとにした世話物', 20],
+  ['おくのほそ道', '江戸', '俳諧紀行文', '松尾芭蕉', '「月日は百代の過客にして、行きかふ年もまた旅人なり。」', 19],
+  ['雨月物語', '江戸', '読本', '上田秋成', '中国や日本の古典をもとにした怪異小説集', 21],
+  ['東海道中膝栗毛', '江戸', '滑稽本', '十返舎一九', '弥次郎兵衛と喜多八の旅の珍道中', 22],
+];
+VIEWS.bungaku = (root) => {
+  root.appendChild(sectionHead('UNIT 5', '文学史', '古典の作品は「いつ」「どんなジャンルで」「だれが」書いたかをセットで覚える。冒頭の一文は、作品名を当てる問題によく出る。'));
+  root.appendChild(points([
+    ['三大随筆', '<p><mark>枕草子</mark>（平安・清少納言）<br><mark>方丈記</mark>（鎌倉・鴨長明）<br><mark>徒然草</mark>（鎌倉・兼好法師）</p>'],
+    ['三大和歌集', '<p><mark>万葉集</mark>（奈良）：ますらをぶり<br><mark>古今和歌集</mark>（平安）：最初の勅撰和歌集、たをやめぶり<br><mark>新古今和歌集</mark>（鎌倉）：幽玄・余情</p>'],
+    ['女流日記', '<p>平安時代、女性が仮名で書いた日記。蜻蛉日記・和泉式部日記・紫式部日記・更級日記。<br>土佐日記は男性（紀貫之）が女性のふりをして書いた。</p>'],
+    ['物語の流れ', '<p>作り物語（竹取物語）と歌物語（伊勢物語）が合わさり、<mark>源氏物語</mark>が生まれた。</p>'],
+  ]));
+
+  const tl = labCard('整理', '作品の年表', 'ジャンルでしぼりこめる。作品を押すと冒頭や特徴が出る');
+  const GEN = [...new Set(WORKS.map(w => w[2]))];
+  tl.insertAdjacentHTML('beforeend', `<div class="row"><label class="ctl" for="tlg">ジャンル<select id="tlg"><option value="">すべて</option>${GEN.map(g => `<option>${g}</option>`).join('')}</select></label></div><div class="tl" id="tlv"></div>`);
+  root.appendChild(tl);
+  function drawTl() {
+    const g = $('#tlg').value; let last = '';
+    $('#tlv').innerHTML = WORKS.filter(w => !g || w[2] === g).map(w => { const era = w[1] !== last ? `<div class="tl-era">${w[1]}時代</div>` : ''; last = w[1]; return `<div class="tl-row">${era}<details><summary style="cursor:pointer"><b>${w[0]}</b>　<span class="chip">${w[2]}</span>　<span class="small muted">${w[3]}</span></summary><p class="small" style="margin-top:4px">${w[4]}</p></details></div>`; }).join('');
+  }
+  $('#tlg', tl).onchange = drawTl; drawTl();
+
+  /* --- 並べかえ --- */
+  const ord = labCard('練習', '成立した順に並べる', '時代のちがう4つの作品を、古いものから順に押していこう');
+  ord.insertAdjacentHTML('beforeend', `<div id="ordbox"></div>`);
+  root.appendChild(ord);
+  function makeOrd() {
+    const box = $('#ordbox', ord); box.innerHTML = '';
+    const eras = shuffle(['奈良', '平安', '鎌倉', '室町', '江戸']).slice(0, 4); // 時代の異なる4作品にして、順番がはっきりするようにする
+    const pickN = eras.map(e => shuffle(WORKS.filter(w => w[1] === e))[0]);
+    const ans = pickN.slice().sort((a, b) => a[5] - b[5]);
+    orderTask(box, [{ ja: '古い順に押そう', ans: ans.map(w => w[0]), note: ans.map(w => `${w[0]}（${w[1]}）`).join(' → ') }], { join: ' → ', hint: '作品名を古い順に押そう。' });
+    $('.ot-next', box).textContent = '別の4作品'; $('.ot-next', box).onclick = makeOrd;
+  }
+  makeOrd();
+  root.appendChild(trap('「方丈記」（鎌倉時代のはじめ）と「徒然草」（鎌倉時代の終わり）は約100年はなれている。どちらも無常観をふくむ随筆だが、時代の順をまちがえないこと。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('bungaku'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から） ===== */
+const QUESTIONS = [
+/* ---------- 古文の基礎 ---------- */
+{ id: 'a1', unit: 'kiso', type: '歴史的仮名遣い', lv: 1, inUnit: true,
+  stem: '<p>「いふ」を現代仮名遣いに直したものはどれか。</p>', choices: ['いう', 'いふう', 'ゆう', 'いわ'], ans: 0,
+  exp: '<p>語頭以外の「ふ」は「う」と読む。<mark>いう</mark>。</p>' },
+{ id: 'a2', unit: 'kiso', type: '歴史的仮名遣い', lv: 2, inUnit: true,
+  stem: '<p>「けふ」（今日）を現代仮名遣いに直したものはどれか。</p>', choices: ['けう', 'きょう', 'けふう', 'こう'], ans: 1,
+  exp: '<p>まず語中の「ふ」を「う」にして「けう」。次に「えう（eu）」は「よう（yô）」になるので <mark>きょう</mark>。</p>' },
+{ id: 'a3', unit: 'kiso', type: '歴史的仮名遣い', lv: 1, inUnit: true,
+  stem: '<p>「やうやう」を現代仮名遣いに直したものはどれか。</p>', choices: ['やうやう', 'ようよう', 'ゆうゆう', 'やおやお'], ans: 1,
+  exp: '<p>「やう（yau）」の「あう（au）」は「おう（ô）」と読むので「よう」。<mark>ようよう</mark>（だんだん）。『枕草子』の「やうやう白くなりゆく山ぎは」。</p>' },
+{ id: 'a4', unit: 'kiso', type: '係り結び', lv: 1, inUnit: true,
+  stem: '<p>係助詞「こそ」があるとき、文末は何形になるか。</p>', choices: ['終止形', '連体形', '已然形', '命令形'], ans: 2,
+  exp: '<p>「ぞ・なむ・や・か」は連体形、「こそ」は<mark>已然形</mark>で結ぶ。</p>' },
+{ id: 'a5', unit: 'kiso', type: '係り結び', lv: 2, inUnit: true,
+  stem: '<p>「月ぞ（　　）。」の（　　）に入る、形容詞「明かし」の正しい形はどれか。</p>', choices: ['明かし', '明かき', '明かけれ', '明かく'], ans: 1,
+  exp: '<p>「ぞ」は連体形で結ぶ。「明かし」の連体形は <mark>明かき</mark>。「こそ」なら已然形「明かけれ」。</p>' },
+{ id: 'a6', unit: 'kiso', type: '古語', lv: 1, inUnit: true,
+  stem: '<p>古語「おどろく」の意味として適当なものはどれか。</p>', choices: ['びっくりする', '目を覚ます・はっと気づく', '怖がる', '大声で騒ぐ'], ans: 1,
+  exp: '<p>古語の「おどろく」は<mark>目を覚ます・はっと気づく</mark>。今の「びっくりする」とはずれがある（古今異義語）。大声で騒ぐのは「ののしる」。</p>' },
+{ id: 'a7', unit: 'kiso', type: '古語', lv: 1,
+  stem: '<p>古語「うつくし」の意味として適当なものはどれか。</p>', choices: ['きれいだ', 'かわいらしい', 'りっぱだ', 'さびしい'], ans: 1,
+  exp: '<p>古語の「うつくし」は小さいものを愛する気持ちで<mark>かわいらしい</mark>。『枕草子』「うつくしきもの」。</p>' },
+{ id: 'a8', unit: 'kiso', type: '古語', lv: 1,
+  stem: '<p>古語「ありがたし」の意味として適当なものはどれか。</p>', choices: ['感謝したい', 'めったにない', 'ありそうだ', 'あるはずがない'], ans: 1,
+  exp: '<p>「有り難し」＝ 存在することが難しい ＝ <mark>めったにない・すぐれている</mark>。</p>' },
+{ id: 'a9', unit: 'kiso', type: '古語', lv: 2,
+  stem: '<p>古語「やがて」の意味として適当なものはどれか。</p>', choices: ['そのうちに', 'すぐに・そのまま', 'ゆっくりと', 'ようやく'], ans: 1,
+  exp: '<p>古語の「やがて」は<mark>すぐに・そのまま</mark>。今の「そのうちに」とは意味がちがう。</p>' },
+{ id: 'a10', unit: 'kiso', type: '古語', lv: 2,
+  stem: '<p>古語「ゆかし」の意味として適当なものはどれか。</p>', choices: ['上品だ', '見たい・聞きたい・知りたい', 'なつかしい', '行くべきだ'], ans: 1,
+  exp: '<p>「行かし（そちらへ行きたい）」から、心ひかれて<mark>見たい・聞きたい・知りたい</mark>。</p>' },
+{ id: 'a11', unit: 'kiso', type: '係り結び', lv: 2,
+  stem: '<p>係助詞「や」「か」の意味として正しいものはどれか。</p>', choices: ['強意', '疑問・反語', '詠嘆', '打消'], ans: 1,
+  exp: '<p>「や・か」は<mark>疑問・反語</mark>。「ぞ・なむ・こそ」は強意。</p>' },
+{ id: 'a12', unit: 'kiso', type: '歴史的仮名遣い', lv: 2,
+  stem: '<p>次のうち、現代仮名遣いに直すと「おうぎ」になるものはどれか。</p>', choices: ['あふぎ', 'おほぎ', 'あうき', 'わうぎ'], ans: 0,
+  exp: '<p>「あふぎ」→ 語中の「ふ」を「う」にして「あうぎ」→「あう」を「おう」にして <mark>おうぎ</mark>（扇）。</p>' },
+{ id: 'a13', unit: 'kiso', type: '古語', lv: 1,
+  stem: '<p>古語「をかし」の意味として適当なものはどれか。</p>', choices: ['こっけいだ', '趣がある・すばらしい', '不思議だ', 'おそろしい'], ans: 1,
+  exp: '<p>「をかし」は明るく知的な感動で<mark>趣がある・すばらしい</mark>。しみじみとした感動の「あはれ」と対比される。</p>' },
+
+/* ---------- 用言の活用 ---------- */
+{ id: 'b1', unit: 'katsuyo', type: '活用の種類', lv: 1, inUnit: true,
+  stem: '<p>動詞「過ぐ」の活用の種類はどれか。</p>', choices: ['四段活用', '上二段活用', '下二段活用', '上一段活用'], ans: 1,
+  exp: '<p>「ず」をつけると「過<b>ぎ</b>ず」でイ段 → <mark>上二段活用</mark>（ガ行）。</p>' },
+{ id: 'b2', unit: 'katsuyo', type: '活用の種類', lv: 1, inUnit: true,
+  stem: '<p>動詞「求む」の活用の種類はどれか。</p>', choices: ['四段活用', '上二段活用', '下二段活用', '下一段活用'], ans: 2,
+  exp: '<p>「求<b>め</b>ず」でエ段 → <mark>下二段活用</mark>（マ行）。</p>' },
+{ id: 'b3', unit: 'katsuyo', type: '活用形', lv: 1, inUnit: true,
+  stem: '<p>ラ行変格活用の動詞はどれか。</p>', choices: ['あり', '去ぬ', 'おはす', '見る'], ans: 0,
+  exp: '<p>ラ変は<mark>あり</mark>・をり・侍り・いまそかり。「去ぬ」はナ変、「おはす」はサ変、「見る」は上一段。</p>' },
+{ id: 'b4', unit: 'katsuyo', type: '上一段', lv: 2, inUnit: true,
+  stem: '<p>上一段活用の動詞<b>ではない</b>ものはどれか。</p>', choices: ['着る', '似る', '居る', '蹴る'], ans: 3,
+  exp: '<p>上一段は「ひいきにみゐる」（干る・射る・着る・似る・見る・居る など）。<mark>蹴る</mark>は下一段（1語だけ）。</p>' },
+{ id: 'b5', unit: 'katsuyo', type: '活用形', lv: 2, inUnit: true,
+  stem: '<p>「花咲く時」の「咲く」の活用形はどれか。</p>', choices: ['未然形', '終止形', '連体形', '已然形'], ans: 2,
+  exp: '<p>「時」という体言（名詞）に続いているので<mark>連体形</mark>。四段活用は終止形と連体形が同じ形なので、後ろの語で判断する。</p>' },
+{ id: 'b6', unit: 'katsuyo', type: '活用の種類', lv: 2,
+  stem: '<p>動詞「恨む」の活用の種類はどれか。</p>', choices: ['四段活用', '上二段活用', '下二段活用', 'ナ行変格活用'], ans: 1,
+  exp: '<p>古語では「恨<b>み</b>ず」なので<mark>上二段活用</mark>（マ行）。現代語の「恨まない」につられないこと。</p>' },
+{ id: 'b7', unit: 'katsuyo', type: '活用', lv: 2,
+  stem: '<p>カ行変格活用「来」の已然形はどれか。</p>', choices: ['こ', 'くる', 'くれ', 'こよ'], ans: 2,
+  exp: '<p>カ変は こ・き・く・くる・<mark>くれ</mark>・こ（こよ）。</p>' },
+{ id: 'b8', unit: 'katsuyo', type: '活用', lv: 2,
+  stem: '<p>ナ行変格活用「死ぬ」の連体形はどれか。</p>', choices: ['死な', '死ぬ', '死ぬる', '死ね'], ans: 2,
+  exp: '<p>ナ変は な・に・ぬ・<mark>ぬる</mark>・ぬれ・ね。</p>' },
+{ id: 'b9', unit: 'katsuyo', type: '形容詞', lv: 2,
+  stem: '<p>形容詞「美し」の活用の種類はどれか。</p>', choices: ['ク活用', 'シク活用', 'ナリ活用', 'タリ活用'], ans: 1,
+  exp: '<p>「なる」をつけて「美し<b>く</b>なる」→「しく」になるので<mark>シク活用</mark>。「よくなる」のように「く」だけならク活用。</p>' },
+{ id: 'b10', unit: 'katsuyo', type: '活用の種類', lv: 3,
+  stem: '<p>動詞「植う」の活用の種類と行の組み合わせはどれか。</p>', choices: ['ア行下二段活用', 'ワ行下二段活用', 'ハ行四段活用', 'ヤ行上二段活用'], ans: 1,
+  exp: '<p>「植<b>ゑ</b>ず」で、「ゑ」はワ行のエ段。<mark>ワ行下二段活用</mark>（植う・飢う・据う）。</p>' },
+{ id: 'b11', unit: 'katsuyo', type: '活用の種類', lv: 3,
+  stem: '<p>ア行で活用する動詞はどれか。</p>', choices: ['老ゆ', '得', '居る', '射る'], ans: 1,
+  exp: '<p>ア行に活用するのは下二段の<mark>「得」</mark>（と「心得」「所得」）だけ。え・え・う・うる・うれ・えよ。「老ゆ」はヤ行、「居る」はワ行、「射る」はヤ行。</p>' },
+{ id: 'b12', unit: 'katsuyo', type: '形容動詞', lv: 1,
+  stem: '<p>形容動詞「静かなり」の連体形はどれか。</p>', choices: ['静かなら', '静かなり', '静かなる', '静かなれ'], ans: 2,
+  exp: '<p>ナリ活用は なら・なり（に）・なり・<mark>なる</mark>・なれ・なれ。</p>' },
+{ id: 'b13', unit: 'katsuyo', type: '活用形', lv: 1,
+  stem: '<p>接続助詞「ど・ども」がつく活用形はどれか。</p>', choices: ['未然形', '連用形', '連体形', '已然形'], ans: 3,
+  exp: '<p>「ど・ども」（逆接）、確定条件の「ば」は<mark>已然形</mark>につく。仮定条件の「ば」は未然形につく。</p>' },
+
+/* ---------- 助動詞 ---------- */
+{ id: 'c1', unit: 'jodoshi', type: '意味', lv: 1, inUnit: true,
+  stem: '<p>過去の助動詞のうち、<b>直接経験した過去</b>を表すものはどれか。</p>', choices: ['き', 'けり', 'たり', 'ぬ'], ans: 0,
+  exp: '<p><mark>き</mark>は自分が直接経験した過去。けりは伝聞の過去や詠嘆。たり・ぬは完了。</p>' },
+{ id: 'c2', unit: 'jodoshi', type: '接続', lv: 1, inUnit: true,
+  stem: '<p>打消の助動詞「ず」の接続はどれか。</p>', choices: ['未然形', '連用形', '終止形', '連体形'], ans: 0,
+  exp: '<p>「ず」は<mark>未然形</mark>につく。だから「ず」をつけて活用の種類を見分けられる。</p>' },
+{ id: 'c3', unit: 'jodoshi', type: 'なりの識別', lv: 2, inUnit: true,
+  stem: '<p>「男もすなる日記といふものを」の「なる」の意味はどれか。</p>', choices: ['断定', '伝聞', '存在', '形容動詞の活用語尾'], ans: 1,
+  exp: '<p>「す」はサ変の<b>終止形</b>。終止形につく「なり」は伝聞・推定で、ここは<mark>伝聞</mark>（男も書くと聞いている日記というもの）。『土佐日記』の冒頭。</p>' },
+{ id: 'c4', unit: 'jodoshi', type: 'ぬの識別', lv: 2, inUnit: true,
+  stem: '<p>「花咲かぬ里」の「ぬ」の説明として正しいものはどれか。</p>', choices: ['完了の助動詞「ぬ」の終止形', '打消の助動詞「ず」の連体形', 'ナ変動詞の活用語尾', '強意の助動詞「ぬ」の終止形'], ans: 1,
+  exp: '<p>「咲か」は<b>未然形</b>なので、未然形につく打消「ず」。「里」に続くので連体形「ぬ」。<mark>打消の助動詞「ず」の連体形</mark>。</p>' },
+{ id: 'c5', unit: 'jodoshi', type: 'る・らる', lv: 2, inUnit: true,
+  stem: '<p>「ふるさとのこと思ひ出でらる」の「らる」の意味として最も適当なものはどれか。</p>', choices: ['受身', '尊敬', '自発', '可能'], ans: 2,
+  exp: '<p>「思ひ出づ」のような<b>心情を表す語</b>につく「る・らる」は<mark>自発</mark>（自然と〜される）。</p>' },
+{ id: 'c6', unit: 'jodoshi', type: '意味', lv: 2,
+  stem: '<p>「べし」の意味に<b>ふくまれない</b>ものはどれか。</p>', choices: ['推量', '当然', '命令', '過去'], ans: 3,
+  exp: '<p>「べし」は 推量・意志・可能・当然・命令・適当（すいかとめて）。<mark>過去</mark>の意味はない。</p>' },
+{ id: 'c7', unit: 'jodoshi', type: '接続', lv: 3,
+  stem: '<p>完了・存続の助動詞「り」の接続はどれか。</p>', choices: ['四段の未然形・サ変の已然形', 'サ変の未然形・四段の已然形', 'すべての動詞の連用形', '体言'], ans: 1,
+  exp: '<p>「り」は<mark>サ変の未然形・四段の已然形</mark>につく（さみしい りかちゃん ＝ サ未四已 り）。「書けり」「せり」。</p>' },
+{ id: 'c8', unit: 'jodoshi', type: '意味', lv: 2,
+  stem: '<p>「鏡に色・形あらましかば、映らざらまし」の「まし」の意味はどれか。</p>', choices: ['反実仮想', '推量', '意志', '希望'], ans: 0,
+  exp: '<p>「〜ましかば…まし」は<mark>反実仮想</mark>（もし〜だったら…だろうに）。実際には鏡に色や形はない。『徒然草』より。</p>' },
+{ id: 'c9', unit: 'jodoshi', type: '意味', lv: 2,
+  stem: '<p>「けり」が和歌の中で使われるとき、多い意味はどれか。</p>', choices: ['伝聞過去', '詠嘆', '完了', '推量'], ans: 1,
+  exp: '<p>和歌や会話文の「けり」は「〜だなあ」という<mark>詠嘆</mark>が多い（気づきの「けり」）。</p>' },
+{ id: 'c10', unit: 'jodoshi', type: 'む', lv: 2,
+  stem: '<p>「我、この山に登らむ」の「む」の意味として最も適当なものはどれか。</p>', choices: ['推量', '意志', '勧誘', '婉曲'], ans: 1,
+  exp: '<p>主語が一人称（我）なので<mark>意志</mark>（〜しよう）。二人称なら適当・勧誘、三人称なら推量が多い。</p>' },
+{ id: 'c11', unit: 'jodoshi', type: '活用形', lv: 3,
+  stem: '<p>「見し人」の「し」の説明として正しいものはどれか。</p>', choices: ['過去の助動詞「き」の連体形', 'サ変動詞「す」の連用形', '強意の副助詞', '形容詞の活用語尾'], ans: 0,
+  exp: '<p>連用形「見」について「人」に続いているので、<mark>過去の助動詞「き」の連体形</mark>（以前会った人）。</p>' },
+{ id: 'c12', unit: 'jodoshi', type: '接続', lv: 2,
+  stem: '<p>次のうち、<b>連用形</b>に接続する助動詞はどれか。</p>', choices: ['む', 'べし', 'けり', 'らむ'], ans: 2,
+  exp: '<p>過去・完了の助動詞（き・<mark>けり</mark>・つ・ぬ・たり・けむ）は連用形接続。む は未然形、べし・らむ は終止形接続。</p>' },
+{ id: 'c13', unit: 'jodoshi', type: '意味', lv: 1,
+  stem: '<p>「京なる医師」の「なる」の意味はどれか。</p>', choices: ['断定', '存在', '伝聞', '推定'], ans: 1,
+  exp: '<p>場所（京）につく「なり」は<mark>存在</mark>（〜にある・〜にいる）。京にいる医師。</p>' },
+
+/* ---------- 漢文の基礎 ---------- */
+{ id: 'k1', unit: 'kanbun', type: '返り点', lv: 1, inUnit: true,
+  stem: '<p>「読レ書」（書を読む）の読む順番はどれか。</p>', choices: ['読 → 書', '書 → 読', 'どちらでもよい', '読 → 書 → 読'], ans: 1,
+  exp: '<p>レ点はすぐ上の1字に返る。「書」を先に読んで「読」に返るので <mark>書 → 読</mark>（書を読む）。</p>' },
+{ id: 'k2', unit: 'kanbun', type: '置き字', lv: 1, inUnit: true,
+  stem: '<p>「学而時習之」の「而」について正しいものはどれか。</p>', choices: ['「しかして」と読む', '置き字で、読まない', '「て」と読み、書き下し文に漢字で書く', '再読文字である'], ans: 1,
+  exp: '<p>「而」は文中の<mark>置き字</mark>で読まない。前の字の送り仮名（学び<b>て</b>）で意味を表す。</p>' },
+{ id: 'k3', unit: 'kanbun', type: '再読文字', lv: 1, inUnit: true,
+  stem: '<p>再読文字「未」の読み方はどれか。</p>', choices: ['まさに〜べし', 'いまだ〜ず', 'なほ〜ごとし', 'すべからく〜べし'], ans: 1,
+  exp: '<p>「未」は <mark>いまだ〜ず</mark>（まだ〜ない）。「未だ生を知らず」。</p>' },
+{ id: 'k4', unit: 'kanbun', type: '書き下し文', lv: 2, inUnit: true,
+  stem: '<p>「良薬苦二於口一」の書き下し文として正しいものはどれか。</p>', choices: ['良薬は口に苦し。', '良薬は於口に苦し。', '良薬苦し口に。', '良薬は口於苦し。'], ans: 0,
+  exp: '<p>一点の「口」を読んでから二点の「苦」に返る。「於」は置き字なので書かない。<mark>良薬は口に苦し。</mark></p>' },
+{ id: 'k5', unit: 'kanbun', type: '句法', lv: 2, inUnit: true,
+  stem: '<p>「使人読書」（人をして書を読ましむ）の句法はどれか。</p>', choices: ['受身', '使役', '否定', '比較'], ans: 1,
+  exp: '<p>「使・令・教・遣」は<mark>使役</mark>。「A をして B せしむ」（A に B させる）。</p>' },
+{ id: 'k6', unit: 'kanbun', type: '再読文字', lv: 2,
+  stem: '<p>再読文字「将」の読み方と意味の組み合わせはどれか。</p>', choices: ['まさに〜んとす・いまにも〜しようとする', 'まさに〜べし・当然〜すべきだ', 'よろしく〜べし・〜するのがよい', 'なんぞ〜ざる・どうして〜しないのか'], ans: 0,
+  exp: '<p>「将・且」は <mark>まさに〜んとす</mark>（いまにも〜しようとする）。「当・応」がまさに〜べし、「宜」がよろしく〜べし、「盍」がなんぞ〜ざる。</p>' },
+{ id: 'k7', unit: 'kanbun', type: '部分否定', lv: 3,
+  stem: '<p>「不常有」（常には有らず）の意味として正しいものはどれか。</p>', choices: ['いつもない', 'いつもあるとは限らない', 'いつもある', 'まったくない'], ans: 1,
+  exp: '<p>「不常〜」は<b>部分否定</b>で<mark>いつもあるとは限らない</mark>。「常不有」（常に有らず）なら全部否定で「いつもない」。</p>' },
+{ id: 'k8', unit: 'kanbun', type: '反語', lv: 2,
+  stem: '<p>「豈不悲哉」（豈に悲しからずや）の意味として最も適当なものはどれか。</p>', choices: ['どうして悲しくないことがあろうか、いや悲しい', '悲しくないのだろうか', 'きっと悲しくない', '悲しいかどうかわからない'], ans: 0,
+  exp: '<p>「豈〜哉」は<b>反語</b>。「どうして悲しくないことがあろうか、いや、<mark>とても悲しい</mark>」と強く言う。</p>' },
+{ id: 'k9', unit: 'kanbun', type: '受身', lv: 2,
+  stem: '<p>受身を表す字の組み合わせとして正しいものはどれか。</p>', choices: ['使・令', '見・被', '不・弗', '唯・只'], ans: 1,
+  exp: '<p><mark>見・被・為・所</mark>が受身（〜る・らる）。使・令は使役、不・弗は否定、唯・只は限定。</p>' },
+{ id: 'k10', unit: 'kanbun', type: '書き下し文', lv: 2,
+  stem: '<p>書き下し文のきまりとして<b>誤っている</b>ものはどれか。</p>', choices: ['歴史的仮名遣いで書く', '送り仮名はひらがなで書く', '置き字も漢字のまま書く', '助動詞にあたる「不」はひらがなで書く'], ans: 2,
+  exp: '<p>置き字（而・於・于 など）は読まないので、書き下し文には<mark>書かない</mark>。</p>' },
+{ id: 'k11', unit: 'kanbun', type: '返り点', lv: 3,
+  stem: '<p>「己所レ不レ欲」の読む順番として正しいものはどれか。</p>', choices: ['己 → 所 → 不 → 欲', '己 → 欲 → 不 → 所', '欲 → 不 → 所 → 己', '己 → 不 → 欲 → 所'], ans: 1,
+  exp: '<p>レ点が続くときは下から1字ずつ返る。<mark>己 → 欲 → 不 → 所</mark>（己の欲せざる所）。</p>' },
+{ id: 'k12', unit: 'kanbun', type: '比較', lv: 2,
+  stem: '<p>「百聞不如一見」（百聞は一見に如かず）の意味として最も適当なものはどれか。</p>', choices: ['百回聞くことは、一回見ることにおよばない', '百回聞けば、一回見たのと同じだ', '一回見るより、百回聞く方がよい', '百回聞いても、一回も見られない'], ans: 0,
+  exp: '<p>「A 不如 B」は「A は B に如かず」＝ <mark>A は B におよばない</mark>（比較）。</p>' },
+{ id: 'k13', unit: 'kanbun', type: '再読文字', lv: 3,
+  stem: '<p>「宜」を再読文字として読むとき、正しいものはどれか。</p>', choices: ['よろしく〜べし', 'すべからく〜べし', 'まさに〜べし', 'なほ〜ごとし'], ans: 0,
+  exp: '<p>「宜」は <mark>よろしく〜べし</mark>（〜するのがよい）。「須」がすべからく〜べし（ぜひ〜する必要がある）。</p>' },
+
+/* ---------- 文学史 ---------- */
+{ id: 'l1', unit: 'bungaku', type: '冒頭', lv: 1, inUnit: true,
+  stem: '<p>「春はあけぼの。」で始まる作品はどれか。</p>', choices: ['枕草子', '徒然草', '源氏物語', '方丈記'], ans: 0,
+  exp: '<p><mark>枕草子</mark>（平安時代・清少納言）の冒頭。</p>' },
+{ id: 'l2', unit: 'bungaku', type: '冒頭', lv: 1, inUnit: true,
+  stem: '<p>「ゆく河の流れは絶えずして、しかももとの水にあらず。」で始まる作品の作者はだれか。</p>', choices: ['兼好法師', '鴨長明', '清少納言', '紀貫之'], ans: 1,
+  exp: '<p>『方丈記』（鎌倉時代）の冒頭。作者は<mark>鴨長明</mark>。無常観を表した随筆。</p>' },
+{ id: 'l3', unit: 'bungaku', type: 'ジャンル', lv: 1, inUnit: true,
+  stem: '<p>三大随筆に<b>ふくまれない</b>ものはどれか。</p>', choices: ['枕草子', '方丈記', '徒然草', '土佐日記'], ans: 3,
+  exp: '<p>三大随筆は枕草子・方丈記・徒然草。<mark>土佐日記</mark>は紀貫之の日記。</p>' },
+{ id: 'l4', unit: 'bungaku', type: '和歌集', lv: 2, inUnit: true,
+  stem: '<p>最初の勅撰和歌集はどれか。</p>', choices: ['万葉集', '古今和歌集', '新古今和歌集', '金槐和歌集'], ans: 1,
+  exp: '<p>天皇の命令で作られた最初の和歌集は<mark>古今和歌集</mark>（905年ごろ、紀貫之ら）。万葉集は勅撰ではない。</p>' },
+{ id: 'l5', unit: 'bungaku', type: '冒頭', lv: 2, inUnit: true,
+  stem: '<p>「月日は百代の過客にして、行きかふ年もまた旅人なり。」で始まる作品はどれか。</p>', choices: ['おくのほそ道', '東海道中膝栗毛', '更級日記', '土佐日記'], ans: 0,
+  exp: '<p>松尾芭蕉の俳諧紀行文<mark>おくのほそ道</mark>（江戸時代）の冒頭。</p>' },
+{ id: 'l6', unit: 'bungaku', type: '作者', lv: 1,
+  stem: '<p>『源氏物語』の作者はだれか。</p>', choices: ['清少納言', '紫式部', '和泉式部', '菅原孝標女'], ans: 1,
+  exp: '<p><mark>紫式部</mark>。清少納言は枕草子、菅原孝標女は更級日記の作者。</p>' },
+{ id: 'l7', unit: 'bungaku', type: 'ジャンル', lv: 2,
+  stem: '<p>「昔、男ありけり。」で始まる章段が多い、歌を中心とした物語はどれか。</p>', choices: ['竹取物語', '伊勢物語', '平家物語', '今昔物語集'], ans: 1,
+  exp: '<p>和歌を中心にした<b>歌物語</b>の<mark>伊勢物語</mark>。在原業平がモデルとされる。</p>' },
+{ id: 'l8', unit: 'bungaku', type: '冒頭', lv: 1,
+  stem: '<p>「祇園精舎の鐘の声、諸行無常の響きあり。」で始まる作品のジャンルはどれか。</p>', choices: ['軍記物語', '説話集', '随筆', '歌物語'], ans: 0,
+  exp: '<p>『平家物語』（鎌倉時代）は平家の栄華と滅亡を描いた<mark>軍記物語</mark>。琵琶法師が語り広めた。</p>' },
+{ id: 'l9', unit: 'bungaku', type: '時代', lv: 2,
+  stem: '<p>鎌倉時代に成立した作品の組み合わせはどれか。</p>', choices: ['方丈記・徒然草', '枕草子・源氏物語', '古事記・万葉集', '雨月物語・好色一代男'], ans: 0,
+  exp: '<p><mark>方丈記・徒然草</mark>は鎌倉時代。枕草子・源氏物語は平安、古事記・万葉集は奈良、雨月物語・好色一代男は江戸。</p>' },
+{ id: 'l10', unit: 'bungaku', type: '作者', lv: 2,
+  stem: '<p>『土佐日記』の作者・紀貫之について正しいものはどれか。</p>', choices: ['女性の作者として仮名で書いた', '男性が女性のふりをして仮名で書いた', '漢文で書いた', '自分の少女時代を回想して書いた'], ans: 1,
+  exp: '<p>「男もすなる日記といふものを、女もしてみむとてするなり」と、<mark>男性の紀貫之が女性のふりをして</mark>仮名で書いた。③ は更級日記。</p>' },
+{ id: 'l11', unit: 'bungaku', type: '冒頭', lv: 2,
+  stem: '<p>「今は昔、竹取の翁といふものありけり。」で始まる作品について正しいものはどれか。</p>', choices: ['「物語の出で来はじめの祖」とよばれる', '最初の勅撰和歌集である', '鎌倉時代の説話集である', '作者は紫式部である'], ans: 0,
+  exp: '<p>『竹取物語』は、源氏物語の中で<mark>「物語の出で来はじめの祖」</mark>とよばれる、現存最古の作り物語。作者は未詳。</p>' },
+{ id: 'l12', unit: 'bungaku', type: '作者', lv: 2,
+  stem: '<p>近松門左衛門が書いた作品はどれか。</p>', choices: ['曽根崎心中', '好色一代男', '雨月物語', '東海道中膝栗毛'], ans: 0,
+  exp: '<p>近松門左衛門は人形浄瑠璃の作者で、代表作は<mark>曽根崎心中</mark>。好色一代男は井原西鶴、雨月物語は上田秋成、膝栗毛は十返舎一九。</p>' },
+{ id: 'l13', unit: 'bungaku', type: '成立順', lv: 3,
+  stem: '<p>成立した順に正しく並べたものはどれか。</p>', choices: ['万葉集 → 源氏物語 → 平家物語 → おくのほそ道', '源氏物語 → 万葉集 → 平家物語 → おくのほそ道', '万葉集 → 平家物語 → 源氏物語 → おくのほそ道', '万葉集 → 源氏物語 → おくのほそ道 → 平家物語'], ans: 0,
+  exp: '<p>万葉集（奈良）→ 源氏物語（平安）→ 平家物語（鎌倉）→ おくのほそ道（江戸）。</p>' },
+];
+
+/* ===== 暗記カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['kiso', 'あはれ', 'しみじみとした趣・感動'],
+  ['kiso', 'をかし', '趣がある・すばらしい・こっけいだ'],
+  ['kiso', 'いと', 'たいそう・とても'],
+  ['kiso', 'うつくし', 'かわいらしい'],
+  ['kiso', 'おどろく', '目を覚ます・はっと気づく'],
+  ['kiso', 'ありがたし', 'めったにない・すぐれている'],
+  ['kiso', 'やがて', 'すぐに・そのまま'],
+  ['kiso', 'ゆかし', '見たい・聞きたい・知りたい'],
+  ['kiso', 'あさまし', '驚きあきれる・情けない'],
+  ['kiso', 'いみじ', '程度がはなはだしい（とてもよい／ひどい）'],
+  ['kiso', 'ののしる', '大声で騒ぐ・評判になる'],
+  ['kiso', 'めでたし', 'すばらしい・りっぱだ'],
+  ['kiso', 'なつかし', '心ひかれる・親しみがもてる'],
+  ['kiso', 'つれづれなり', 'することがなく退屈だ・手持ちぶさただ'],
+  ['kiso', '年ごろ', '長年・数年来'],
+  ['kiso', '係り結び（ぞ・なむ・や・か）', '文末が連体形'],
+  ['kiso', '係り結び（こそ）', '文末が已然形'],
+  ['katsuyo', '上一段活用の動詞', 'ひいきにみゐる（干る・射る・着る・似る・煮る・見る・居る・率る など）'],
+  ['katsuyo', '下一段活用の動詞', '蹴る'],
+  ['katsuyo', 'ナ行変格活用の動詞', '死ぬ・往ぬ（去ぬ）'],
+  ['katsuyo', 'ラ行変格活用の動詞', 'あり・をり・侍り・いまそかり'],
+  ['katsuyo', '四段・上二段・下二段の見分け方', '「ず」をつけて直前がア段 → 四段、イ段 → 上二段、エ段 → 下二段'],
+  ['jodoshi', '「き」の活用', '（せ）・○・き・し・しか・○'],
+  ['jodoshi', '「べし」の意味', '推量・意志・可能・当然・命令・適当（すいかとめて）'],
+  ['jodoshi', '「む」の意味', '推量・意志・勧誘・仮定・適当・婉曲（すいかかてえ）'],
+  ['jodoshi', '「る・らる」の意味', '受身・尊敬・自発・可能'],
+  ['jodoshi', '「り」の接続', 'サ変の未然形・四段の已然形（さみしい りかちゃん）'],
+  ['jodoshi', '終止形＋なり', '伝聞・推定'],
+  ['jodoshi', '連体形・体言＋なり', '断定・存在'],
+  ['kanbun', 'レ点', 'すぐ上の1字に返る'],
+  ['kanbun', '一・二点', '2字以上はなれた上の字に返る'],
+  ['kanbun', '未', 'いまだ〜ず（まだ〜ない）'],
+  ['kanbun', '将・且', 'まさに〜んとす（いまにも〜しようとする）'],
+  ['kanbun', '当・応', 'まさに〜べし（当然〜すべきだ／きっと〜だろう）'],
+  ['kanbun', '須', 'すべからく〜べし（ぜひ〜する必要がある）'],
+  ['kanbun', '猶・由', 'なほ〜ごとし（ちょうど〜のようだ）'],
+  ['kanbun', '使役の字', '使・令・教・遣（A をして B せしむ）'],
+  ['kanbun', '受身の字', '見・被・為・所（〜る・らる）'],
+  ['bungaku', '三大随筆', '枕草子・方丈記・徒然草'],
+  ['bungaku', '最初の勅撰和歌集', '古今和歌集（紀貫之ら）'],
+  ['bungaku', '『徒然草』の作者', '兼好法師（鎌倉時代）'],
+  ['bungaku', '『更級日記』の作者', '菅原孝標女'],
+  ['bungaku', '『雨月物語』の作者', '上田秋成（江戸時代・読本）'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['歴史的仮名遣い', 'れきしてきかなづかい', 'kiso', '平安時代中期ごろまでの発音にもとづく仮名の書き方。古文はこれで書かれている。'],
+  ['現代仮名遣い', 'げんだいかなづかい', 'kiso', '現在の発音にもとづく仮名の書き方。'],
+  ['係り結びの法則', 'かかりむすびのほうそく', 'kiso', '係助詞「ぞ・なむ・や・か」で文末が連体形、「こそ」で已然形になるきまり。'],
+  ['係助詞', 'かかりじょし', 'kiso', 'ぞ・なむ・や・か・こそ など。強意や疑問・反語を表し、文末の形に影響する。'],
+  ['古今異義語', 'ここんいぎご', 'kiso', '現代語にもあるが、古語では意味がちがう言葉。おどろく・うつくし など。'],
+  ['強意', 'きょうい', 'kiso', '意味を強めるはたらき。訳には出さないことが多い。'],
+  ['反語', 'はんご', 'kiso', '疑問の形で、反対の内容を強く主張する表現。「〜か、いや〜ない」。'],
+  ['用言', 'ようげん', 'katsuyo', '活用があり、単独で述語になる語。動詞・形容詞・形容動詞。'],
+  ['活用', 'かつよう', 'katsuyo', 'あとに続く言葉によって語の形が変わること。'],
+  ['語幹', 'ごかん', 'katsuyo', '活用しても形が変わらない部分。'],
+  ['活用語尾', 'かつようごび', 'katsuyo', '活用によって形が変わる部分。'],
+  ['未然形', 'みぜんけい', 'katsuyo', 'まだそうなっていないことを表す形。「ず」「む」などがつく。'],
+  ['連用形', 'れんようけい', 'katsuyo', '用言に続く形。「たり」「て」「けり」などがつく。'],
+  ['終止形', 'しゅうしけい', 'katsuyo', '文を言い切る形。辞書の見出しの形。'],
+  ['連体形', 'れんたいけい', 'katsuyo', '体言（名詞）に続く形。'],
+  ['已然形', 'いぜんけい', 'katsuyo', 'すでにそうなっていることを表す形。「ど・ども」、確定条件の「ば」がつく。'],
+  ['命令形', 'めいれいけい', 'katsuyo', '命令して言い切る形。'],
+  ['四段活用', 'よだんかつよう', 'katsuyo', 'ア・イ・ウ・エの4段で活用する動詞。'],
+  ['上二段活用', 'かみにだんかつよう', 'katsuyo', 'イ段とウ段の2段で活用する動詞。'],
+  ['下二段活用', 'しもにだんかつよう', 'katsuyo', 'ウ段とエ段の2段で活用する動詞。'],
+  ['変格活用', 'へんかくかつよう', 'katsuyo', '不規則な活用。カ変・サ変・ナ変・ラ変の4種類。'],
+  ['ク活用・シク活用', 'くかつよう・しくかつよう', 'katsuyo', '形容詞の2種類の活用。「なる」をつけて「く」ならク活用、「しく」ならシク活用。'],
+  ['補助活用', 'ほじょかつよう', 'katsuyo', '形容詞の「から・かり・かる・かれ」の活用。おもに助動詞が続くときに使う（カリ活用）。'],
+  ['助動詞', 'じょどうし', 'jodoshi', '用言などについて意味をそえる、活用のある付属語。'],
+  ['接続', 'せつぞく', 'jodoshi', '助動詞が上の語の何形につくかということ。'],
+  ['反実仮想', 'はんじつかそう', 'jodoshi', '事実に反することを仮に想像する表現。「〜ましかば…まし」。'],
+  ['伝聞', 'でんぶん', 'jodoshi', '人から聞いたことを表す。終止形接続の「なり」、「けり」など。'],
+  ['推定', 'すいてい', 'jodoshi', '根拠にもとづいて推し量ること。「めり」「らし」「なり」。'],
+  ['詠嘆', 'えいたん', 'jodoshi', '感動を表す。「〜だなあ」。'],
+  ['自発', 'じはつ', 'jodoshi', '自然とそうなる意味。「る・らる」が心情語につくとき。'],
+  ['識別', 'しきべつ', 'jodoshi', '同じ形の語（なり・ぬ・に など）が何であるかを見分けること。'],
+  ['訓読', 'くんどく', 'kanbun', '漢文を日本語の語順と文法で読むこと。'],
+  ['白文', 'はくぶん', 'kanbun', '返り点や送り仮名のついていない、漢字だけの文。'],
+  ['返り点', 'かえりてん', 'kanbun', '下から上に返って読むことを示す記号。レ点・一二点・上下点など。'],
+  ['送り仮名', 'おくりがな', 'kanbun', '漢字の右下につけるカタカナ。活用語尾や助詞・助動詞を表す。'],
+  ['書き下し文', 'かきくだしぶん', 'kanbun', '訓読したとおりに漢字かな交じりで書いた文。'],
+  ['置き字', 'おきじ', 'kanbun', '訓読では読まない字。而・於・于・乎・矣・焉 など。'],
+  ['再読文字', 'さいどくもじ', 'kanbun', '1字を2回読む字。未・将・当・宜・須・猶・盍 など。'],
+  ['句法', 'くほう', 'kanbun', '否定・疑問・反語・使役・受身などの、決まった表現の形。'],
+  ['部分否定', 'ぶぶんひてい', 'kanbun', '「不常〜」のように、「いつも〜とは限らない」と一部だけを否定する形。'],
+  ['勅撰和歌集', 'ちょくせんわかしゅう', 'bungaku', '天皇や上皇の命令で編集された和歌集。最初は古今和歌集。'],
+  ['随筆', 'ずいひつ', 'bungaku', '見聞きしたことや感じたことを自由に書いた文章。'],
+  ['作り物語', 'つくりものがたり', 'bungaku', '架空の話を語る物語。竹取物語・源氏物語など。'],
+  ['歌物語', 'うたものがたり', 'bungaku', '和歌を中心にした短い話を集めた物語。伊勢物語など。'],
+  ['説話', 'せつわ', 'bungaku', '人々の間で語り伝えられた話。今昔物語集・宇治拾遺物語など。'],
+  ['軍記物語', 'ぐんきものがたり', 'bungaku', '合戦を中心に描いた物語。平家物語・太平記など。'],
+  ['無常観', 'むじょうかん', 'bungaku', 'この世のすべては移り変わり、永遠のものはないという考え方。'],
+  ['紀行文', 'きこうぶん', 'bungaku', '旅の体験や感想を書いた文章。おくのほそ道など。'],
+];
+/* ===== ホーム ===== */
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">${SITE.eyebrow}</div>
+      <h1 class="hero-title">${SITE.heroTitle}</h1>
+      <p class="lead">${SITE.lead}</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">${SITE.bubble}</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>${SITE.subject}の地図</h3><span class="muted small">${SITE.stations.length}つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${SITE.stations.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">${SITE.links.map(([t, b]) => `<div class="point"><h4>${t}</h4><p class="small">${b}</p></div>`).join('')}</div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', `各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、覚えることは「暗記カード」で。`));
+  const st = h('<div class="stations"></div>');
+  SITE.stations.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.entries(S.ans).filter(([id, v]) => v === true && QUESTIONS.some(q => q.id === id)).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と暗記カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = shuffle(p).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 暗記カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">暗記カード</span><h3>フラッシュカード</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const sg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; sg.appendChild(b); });
+  function build() {
+    deck = shuffle(CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok')));
+    ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div style="font-size:1.05rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+  if (SITE.cardsExtra) SITE.cardsExtra(root);
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="${SITE.glossHint}" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const sg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    sg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    [`単元ページ（${SITE.stations.length}つ）`, `<p>上のタブの「${SITE.stations[0].tab || SITE.stations[0].name}」〜「${SITE.stations.at(-1).tab || SITE.stations.at(-1).name}」。<br>① <b>要点</b>：その単元の大事なところ<br>② <b>実験</b>：押したり動かしたりして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>`],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['暗記カード', `<p>表に問い、裏に答え。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。${SITE.cardsNote || ''}</p>`],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>覚えることがあやふや</td><td>暗記カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+
+/* ===== 起動 ===== */
+// 正解の位置がかたよらないよう、選択肢の順番を入れかえる（毎回同じ順。解説の ⓪〜③ も合わせて書きかえる。数値の選択肢は小さい順のまま）
+QUESTIONS.forEach(q => {
+  if (q.fixed || q.choices.every(c => /^[−+\-]?[0-9０-９.]/.test(c.replace(/<[^>]+>/g, '')))) return;
+  let sd = 7; for (const ch of q.id + STORE_KEY) sd = (sd * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = rng(sd), idx = q.choices.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  q.choices = idx.map(i => q.choices[i]); q.ans = idx.indexOf(q.ans);
+  q.exp = q.exp.replace(/[⓪①②③④]/g, c => MARK[idx.indexOf(MARK.indexOf(c))]);
+});
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+updateXP();
+route();
+</script>
+</body></html>

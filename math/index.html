@@ -1,0 +1,2182 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>数学Ⅰ ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+</style>
+</head><body>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>数学Ⅰ ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">自然数見習い</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題はすべてこの教材のためのオリジナル問題です。範囲は高等学校学習指導要領（平成30年告示）の「数学Ⅰ」にそろえています。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+/* ===== キャラクター ===== */
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const TIPS = {
+  shiki: '展開は「面積」、因数分解は「その逆」。<br>図を動かして、どの項がどこから来たか確かめよう。',
+  shugo: 'ベン図を自分でぬってみよう。<br>「必要・十分」は矢印の向きだけ覚えればOK！',
+  kansu: 'スライダーを動かして、グラフがどう動くか見てみよう。<br>「頂点」と「軸」がわかれば半分解けたも同然！',
+  keiryo: '三角比は「単位円」で考えると、90°をこえても迷わないよ。',
+  data: '数値をかえると箱ひげ図がすぐ動くよ。<br>平均と中央値のちがいも見てみよう。',
+  drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+  cards: '公式カードは「覚えた」「まだ」で仕分けよう。<br>「まだ」だけを何周もするのが近道！',
+  glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+};
+const PRAISE = ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+/* ===== core ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* 数式の表記：F(分子,分母) R(根号の中) */
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const R = (x) => `<span class="rt">√<span>${x}</span></span>`;
+const BAR = (x) => `<span class="ov-bar">${x}</span>`;
+const M = (s) => s.replace(/-/g, '−');
+
+/* 分数（約分つき） */
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a || 1; }
+function Q(n, d = 1) { if (d < 0) { n = -n; d = -d; } const g = gcd(n, d); return { n: n / g, d: d / g }; }
+const qadd = (x, y) => Q(x.n * y.d + y.n * x.d, x.d * y.d);
+const qmul = (x, y) => Q(x.n * y.n, x.d * y.d);
+const qneg = x => Q(-x.n, x.d);
+function qs(x, opt = {}) { // 表示用
+  const sgn = x.n < 0 ? '−' : (opt.plus ? '+' : '');
+  const a = Math.abs(x.n);
+  return x.d === 1 ? sgn + a : sgn + F(a, x.d);
+}
+const qv = x => x.n / x.d;
+
+const STORE_KEY = 'math1-lab-v1';
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+const RANKS = [[0, '自然数見習い'], [5, '整数使い'], [15, '有理数使い'], [30, '無理数使い'], [50, '実数マスター'], [75, '関数マスター'], [100, '数学Ⅰ 免許皆伝']];
+const RANK_NOTE = ['1, 2, 3, … ものを数える数', '0 や負の数も仲間入り', '分数で表せる数', '√2 や π のように分数で表せない数', '数直線上のすべての数', 'x が決まると y がただ1つ決まる', '全問正解！'];
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const COURSE_NAME = { shiki: '数と式', shugo: '集合と命題', kansu: '2次関数', keiryo: '図形と計量', data: 'データの分析' };
+const UNITS = [
+  { id: 'home', name: 'ホーム' },
+  { id: 'shiki', name: '数と式' },
+  { id: 'shugo', name: '集合と命題' },
+  { id: 'kansu', name: '2次関数' },
+  { id: 'keiryo', name: '図形と計量' },
+  { id: 'data', name: 'データの分析' },
+  { id: 'drill', name: '問題ドリル' },
+  { id: 'cards', name: '公式カード' },
+  { id: 'glossary', name: '用語集' },
+];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}の実験室へ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+function gauss(r) { let u = 0, v = 0; while (u === 0) u = r(); v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+const sg = (x) => x < 0 ? '−' + Math.abs(x) : '+' + x; // 符号つき
+
+/* 座標平面（SVG） */
+function plane(o) {
+  const W = o.W || 520, H = o.H || 400, pad = 28;
+  const [x0, x1] = o.x, [y0, y1] = o.y;
+  const X = x => pad + (x - x0) / (x1 - x0) * (W - 2 * pad);
+  const Y = y => H - pad - (y - y0) / (y1 - y0) * (H - 2 * pad);
+  let s = '';
+  for (let x = Math.ceil(x0); x <= x1; x++) s += `<line class="g" x1="${X(x)}" y1="${Y(y0)}" x2="${X(x)}" y2="${Y(y1)}"/>`;
+  for (let y = Math.ceil(y0); y <= y1; y++) s += `<line class="g" x1="${X(x0)}" y1="${Y(y)}" x2="${X(x1)}" y2="${Y(y)}"/>`;
+  s += `<line class="ax" x1="${X(x0)}" y1="${Y(0)}" x2="${X(x1)}" y2="${Y(0)}"/><line class="ax" x1="${X(0)}" y1="${Y(y0)}" x2="${X(0)}" y2="${Y(y1)}"/>`;
+  const st = o.tick || 1;
+  for (let x = Math.ceil(x0 / st) * st; x <= x1; x += st) if (x) s += `<text class="tk" x="${X(x)}" y="${Y(0) + 14}" text-anchor="middle">${M(String(x))}</text>`;
+  for (let y = Math.ceil(y0 / st) * st; y <= y1; y += st) if (y) s += `<text class="tk" x="${X(0) - 5}" y="${Y(y) + 4}" text-anchor="end">${M(String(y))}</text>`;
+  s += `<text class="tk" x="${X(0) - 5}" y="${Y(0) + 14}" text-anchor="end">O</text><text class="tk" x="${X(x1) - 4}" y="${Y(0) - 6}" text-anchor="end" font-style="italic">x</text><text class="tk" x="${X(0) + 6}" y="${Y(y1) + 12}" font-style="italic">y</text>`;
+  const path = (f, a = x0, b = x1, n = 240) => {
+    let d = '';
+    for (let i = 0; i <= n; i++) { const x = a + (b - a) * i / n, y = f(x); const yy = Math.max(Math.min(Y(y), H + 200), -200); d += (i ? 'L' : 'M') + X(x).toFixed(1) + ' ' + yy.toFixed(1); }
+    return d;
+  };
+  return { W, H, X, Y, base: s, path, x0, x1, y0, y1 };
+}
+/* ===== 単元1 数と式 ===== */
+function polyStr(cs, v = 'x') { // cs: [a2, a1, a0] 整数
+  const deg = cs.length - 1; let s = '';
+  cs.forEach((c, i) => {
+    if (!c) return;
+    const p = deg - i, abs = Math.abs(c);
+    const body = p === 0 ? String(abs) : (abs === 1 ? '' : abs) + v + (p === 2 ? '²' : '');
+    s += (s ? (c < 0 ? ' − ' : ' + ') : (c < 0 ? '−' : '')) + body;
+  });
+  return s || '0';
+}
+function linStr(k, c, v = 'x') { // kx + c
+  return polyStr([k, c], v);
+}
+VIEWS.shiki = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '数と式', '式の展開・因数分解、実数と根号、1次不等式。計算のルールを「図」と「数直線」で確かめよう。'));
+  root.appendChild(points([
+    ['展開の公式', `<ul class="fx" style="font-size:1rem;line-height:1.9">
+      <li>(a + b)² = a² + 2ab + b²</li><li>(a − b)² = a² − 2ab + b²</li><li>(a + b)(a − b) = a² − b²</li>
+      <li>(x + a)(x + b) = x² + (a + b)x + ab</li><li>(ax + b)(cx + d) = acx² + (ad + bc)x + bd</li></ul>`],
+    ['実数の仲間分け', `<p>実数 ＝ <mark>有理数</mark>（分数 ${F('m', 'n')} で表せる数）＋ <mark>無理数</mark>（${R(2)}、π など）。<br>有理数は「整数」と「有限小数・循環小数」に分かれる。</p>`],
+    ['絶対値と根号', `<p>|a| は数直線上で原点からの距離。<br>a ≥ 0 なら |a| = a、a &lt; 0 なら |a| = −a。<br>${R('a²')} = <mark>|a|</mark>（a が負のときに注意）。</p>`],
+    ['分母の有理化', `<p>分母と分子に同じ数をかけて分母の√を消す。<br>${F(1, R(3) + '−' + R(2))} = ${F(R(3) + '+' + R(2), '(' + R(3) + ')² − (' + R(2) + ')²')} = ${R(3)} + ${R(2)}</p>`],
+  ]));
+
+  /* --- 展開の面積図 --- */
+  const ar = labCard('実験', '展開は長方形の面積', '(x + a)(x + b) を、たて x + b・よこ x + a の長方形として見る');
+  ar.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('ara', 'a =', 1, 4, 1, 3)}${slider('arb', 'b =', 1, 4, 1, 2)}</div>
+    <div class="lab-split"><svg class="plot" id="arsvg" viewBox="0 0 360 300" role="img" aria-label="展開の面積図"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="fx big" id="arfx"></div><div class="note" id="arnote"></div></div></div>`);
+  root.appendChild(ar);
+  function drawAr() {
+    const a = +$('#ara').value, b = +$('#arb').value;
+    $('#ara-v').textContent = a; $('#arb-v').textContent = b;
+    const u = 34, X = 5 * u, ox = 40, oy = 30; // x は長さ 5 目盛りぶんとして描く
+    const rect = (x, y, w, hh, cls, t) => `<rect x="${x}" y="${y}" width="${w}" height="${hh}" style="fill:var(${cls});stroke:var(--ink);stroke-width:1.5"/><text x="${x + w / 2}" y="${y + hh / 2 + 5}" text-anchor="middle" font-weight="700" font-size="${Math.min(16, w / 2.2, hh / 1.6)}">${t}</text>`;
+    let s = rect(ox, oy, X, X, '--accent-soft', 'x²') + rect(ox + X, oy, a * u, X, '--cobalt-soft', a === 1 ? 'x' : a + 'x') +
+      rect(ox, oy + X, X, b * u, '--cobalt-soft', b === 1 ? 'x' : b + 'x') + rect(ox + X, oy + X, a * u, b * u, '--good-soft', a * b);
+    s += `<text x="${ox + X / 2}" y="${oy - 8}" text-anchor="middle" class="lbl">x</text><text x="${ox + X + a * u / 2}" y="${oy - 8}" text-anchor="middle" class="lbl">${a}</text>`;
+    s += `<text x="${ox - 10}" y="${oy + X / 2 + 4}" text-anchor="end" class="lbl">x</text><text x="${ox - 10}" y="${oy + X + b * u / 2 + 4}" text-anchor="end" class="lbl">${b}</text>`;
+    $('#arsvg').setAttribute('viewBox', `0 0 ${ox + X + a * u + 20} ${oy + X + b * u + 20}`);
+    $('#arsvg').innerHTML = s;
+    $('#arfx').innerHTML = `(x + ${a})(x + ${b})<br>= x² + ${a}x + ${b}x + ${a * b}<br>= <mark>x² + ${a + b}x + ${a * b}</mark>`;
+    $('#arnote').innerHTML = a === b ? `a = b のときは正方形。(x + ${a})² = x² + <b>2×${a}</b>x + ${a}² になり、公式 (a + b)² = a² + 2ab + b² と同じ形。` :
+      `青い2枚の長方形を合わせると (${a} + ${b})x。x の係数は「たした数」、数の項は緑の「かけた数」になる。`;
+  }
+  $('#ara', ar).oninput = drawAr; $('#arb', ar).oninput = drawAr; drawAr();
+
+  /* --- たすき掛け --- */
+  const tk = labCard('練習', 'たすき掛けで因数分解', 'ax² + bx + c を (px + q)(rx + s) に。4つの数を入れると、ななめのかけ算が自動で出る');
+  tk.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="fx big" id="tkq"></div><button class="btn ghost sm" id="tknew">別の問題</button></div>
+    <div class="lab-split"><div style="display:grid;gap:10px">
+      <div class="tasuki" aria-label="たすき掛けの表">
+        <span class="small muted">x の係数</span><span class="small muted">数</span><span></span><span class="small muted">ななめのかけ算</span>
+        <input type="number" id="tp" aria-label="1行目 x の係数"><input type="number" id="tq" aria-label="1行目 数"><span class="x">⤡</span><span id="tc1">—</span>
+        <input type="number" id="tr" aria-label="2行目 x の係数"><input type="number" id="ts" aria-label="2行目 数"><span class="x">⤢</span><span id="tc2">—</span>
+        <span id="tpr">—</span><span id="tqs">—</span><span></span><span id="tsum">—</span>
+      </div>
+      <p class="small muted">いちばん下の行：左は「たての積」（= a になればよい）、右は「ななめの和」（= b になればよい）。</p>
+    </div><div style="display:grid;gap:10px;align-content:start"><div class="res" id="tkres">数を入れてみよう。</div><div class="row"><button class="btn ghost sm" id="tkhint">ヒント</button><button class="btn ghost sm" id="tkans">答えを見る</button></div></div></div>`);
+  root.appendChild(tk);
+  let T = null;
+  function newTk() {
+    for (;;) {
+      const p = 1 + Math.floor(Math.random() * 3), r = 1 + Math.floor(Math.random() * 4);
+      const q = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5][Math.floor(Math.random() * 10)], s = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5][Math.floor(Math.random() * 10)];
+      if (p * r < 2 || gcd(p, q) !== 1 || gcd(r, s) !== 1) continue;
+      const b = p * s + q * r; if (!b) continue;
+      T = { p, q, r, s, a: p * r, b, c: q * s }; break;
+    }
+    $('#tkq').innerHTML = polyStr([T.a, T.b, T.c]);
+    ['#tp', '#tq', '#tr', '#ts'].forEach(i => $(i).value = '');
+    checkTk();
+  }
+  function checkTk() {
+    const v = ['#tp', '#tq', '#tr', '#ts'].map(i => $(i).value === '' ? null : +$(i).value);
+    const [p, q, r, s] = v;
+    $('#tc1').textContent = p != null && s != null ? `${p}×${s} = ${p * s}` : '—';
+    $('#tc2').textContent = r != null && q != null ? `${r}×${q} = ${r * q}` : '—';
+    $('#tpr').textContent = p != null && r != null ? `積 ${p * r}` : '—';
+    $('#tqs').textContent = q != null && s != null ? `積 ${q * s}` : '—';
+    $('#tsum').textContent = v.every(x => x != null) ? `和 ${p * s + r * q}` : '—';
+    const res = $('#tkres'); res.className = 'res';
+    if (v.some(x => x == null)) { res.innerHTML = '4つの数を入れてみよう。'; return; }
+    const okA = p * r === T.a, okC = q * s === T.c, okB = p * s + r * q === T.b;
+    if (okA && okC && okB) { res.className = 'res ok'; res.innerHTML = `<b>正解！</b><span class="fx">${polyStr([T.a, T.b, T.c])} = (${linStr(p, q)})(${linStr(r, s)})</span>`; }
+    else { res.className = 'res ng'; res.innerHTML = `${okA ? '✓' : '✗'} たての積が ${T.a}　${okC ? '✓' : '✗'} 数の積が ${T.c}　${okB ? '✓' : '✗'} ななめの和が ${T.b}`; }
+  }
+  ['#tp', '#tq', '#tr', '#ts'].forEach(i => $(i, tk).oninput = checkTk);
+  $('#tknew', tk).onclick = newTk;
+  $('#tkhint', tk).onclick = () => { $('#tkres').className = 'res'; $('#tkres').innerHTML = `x² の係数 ${T.a} を「${T.p} と ${T.r}」に分けてみよう。数の項 ${T.c} はかけて ${T.c} になる2数の組を順に試す。`; };
+  $('#tkans', tk).onclick = () => { $('#tp').value = T.p; $('#tq').value = T.q; $('#tr').value = T.r; $('#ts').value = T.s; checkTk(); };
+  newTk();
+
+  /* --- 絶対値と不等式 --- */
+  const ab = labCard('実験', '絶対値を含む不等式を数直線で', '|x − a| は「x と a の距離」');
+  ab.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('aba', 'a =', -5, 5, 1, 2)}${slider('abb', 'b =', 1, 5, 1, 3)}
+    <label class="ctl">不等号<div class="seg" id="abs"><button aria-pressed="true" data-s="lt">&lt; b</button><button aria-pressed="false" data-s="gt">&gt; b</button></div></label></div>
+    <svg class="plot" id="absvg" viewBox="0 0 560 90" role="img" aria-label="数直線"></svg><div class="fx" id="abfx"></div><div class="note" id="abnote"></div>`);
+  root.appendChild(ab);
+  let abS = 'lt';
+  $$('[data-s]', ab).forEach(b => b.onclick = () => { abS = b.dataset.s; $$('[data-s]', ab).forEach(x => x.setAttribute('aria-pressed', x === b)); drawAb(); });
+  function drawAb() {
+    const a = +$('#aba').value, b = +$('#abb').value; $('#aba-v').textContent = M(String(a)); $('#abb-v').textContent = b;
+    const X = x => 20 + (x + 11) / 22 * 520, y = 50;
+    let s = `<line class="ax" x1="10" y1="${y}" x2="550" y2="${y}"/>`;
+    for (let x = -10; x <= 10; x++) s += `<line class="ax" x1="${X(x)}" y1="${y - 5}" x2="${X(x)}" y2="${y + 5}"/>${x % 2 === 0 || x === a - b || x === a + b ? `<text class="tk" x="${X(x)}" y="${y + 22}" text-anchor="middle">${M(String(x))}</text>` : ''}`;
+    const L = a - b, Rr = a + b;
+    if (abS === 'lt') s += `<line class="hi" x1="${X(L)}" y1="${y}" x2="${X(Rr)}" y2="${y}"/>`;
+    else s += `<line class="hi" x1="${X(-11)}" y1="${y}" x2="${X(L)}" y2="${y}"/><line class="hi" x1="${X(Rr)}" y1="${y}" x2="${X(11)}" y2="${y}"/>`;
+    s += `<circle cx="${X(L)}" cy="${y}" r="6" style="fill:var(--card);stroke:var(--accent);stroke-width:2.5"/><circle cx="${X(Rr)}" cy="${y}" r="6" style="fill:var(--card);stroke:var(--accent);stroke-width:2.5"/>`;
+    s += `<circle class="dot2" cx="${X(a)}" cy="${y}" r="5"/><text x="${X(a)}" y="${y - 12}" text-anchor="middle" class="lbl" style="fill:var(--cobalt)">a</text>`;
+    s += `<path d="M${X(a)} ${y - 26} H${X(Rr)}" style="stroke:var(--cobalt);stroke-width:1.5;fill:none" marker-end=""/><text x="${(X(a) + X(Rr)) / 2}" y="${y - 30}" text-anchor="middle" class="tk">距離 ${b}</text>`;
+    $('#absvg').innerHTML = s;
+    const xa = a === 0 ? '|x|' : `|x ${a < 0 ? '+' : '−'} ${Math.abs(a)}|`;
+    $('#abfx').innerHTML = abS === 'lt' ? `${xa} &lt; ${b}　⇔　${M(String(-b))} &lt; ${a === 0 ? 'x' : `x ${a < 0 ? '+' : '−'} ${Math.abs(a)}`} &lt; ${b}　⇔　<mark>${M(String(L))} &lt; x &lt; ${M(String(Rr))}</mark>`
+      : `${xa} &gt; ${b}　⇔　<mark>x &lt; ${M(String(L))}, ${M(String(Rr))} &lt; x</mark>`;
+    $('#abnote').innerHTML = abS === 'lt' ? `数直線で ${M(String(a))} からの距離が ${b} より<b>小さい</b>範囲 → ${M(String(a))} を中心に左右 ${b} の「内側」。` : `${M(String(a))} からの距離が ${b} より<b>大きい</b>範囲 → 「外側」の2つの部分。答えは2つに分かれる。`;
+  }
+  $('#aba', ab).oninput = drawAb; $('#abb', ab).oninput = drawAb; drawAb();
+  root.appendChild(trap('1次不等式で両辺に<b>負の数</b>をかける・割るときは、不等号の向きが逆になる。−2x &lt; 6 → x &gt; −3。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('shiki'));
+};
+/* ===== 単元2 集合と命題 ===== */
+VIEWS.shugo = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '集合と命題', 'ベン図で集合を表し、命題の真偽や「必要・十分」を数直線で判断する。証明のしかた（対偶・背理法）につながる単元。'));
+  root.appendChild(points([
+    ['集合の記号', `<p>A∩B：<mark>共通部分</mark>（A かつ B）<br>A∪B：<mark>和集合</mark>（A または B）<br>${BAR('A')}：<mark>補集合</mark>（A でないもの）<br>A ⊂ B：A は B の部分集合</p>`],
+    ['ド・モルガンの法則', `<p class="fx" style="font-size:1rem">${BAR('A∪B')} = ${BAR('A')} ∩ ${BAR('B')}<br>${BAR('A∩B')} = ${BAR('A')} ∪ ${BAR('B')}</p><p class="small muted">バーを分けると ∪ と ∩ が入れかわる。</p>`],
+    ['必要条件・十分条件', `<p>p ⇒ q が真のとき<br>p は q であるための <mark>十分条件</mark><br>q は p であるための <mark>必要条件</mark><br>両方向とも真なら <mark>必要十分条件</mark>（同値）。</p>`],
+    ['逆・裏・対偶', `<p>もとの命題「p ⇒ q」に対して<br>逆「q ⇒ p」　裏「${BAR('p')} ⇒ ${BAR('q')}」　<mark>対偶</mark>「${BAR('q')} ⇒ ${BAR('p')}」<br>もとの命題と対偶の真偽は<b>必ず一致</b>する。</p>`],
+  ]));
+
+  /* --- ベン図 --- */
+  const vn = labCard('実験', 'ベン図をぬってみよう', '領域を押すと色がつく。お題の集合をぬって「答え合わせ」');
+  vn.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="fx big" id="vnq"></div><div class="row"><button class="btn ghost sm" id="vnnew">別のお題</button></div></div>
+    <div class="lab-split"><svg class="plot venn" viewBox="0 0 400 280" role="group" aria-label="ベン図">
+      <path class="rg" data-r="o" fill-rule="evenodd" d="M20 20 H380 V260 H20 Z M200 65.17 A90 90 0 1 0 200 214.83 A90 90 0 1 0 200 65.17 Z"/>
+      <path class="rg" data-r="a" d="M200 65.17 A90 90 0 1 0 200 214.83 A90 90 0 0 1 200 65.17 Z"/>
+      <path class="rg" data-r="ab" d="M200 65.17 A90 90 0 0 1 200 214.83 A90 90 0 0 1 200 65.17 Z"/>
+      <path class="rg" data-r="b" d="M200 65.17 A90 90 0 1 1 200 214.83 A90 90 0 0 0 200 65.17 Z"/>
+      <text x="32" y="42">U</text><text x="88" y="64" font-size="18">A</text><text x="298" y="64" font-size="18">B</text>
+      <g id="vnel" class="tk" style="font-size:14px"></g>
+    </svg>
+    <div style="display:grid;gap:10px;align-content:start">
+      <label class="row small" style="gap:6px"><input type="checkbox" id="vnshow"> 要素も表示する（U = {1, 2, …, 12}、A：2の倍数、B：3の倍数）</label>
+      <div class="row"><button class="btn" id="vnchk">答え合わせ</button><button class="btn ghost sm" id="vnclr">消す</button></div>
+      <div class="res" id="vnres">お題の集合にあたる部分を押してぬろう。</div></div></div>`);
+  root.appendChild(vn);
+  const VQ = [
+    ['A∩B', ['ab'], 'A と B の両方に入る部分（重なり）。'],
+    ['A∪B', ['a', 'ab', 'b'], 'A か B の少なくとも一方に入る部分。'],
+    [BAR('A'), ['b', 'o'], 'A の外側すべて。B だけの部分も入る。'],
+    [BAR('A') + '∩B', ['b'], 'A でなく、B である部分 ＝ B だけの部分。'],
+    ['A∩' + BAR('B'), ['a'], 'A であって B でない部分 ＝ A だけの部分。'],
+    [BAR('A∪B'), ['o'], `ド・モルガンの法則で ${BAR('A')}∩${BAR('B')} と同じ。どちらにも入らない部分。`],
+    [BAR('A∩B'), ['a', 'b', 'o'], `ド・モルガンの法則で ${BAR('A')}∪${BAR('B')} と同じ。重なり以外のすべて。`],
+    [BAR('A') + '∪B', ['ab', 'b', 'o'], 'A の外側に、B 全体を加えた部分。'],
+  ];
+  const EL = { a: [2, 4, 8, 10], ab: [6, 12], b: [3, 9], o: [1, 5, 7, 11] };
+  const ELP = { a: [[95, 120], [125, 120], [95, 160], [125, 160]], ab: [[200, 125], [200, 160]], b: [[275, 120], [275, 160]], o: [[45, 230], [90, 245], [310, 245], [355, 230]] };
+  let vq = 0, on = new Set();
+  function drawVn() {
+    $('#vnq').innerHTML = `お題：${VQ[vq][0]}`;
+    $$('.rg', vn).forEach(p => { p.classList.toggle('on', on.has(p.dataset.r)); p.classList.remove('ok', 'miss'); });
+    $('#vnel').innerHTML = $('#vnshow').checked ? Object.entries(ELP).map(([k, ps]) => ps.map(([x, y], i) => `<text x="${x}" y="${y}" text-anchor="middle">${EL[k][i]}</text>`).join('')).join('') : '';
+  }
+  $$('.rg', vn).forEach(p => p.onclick = () => { const r = p.dataset.r; on.has(r) ? on.delete(r) : on.add(r); $('#vnres').className = 'res'; $('#vnres').textContent = 'ぬれたら「答え合わせ」。'; drawVn(); });
+  $('#vnchk', vn).onclick = () => {
+    const ans = new Set(VQ[vq][1]);
+    const ok = ans.size === on.size && [...ans].every(r => on.has(r));
+    $$('.rg', vn).forEach(p => { const r = p.dataset.r; if (ok && on.has(r)) p.classList.add('ok'); if (!ok && ans.has(r) !== on.has(r)) p.classList.add('miss'); });
+    const elems = $('#vnshow').checked ? `<span>要素：{${[...ans].flatMap(r => EL[r]).sort((x, y) => x - y).join(', ')}}</span>` : '';
+    $('#vnres').className = 'res ' + (ok ? 'ok' : 'ng');
+    $('#vnres').innerHTML = ok ? `<b>正解！</b><span>${VQ[vq][2]}</span>${elems}` : '<b>おしい。</b><span>赤くなった部分がちがうよ。押して直してみよう。</span>';
+  };
+  $('#vnclr', vn).onclick = () => { on.clear(); drawVn(); };
+  $('#vnnew', vn).onclick = () => { vq = (vq + 1 + Math.floor(Math.random() * (VQ.length - 1))) % VQ.length; on.clear(); $('#vnres').className = 'res'; $('#vnres').textContent = 'お題の集合にあたる部分を押してぬろう。'; drawVn(); };
+  $('#vnshow', vn).onchange = drawVn;
+  drawVn();
+
+  /* --- 必要・十分 --- */
+  const CONDS = [
+    ['x > 3', [{ a: 3, b: Infinity }]], ['x > 1', [{ a: 1, b: Infinity }]], ['x ≧ 1', [{ a: 1, b: Infinity, ia: 1 }]],
+    ['0 < x < 2', [{ a: 0, b: 2 }]], ['−1 < x < 3', [{ a: -1, b: 3 }]], ['|x| < 2', [{ a: -2, b: 2 }]],
+    ['x = 2', [{ a: 2, b: 2, ia: 1, ib: 1 }]], ['x² = 4', [{ a: -2, b: -2, ia: 1, ib: 1 }, { a: 2, b: 2, ia: 1, ib: 1 }]],
+    ['x² > 4', [{ a: -Infinity, b: -2 }, { a: 2, b: Infinity }]],
+  ];
+  const inC = (c, x) => c[1].some(s => (x > s.a || (s.ia && x === s.a)) && (x < s.b || (s.ib && x === s.b)));
+  const GRID = []; for (let k = -2000; k <= 2000; k++) GRID.push(k / 200);
+  const cex = (p, q) => { // p を満たし q を満たさない x（できるだけきれいな数）
+    const c = GRID.filter(x => inC(p, x) && !inC(q, x)); if (!c.length) return null;
+    return c.find(Number.isInteger) ?? c.find(x => Number.isInteger(x * 2)) ?? c[0];
+  };
+  const ns = labCard('実験', '必要条件・十分条件を数直線で判定', '条件を表す範囲が「すっぽり入る」かどうかを見る');
+  const opt = (sel) => CONDS.map((c, i) => `<option value="${i}" ${i === sel ? 'selected' : ''}>${c[0]}</option>`).join('');
+  ns.insertAdjacentHTML('beforeend', `<div class="row"><label class="ctl" for="nsp">条件 p<select id="nsp">${opt(0)}</select></label><label class="ctl" for="nsq">条件 q<select id="nsq">${opt(1)}</select></label></div>
+    <div class="nl-legend"><span><i style="background:var(--accent)"></i>p を満たす x</span><span><i style="background:var(--cobalt)"></i>q を満たす x</span></div>
+    <svg class="plot" id="nssvg" viewBox="0 0 560 120" role="img" aria-label="条件の範囲"></svg>
+    <div class="grid2"><div class="res" id="ns1"></div><div class="res" id="ns2"></div></div><div class="note" id="nsans"></div>`);
+  root.appendChild(ns);
+  function drawNs() {
+    const p = CONDS[+$('#nsp').value], q = CONDS[+$('#nsq').value];
+    const X = x => 20 + (Math.max(-6, Math.min(6, x)) + 6) / 12 * 520;
+    let s = `<line class="ax" x1="10" y1="100" x2="550" y2="100"/>`;
+    for (let x = -5; x <= 5; x++) s += `<line class="ax" x1="${X(x)}" y1="96" x2="${X(x)}" y2="104"/><text class="tk" x="${X(x)}" y="117" text-anchor="middle">${M(String(x))}</text>`;
+    [[p, 35, '--accent'], [q, 70, '--cobalt']].forEach(([c, y, col]) => {
+      c[1].forEach(sg => {
+        if (sg.a === sg.b) { s += `<circle cx="${X(sg.a)}" cy="${y}" r="7" style="fill:var(${col})"/>`; return; }
+        s += `<line x1="${X(sg.a)}" y1="${y}" x2="${X(sg.b)}" y2="${y}" style="stroke:var(${col});stroke-width:6;stroke-linecap:butt"/>`;
+        [[sg.a, sg.ia], [sg.b, sg.ib]].forEach(([e, inc]) => { if (isFinite(e)) s += `<circle cx="${X(e)}" cy="${y}" r="6" style="fill:var(${inc ? col : '--card'});stroke:var(${col});stroke-width:2.5"/>`; });
+      });
+      s += `<text x="8" y="${y + 5}" class="lbl" style="fill:var(${col})">${c === p ? 'p' : 'q'}</text>`;
+    });
+    $('#nssvg').innerHTML = s;
+    const c1 = cex(p, q), c2 = cex(q, p);
+    const tf = (c, A, B) => c === null ? `<b style="color:var(--good)">真</b>　<span class="small">「${A}」の範囲は「${B}」にすっぽり入る</span>` : `<b style="color:var(--bad)">偽</b>　<span class="small">反例：x = ${M(String(c))}</span>`;
+    $('#ns1').innerHTML = `<span>p ⇒ q（${p[0]} ならば ${q[0]}）</span>${tf(c1, p[0], q[0])}`;
+    $('#ns2').innerHTML = `<span>q ⇒ p（${q[0]} ならば ${p[0]}）</span>${tf(c2, q[0], p[0])}`;
+    const r = c1 === null && c2 === null ? '<mark>必要十分条件</mark>である' : c1 === null ? '<mark>十分条件</mark>であるが、必要条件ではない' : c2 === null ? '<mark>必要条件</mark>であるが、十分条件ではない' : '必要条件でも十分条件でもない';
+    $('#nsans').innerHTML = `p は q であるための ${r}。${c1 === null && c2 !== null ? '<br><span class="small">せまい方（p）⇒ 広い方（q）が真。矢印の出発点が「十分」、到着点が「必要」。</span>' : ''}`;
+  }
+  $('#nsp', ns).onchange = drawNs; $('#nsq', ns).onchange = drawNs; drawNs();
+
+  /* --- 逆・裏・対偶 --- */
+  const EX = [
+    { p: 'x = 2', q: 'x² = 4', np: 'x ≠ 2', nq: 'x² ≠ 4', t: [true, false, false, true], c: ['', 'x = −2', 'x = −2', ''] },
+    { p: 'x > 3', q: 'x > 1', np: 'x ≦ 3', nq: 'x ≦ 1', t: [true, false, false, true], c: ['', 'x = 2', 'x = 2', ''] },
+    { p: '自然数 n が 6 の倍数', q: 'n は 3 の倍数', np: 'n が 6 の倍数でない', nq: 'n は 3 の倍数でない', t: [true, false, false, true], c: ['', 'n = 3', 'n = 3', ''] },
+    { p: 'x + y = 0', q: 'x = 0 かつ y = 0', np: 'x + y ≠ 0', nq: 'x ≠ 0 または y ≠ 0', t: [false, true, true, false], c: ['x = 1, y = −1', '', '', 'x = 1, y = −1'] },
+  ];
+  const gy = labCard('練習', '逆・裏・対偶の真偽', '真か偽かを選んでから「答え合わせ」。もとの命題と対偶の関係に注目');
+  gy.insertAdjacentHTML('beforeend', `<div class="seg" id="gyex">${EX.map((e, i) => `<button aria-pressed="${i === 0}" data-i="${i}">例${i + 1}</button>`).join('')}</div><div id="gyt" class="scroll-x"></div><div class="row"><button class="btn" id="gychk">答え合わせ</button></div><div class="note" id="gyn">もとの命題が偽の例（例4）もある。対偶の真偽はどうなるかな？</div>`);
+  root.appendChild(gy);
+  let gi = 0;
+  function drawGy() {
+    const e = EX[gi];
+    const rows = [['もとの命題', e.p, e.q], ['逆', e.q, e.p], ['裏', e.np, e.nq], ['対偶', e.nq, e.np]];
+    $('#gyt').innerHTML = `<table class="tbl"><thead><tr><th>種類</th><th>命題</th><th>真偽</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td><b>${r[0]}</b></td><td>${r[1]} ならば ${r[2]}</td><td><div class="seg" data-row="${i}"><button aria-pressed="false" data-v="1">真</button><button aria-pressed="false" data-v="0">偽</button></div><div class="small" data-fb="${i}"></div></td></tr>`).join('')}</tbody></table>`;
+    $$('[data-row] button', gy).forEach(b => b.onclick = () => { $$('button', b.parentNode).forEach(x => x.setAttribute('aria-pressed', x === b)); });
+  }
+  $$('#gyex button', gy).forEach(b => b.onclick = () => { gi = +b.dataset.i; $$('#gyex button', gy).forEach(x => x.setAttribute('aria-pressed', x === b)); drawGy(); });
+  $('#gychk', gy).onclick = () => {
+    const e = EX[gi]; let n = 0;
+    e.t.forEach((t, i) => {
+      const b = $(`[data-row="${i}"] [aria-pressed="true"]`, gy), fb = $(`[data-fb="${i}"]`, gy);
+      const ok = b && (b.dataset.v === '1') === t; if (ok) n++;
+      fb.innerHTML = `<span style="color:var(${ok ? '--good' : '--bad'});font-weight:700">${ok ? '○' : '×'} ${t ? '真' : '偽'}</span>${t ? '' : `（反例：${e.c[i]}）`}`;
+    });
+    $('#gyn').innerHTML = `${n} / 4 正解。もとの命題と<mark>対偶</mark>、逆と裏は、それぞれ真偽が一致している（逆と裏はたがいに対偶の関係）。`;
+  };
+  drawGy();
+  root.appendChild(trap(`「x = 0 または y = 0」の否定は「x ≠ 0 <b>かつ</b> y ≠ 0」。否定すると「または」と「かつ」が入れかわる（ド・モルガン）。`));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('shugo'));
+};
+/* ===== 単元3 2次関数 ===== */
+function simpSqrt(n) { let k = 1, m = n; for (let d = 2; d * d <= m; d++) while (m % (d * d) === 0) { m /= d * d; k *= d; } return [k, m]; }
+// x² + bx + c = 0 の2つの解（b, c は整数）。[α, β, 小数α, 小数β]
+function rootPair(b, c) {
+  const D = b * b - 4 * c; const [k, m] = simpSqrt(D);
+  const al = (-b - Math.sqrt(D)) / 2, be = (-b + Math.sqrt(D)) / 2;
+  if (m === 1) return [qs(Q(-b - k, 2)), qs(Q(-b + k, 2)), al, be];
+  const rp = (sgn) => {
+    if ((b % 2 === 0) && (k % 2 === 0)) { const p = -b / 2, q = k / 2; return `${p ? M(String(p)) + ' ' + (sgn < 0 ? '−' : '+') + ' ' : (sgn < 0 ? '−' : '')}${q === 1 ? '' : q}√${m}`; }
+    return F(`${b ? M(String(-b)) + ' ' + (sgn < 0 ? '−' : '+') + ' ' : (sgn < 0 ? '−' : '')}${k === 1 ? '' : k}√${m}`, 2);
+  };
+  return [rp(-1), rp(1), al, be];
+}
+VIEWS.kansu = (root) => {
+  root.appendChild(sectionHead('UNIT 3', '2次関数', 'グラフの頂点と軸、最大・最小、2次方程式・2次不等式。すべて「グラフを思い浮かべる」ことから始まる。'));
+  root.appendChild(points([
+    ['グラフの形', `<p>y = a(x − p)² + q のグラフは<br>y = ax² を <mark>x 軸方向に p、y 軸方向に q</mark> 平行移動した放物線。<br>頂点 (p, q)、軸 x = p。a &gt; 0 で下に凸、a &lt; 0 で上に凸。</p>`],
+    ['平方完成', `<p class="fx" style="font-size:1rem">ax² + bx + c = a(x + ${F('b', '2a')})² − ${F('b² − 4ac', '4a')}</p><p class="small muted">頂点の x 座標は −${F('b', '2a')}。</p>`],
+    ['判別式 D = b² − 4ac', `<p>D &gt; 0：x 軸と <b>2点</b>で交わる<br>D = 0：x 軸と <b>接する</b>（1点）<br>D &lt; 0：x 軸と <b>共有点なし</b></p>`],
+    ['解の公式', `<p class="fx" style="font-size:1rem">ax² + bx + c = 0 の解は<br>x = ${F('−b ± ' + R('b² − 4ac'), '2a')}</p>`],
+  ]));
+
+  /* --- グラフ --- */
+  const gr = labCard('実験', '放物線を動かす', 'y = a(x − p)² + q の a、p、q を動かして、グラフの変化を見よう');
+  gr.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('ga', 'a =', -3, 3, 0.5, 1)}${slider('gp', 'p =', -4, 4, 0.5, 1)}${slider('gq', 'q =', -4, 4, 0.5, -2)}</div>
+    <div class="lab-split"><svg class="plot" id="gsvg" viewBox="0 0 520 400" role="img" aria-label="放物線のグラフ"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="fx big" id="gfx"></div><div class="stat-grid" id="ginfo"></div><div class="note" id="gnote"></div></div></div>`);
+  root.appendChild(gr);
+  function drawG() {
+    let a = +$('#ga').value; if (a === 0) { a = 0.5; $('#ga').value = 0.5; }
+    const p = +$('#gp').value, q = +$('#gq').value;
+    $('#ga-v').textContent = fmt(a); $('#gp-v').textContent = fmt(p); $('#gq-v').textContent = fmt(q);
+    const P = plane({ x: [-6, 6], y: [-6, 6] });
+    let s = P.base + `<path class="cv2" d="${P.path(x => a * x * x)}"/>`;
+    s += `<line class="axisline" x1="${P.X(p)}" y1="${P.Y(6)}" x2="${P.X(p)}" y2="${P.Y(-6)}"/>`;
+    s += `<path class="cv" d="${P.path(x => a * (x - p) ** 2 + q)}"/><circle class="dot" cx="${P.X(p)}" cy="${P.Y(q)}" r="6"/>`;
+    s += `<text class="lbl" x="${P.X(p) + 8}" y="${P.Y(q) + (a > 0 ? 18 : -10)}" style="fill:var(--accent)">(${fmt(p)}, ${fmt(q)})</text>`;
+    $('#gsvg').innerHTML = s;
+    const sgnP = p === 0 ? 'x' : `x ${p > 0 ? '−' : '+'} ${fmt(Math.abs(p))}`;
+    $('#gfx').innerHTML = `y = ${a === 1 ? '' : a === -1 ? '−' : fmt(a)}(${sgnP})² ${q === 0 ? '' : (q > 0 ? '+ ' : '− ') + fmt(Math.abs(q))}`;
+    const b = -2 * a * p, c = a * p * p + q;
+    $('#ginfo').innerHTML = `<div class="var"><div class="k">頂点</div><div class="v">(${fmt(p)}, ${fmt(q)})</div></div><div class="var"><div class="k">軸</div><div class="v">x = ${fmt(p)}</div></div><div class="var"><div class="k">向き</div><div class="v">${a > 0 ? '下に凸' : '上に凸'}</div></div>`;
+    $('#gnote').innerHTML = `点線は y = ${fmt(a)}x²。これを x 軸方向に ${fmt(p)}、y 軸方向に ${fmt(q)} 動かした。<br>展開すると y = ${fmt(a)}x² ${b < 0 ? '−' : '+'} ${fmt(Math.abs(b))}x ${c < 0 ? '−' : '+'} ${fmt(Math.abs(c))}`;
+  }
+  ['#ga', '#gp', '#gq'].forEach(i => $(i, gr).oninput = drawG); drawG();
+  root.appendChild(trap('y = (x <b>−</b> 3)² の頂点は (<b>3</b>, 0)。かっこの中の符号と頂点の x 座標は逆になる。'));
+
+  /* --- 平方完成 --- */
+  const sq = labCard('練習', '平方完成を1行ずつ', '係数を入れると、平方完成の途中式が出る（a, b, c は整数）');
+  sq.insertAdjacentHTML('beforeend', `<div class="row"><label class="ctl">a<input type="number" id="sqa" value="2" style="width:5em"></label><label class="ctl">b<input type="number" id="sqb" value="-8" style="width:5em"></label><label class="ctl">c<input type="number" id="sqc" value="5" style="width:5em"></label><button class="btn ghost sm" id="sqr" style="align-self:end">ランダム</button></div>
+    <ol class="steps fx" id="sqs" style="font-size:1.05rem"></ol><div class="res" id="sqres"></div>`);
+  root.appendChild(sq);
+  function drawSq() {
+    const a = parseInt($('#sqa').value) || 0, b = parseInt($('#sqb').value) || 0, c = parseInt($('#sqc').value) || 0;
+    const out = $('#sqs'), res = $('#sqres');
+    if (!a) { out.innerHTML = '<li>a = 0 だと2次関数にならない。a に 0 以外の整数を入れてね。</li>'; res.innerHTML = ''; return; }
+    const A = Q(a), B = Q(b), C = Q(c);
+    const h2 = Q(b, 2 * a); // b/2a
+    const term = (x, after = '') => `${x.n < 0 ? '−' : '+'} ${qs(Q(Math.abs(x.n), x.d))}${after}`;
+    const coef = a === 1 ? '' : a === -1 ? '−' : String(a).replace('-', '−');
+    const inner = (x) => x.n === 0 ? 'x' : `x ${term(x)}`;
+    const q = qadd(C, qneg(qmul(A, qmul(h2, h2)))); // c − a(b/2a)²
+    const st = [];
+    st.push([`y = ${polyStr([a, b, c])}`, 'もとの式']);
+    if (b === 0) { st.push([`y = ${coef}x² ${c ? term(C) : ''}`, 'x の1次の項がないので、すでに平方完成の形']); }
+    else {
+      const ba = Q(b, a);
+      st.push([`y = ${coef}(x² ${term(ba, 'x')}) ${c ? term(C) : ''}`, a === 1 ? 'x² と x の項をかっこでまとめる' : `x² と x の項を a = ${M(String(a))} でくくる`]);
+      st.push([`y = ${coef}{(${inner(h2)})² − (${qs(h2)})²} ${c ? term(C) : ''}`, `x の係数 ${qs(ba)} の半分 ${qs(h2)} を使って (x + ●)² を作り、よけいな分を引く`]);
+      const mid = qneg(qmul(A, qmul(h2, h2)));
+      st.push([`y = ${coef}(${inner(h2)})² ${term(mid)} ${c ? term(C) : ''}`, '中かっこをはずす（' + M(String(a)) + ' をかける）']);
+      st.push([`y = ${coef}(${inner(h2)})² ${q.n ? term(q) : ''}`, '数の項を計算する']);
+    }
+    out.innerHTML = st.map(([f, w]) => `<li><span>${f}<span class="why">${w}</span></span></li>`).join('');
+    res.innerHTML = `<span>頂点 <b>(${qs(qneg(h2))}, ${qs(q)})</b>　軸 <b>x = ${qs(qneg(h2))}</b>　${a > 0 ? '下に凸 → 頂点で<b>最小</b>' : '上に凸 → 頂点で<b>最大</b>'}</span>`;
+  }
+  ['#sqa', '#sqb', '#sqc'].forEach(i => $(i, sq).oninput = drawSq);
+  $('#sqr', sq).onclick = () => { const r = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1)); let a; do { a = r(-3, 3); } while (!a); $('#sqa').value = a; $('#sqb').value = r(-8, 8); $('#sqc').value = r(-9, 9); drawSq(); };
+  drawSq();
+
+  /* --- 定義域つきの最大・最小 --- */
+  const mm = labCard('実験', '範囲が動くときの最大・最小', 'f(x) = x² − 4x + 5 = (x − 2)² + 1 で、範囲 t ≦ x ≦ t + 2 を動かす');
+  mm.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('mmt', 't =', -1, 4, 0.5, -1)}</div>
+    <div class="lab-split"><svg class="plot" id="mmsvg" viewBox="0 0 520 440" role="img" aria-label="最大最小のグラフ"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="fx" id="mmrange"></div><div class="stat-grid" id="mminfo"></div><div class="note" id="mmnote"></div></div></div>`);
+  root.appendChild(mm);
+  const f = x => x * x - 4 * x + 5;
+  function drawMm() {
+    const t = +$('#mmt').value; $('#mmt-v').textContent = fmt(t);
+    const P = plane({ x: [-2, 7], y: [-1, 18], H: 440, tick: 2 });
+    const L = t, Rr = t + 2;
+    let mn, mnx, mx, mxx, cmin, cmax;
+    if (Rr < 2) { mnx = Rr; cmin = '範囲が軸 x = 2 より<b>左</b>にある → 右はし x = t + 2 で最小'; }
+    else if (L > 2) { mnx = L; cmin = '範囲が軸 x = 2 より<b>右</b>にある → 左はし x = t で最小'; }
+    else { mnx = 2; cmin = '範囲に軸 x = 2 が<b>入っている</b> → 頂点で最小'; }
+    mn = f(mnx);
+    const mid = t + 1;
+    if (mid < 2) { mxx = [L]; cmax = '範囲のまん中 t + 1 が軸より左 → 軸から遠い左はしで最大'; }
+    else if (mid > 2) { mxx = [Rr]; cmax = '範囲のまん中 t + 1 が軸より右 → 軸から遠い右はしで最大'; }
+    else { mxx = [L, Rr]; cmax = 'まん中が軸と一致（t = 1）→ 両はしで同じ値の最大'; }
+    mx = f(mxx[0]);
+    let s = P.base;
+    s += `<rect x="${P.X(L)}" y="${P.Y(18)}" width="${P.X(Rr) - P.X(L)}" height="${P.Y(-1) - P.Y(18)}" class="shb" opacity=".6"/>`;
+    s += `<line class="axisline" x1="${P.X(2)}" y1="${P.Y(18)}" x2="${P.X(2)}" y2="${P.Y(-1)}"/>`;
+    s += `<path class="cv2" d="${P.path(f, -2, 7)}"/><path class="hi" d="${P.path(f, L, Rr, 80)}"/>`;
+    s += `<circle cx="${P.X(mnx)}" cy="${P.Y(mn)}" r="7" style="fill:var(--cobalt)"/>`;
+    mxx.forEach(x => s += `<circle cx="${P.X(x)}" cy="${P.Y(mx)}" r="7" class="dot"/>`);
+    s += `<text class="lbl" x="${P.X(mnx)}" y="${P.Y(mn) + 22}" text-anchor="middle" style="fill:var(--cobalt)">最小 ${fmt(mn)}</text>`;
+    mxx.forEach(x => s += `<text class="lbl" x="${P.X(x)}" y="${P.Y(mx) - 12}" text-anchor="middle" style="fill:var(--accent)">最大 ${fmt(mx)}</text>`);
+    $('#mmsvg').innerHTML = s;
+    $('#mmrange').innerHTML = `${fmt(L)} ≦ x ≦ ${fmt(Rr)}`;
+    $('#mminfo').innerHTML = `<div class="var"><div class="k">最大値</div><div class="v">${fmt(mx)}（x = ${mxx.map(x => fmt(x)).join(', ')}）</div></div><div class="var"><div class="k">最小値</div><div class="v">${fmt(mn)}（x = ${fmt(mnx)}）</div></div>`;
+    $('#mmnote').innerHTML = `<b>最小</b>：${cmin}<br><b>最大</b>：${cmax}`;
+  }
+  $('#mmt', mm).oninput = drawMm; drawMm();
+
+  /* --- 判別式と2次不等式 --- */
+  const iq = labCard('実験', 'グラフで解く2次不等式', 'y = x² + bx + c のグラフが x 軸より上か下かで、不等式の解が決まる');
+  iq.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('iqb', 'b =', -6, 6, 1, -2)}${slider('iqc', 'c =', -6, 9, 1, -3)}
+    <label class="ctl">不等式<select id="iqs"><option value="gt">x² + bx + c &gt; 0</option><option value="lt">x² + bx + c &lt; 0</option><option value="ge">x² + bx + c ≧ 0</option><option value="le">x² + bx + c ≦ 0</option></select></label></div>
+    <div class="lab-split"><svg class="plot" id="iqsvg" viewBox="0 0 520 400" role="img" aria-label="2次不等式のグラフ"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="fx big" id="iqfx"></div><div class="stat-grid" id="iqinfo"></div><div class="res" id="iqres"></div></div></div>`);
+  root.appendChild(iq);
+  function drawIq() {
+    const b = +$('#iqb').value, c = +$('#iqc').value, md = $('#iqs').value;
+    $('#iqb-v').textContent = M(String(b)); $('#iqc-v').textContent = M(String(c));
+    const g = x => x * x + b * x + c, D = b * b - 4 * c;
+    const P = plane({ x: [-8, 8], y: [-8, 8], tick: 2 });
+    const sat = x => { const v = g(x); return md === 'gt' ? v > 1e-9 : md === 'lt' ? v < -1e-9 : md === 'ge' ? v > -1e-9 : v < 1e-9; };
+    let s = P.base, run = null;
+    for (let i = 0; i <= 640; i++) { const x = -8 + 16 * i / 640, ok = sat(x); if (ok && run === null) run = x; if ((!ok || i === 640) && run !== null) { s += `<line class="hi" x1="${P.X(run)}" y1="${P.Y(0)}" x2="${P.X(ok ? x : x - 16 / 640)}" y2="${P.Y(0)}"/>`; run = null; } }
+    s += `<path class="cv" d="${P.path(g)}"/>`;
+    let roots = null;
+    if (D >= 0) { roots = rootPair(b, c); [roots[2], roots[3]].forEach(x => s += `<circle cx="${P.X(x)}" cy="${P.Y(0)}" r="6" style="fill:var(${md === 'ge' || md === 'le' ? '--accent' : '--card'});stroke:var(--accent);stroke-width:2.5"/>`); }
+    if (D === 0 && (md === 'ge' || md === 'le' || md === 'lt')) s += `<circle cx="${P.X(roots[2])}" cy="${P.Y(0)}" r="6" style="fill:var(${md === 'lt' ? '--card' : '--accent'});stroke:var(--accent);stroke-width:2.5"/>`;
+    $('#iqsvg').innerHTML = s;
+    const sym = { gt: '&gt;', lt: '&lt;', ge: '≧', le: '≦' }[md];
+    $('#iqfx').innerHTML = `${polyStr([1, b, c])} ${sym} 0`;
+    $('#iqinfo').innerHTML = `<div class="var"><div class="k">判別式 D</div><div class="v">${M(String(D))}</div></div><div class="var"><div class="k">x 軸との共有点</div><div class="v">${D > 0 ? '2個' : D === 0 ? '1個（接する）' : 'なし'}</div></div>` +
+      (D > 0 ? `<div class="var"><div class="k">α（小さい方）</div><div class="v">${roots[0]}</div></div><div class="var"><div class="k">β（大きい方）</div><div class="v">${roots[1]}</div></div>` : D === 0 ? `<div class="var"><div class="k">接点の x</div><div class="v">${roots[0]}</div></div>` : '');
+    let ans;
+    if (D > 0) { const [al, be] = roots; ans = { gt: `x &lt; ${al}, ${be} &lt; x`, ge: `x ≦ ${al}, ${be} ≦ x`, lt: `${al} &lt; x &lt; ${be}`, le: `${al} ≦ x ≦ ${be}` }[md]; }
+    else if (D === 0) { const al = roots[0]; ans = { gt: `${al} 以外のすべての実数`, ge: 'すべての実数', lt: '解なし', le: `x = ${al}` }[md]; }
+    else ans = (md === 'gt' || md === 'ge') ? 'すべての実数' : '解なし';
+    $('#iqres').innerHTML = `<span>解：<b class="fx">${ans}</b></span><span class="small">${md === 'gt' || md === 'ge' ? 'グラフが x 軸より<b>上</b>' : 'グラフが x 軸より<b>下</b>'}${md === 'ge' || md === 'le' ? '（x 軸上もふくむ）' : ''}にある x の範囲（赤い線）。</span>`;
+  }
+  ['#iqb', '#iqc'].forEach(i => $(i, iq).oninput = drawIq); $('#iqs', iq).onchange = drawIq; drawIq();
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kansu'));
+};
+/* ===== 単元4 図形と計量 ===== */
+const TRIG = { // 角度: [sin, cos, tan] の正確な値（HTML）
+  0: ['0', '1', '0'], 30: [F(1, 2), F(R(3), 2), F(1, R(3))], 45: [F(1, R(2)), F(1, R(2)), '1'], 60: [F(R(3), 2), F(1, 2), R(3)],
+  90: ['1', '0', 'なし'], 120: [F(R(3), 2), '−' + F(1, 2), '−' + R(3)], 135: [F(1, R(2)), '−' + F(1, R(2)), '−1'],
+  150: [F(1, 2), '−' + F(R(3), 2), '−' + F(1, R(3))], 180: ['0', '−1', '0'],
+};
+// sinA, cosA を「有理数 × √k」で持つ（三角形の計算の正確な値用）
+const TRIGQ = { 30: [[Q(1, 2), 1], [Q(1, 2), 3]], 45: [[Q(1, 2), 2], [Q(1, 2), 2]], 60: [[Q(1, 2), 3], [Q(1, 2), 1]], 90: [[Q(1), 1], [Q(0), 1]],
+  120: [[Q(1, 2), 3], [Q(-1, 2), 1]], 135: [[Q(1, 2), 2], [Q(-1, 2), 2]], 150: [[Q(1, 2), 1], [Q(-1, 2), 3]] };
+const surd = (q, k) => { // q√k を表示
+  if (q.n === 0) return '0';
+  if (k === 1) return qs(q);
+  const [kk, m] = simpSqrt(k); const q2 = qmul(q, Q(kk));
+  if (m === 1) return qs(q2);
+  const sgn = q2.n < 0 ? '−' : '', a = Math.abs(q2.n);
+  return q2.d === 1 ? `${sgn}${a === 1 ? '' : a}√${m}` : sgn + F(`${a === 1 ? '' : a}√${m}`, q2.d);
+};
+VIEWS.keiryo = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '図形と計量', '三角比（sin・cos・tan）を直角三角形から単位円へ広げ、正弦定理・余弦定理で三角形の辺や角、面積を求める。'));
+  root.appendChild(points([
+    ['三角比の定義', `<p>直角三角形で、角 θ に対して<br>sin θ = ${F('対辺', '斜辺')}　cos θ = ${F('底辺', '斜辺')}　tan θ = ${F('対辺', '底辺')}</p><p class="small muted">単位円では、点 P(cos θ, sin θ)。tan θ は直線 OP の傾き。</p>`],
+    ['三角比の相互関係', `<p class="fx" style="font-size:1rem">sin²θ + cos²θ = 1<br>tan θ = ${F('sin θ', 'cos θ')}<br>1 + tan²θ = ${F(1, 'cos²θ')}</p>`],
+    ['正弦定理・余弦定理', `<p class="fx" style="font-size:1rem">${F('a', 'sin A')} = ${F('b', 'sin B')} = ${F('c', 'sin C')} = 2R<br>a² = b² + c² − 2bc cos A</p><p class="small muted">R は外接円の半径。</p>`],
+    ['三角形の面積', `<p class="fx" style="font-size:1rem">S = ${F(1, 2)}bc sin A</p><p class="small muted">内接円の半径 r を使うと S = ${F(1, 2)}r(a + b + c)。</p>`],
+  ]));
+
+  /* --- 単位円 --- */
+  const uc = labCard('実験', '単位円で見る三角比', 'θ を動かすと、点 P(cos θ, sin θ) が半径 1 の円の上を動く');
+  uc.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('uct', 'θ =', 0, 180, 1, 30)}<div class="row" id="ucsp" style="align-self:end;gap:4px">${[0, 30, 45, 60, 90, 120, 135, 150, 180].map(a => `<button class="btn ghost sm" data-a="${a}">${a}°</button>`).join('')}</div></div>
+    <label class="row small" style="gap:6px"><input type="checkbox" id="ucm"> 180° − θ の点も表示する</label>
+    <div class="lab-split"><svg class="plot" id="ucsvg" viewBox="0 0 520 330" role="img" aria-label="単位円"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="stat-grid" id="ucv"></div><div class="note" id="ucn"></div></div></div>`);
+  root.appendChild(uc);
+  function drawUc() {
+    const t = +$('#uct').value; $('#uct-v').textContent = t + '°';
+    const r = t * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+    const cx = 260, cy = 280, U = 200, X = x => cx + x * U, Y = y => cy - y * U;
+    let g = `<line class="ax" x1="30" y1="${cy}" x2="490" y2="${cy}"/><line class="ax" x1="${cx}" y1="${cy + 30}" x2="${cx}" y2="40"/>`;
+    g += `<path d="M${X(1)} ${cy} A${U} ${U} 0 0 0 ${X(-1)} ${cy}" style="fill:none;stroke:var(--ink);stroke-width:1.5"/>`;
+    g += `<text class="tk" x="${X(1)}" y="${cy + 16}" text-anchor="middle">1</text><text class="tk" x="${X(-1)}" y="${cy + 16}" text-anchor="middle">−1</text><text class="tk" x="${cx - 6}" y="${Y(1) - 4}" text-anchor="end">1</text><text class="tk" x="${cx - 6}" y="${cy + 16}" text-anchor="end">O</text>`;
+    if ($('#ucm').checked && t !== 90) {
+      g += `<line x1="${cx}" y1="${cy}" x2="${X(-c)}" y2="${Y(s)}" class="cv2"/><circle cx="${X(-c)}" cy="${Y(s)}" r="5" style="fill:var(--muted)"/><text class="tk" x="${X(-c)}" y="${Y(s) - 10}" text-anchor="middle">${180 - t}°</text>`;
+    }
+    g += `<path d="M${cx + 30} ${cy} A30 30 0 0 0 ${cx + 30 * c} ${cy - 30 * s}" style="fill:none;stroke:var(--accent);stroke-width:2"/>`;
+    g += `<line x1="${X(c)}" y1="${Y(s)}" x2="${X(c)}" y2="${cy}" style="stroke:var(--accent);stroke-width:3"/><line x1="${cx}" y1="${cy}" x2="${X(c)}" y2="${cy}" style="stroke:var(--cobalt);stroke-width:4"/>`;
+    g += `<line x1="${cx}" y1="${cy}" x2="${X(c)}" y2="${Y(s)}" style="stroke:var(--ink);stroke-width:2"/><circle class="dot" cx="${X(c)}" cy="${Y(s)}" r="7"/>`;
+    g += `<text class="lbl" x="${X(c) + (c >= 0 ? 10 : -10)}" y="${Y(s) - 8}" text-anchor="${c >= 0 ? 'start' : 'end'}">P</text>`;
+    g += `<text class="lbl" x="${X(c) + (c >= 0 ? 6 : -6)}" y="${(Y(s) + cy) / 2 + 4}" text-anchor="${c >= 0 ? 'start' : 'end'}" style="fill:var(--accent)">sin</text><text class="lbl" x="${(cx + X(c)) / 2}" y="${cy + 18}" text-anchor="middle" style="fill:var(--cobalt)">cos</text>`;
+    $('#ucsvg').innerHTML = g;
+    const ex = TRIG[t];
+    const cell = (k, v, e, col) => `<div class="var"><div class="k" style="color:var(${col})">${k}</div><div class="v">${e ? e : fmt(v, 3)}</div>${e && !/なし/.test(e) ? `<div class="k">≒ ${fmt(v, 3)}</div>` : ''}</div>`;
+    $('#ucv').innerHTML = cell('sin θ', s, ex && ex[0], '--accent') + cell('cos θ', c, ex && ex[1], '--cobalt') + (t === 90 ? cell('tan θ', 0, 'なし', '--ink') : cell('tan θ', Math.tan(r), ex && ex[2], '--ink'));
+    $('#ucn').innerHTML = t > 90 ? `θ が 90° をこえると P は左側（x &lt; 0）へ。だから <b>cos θ と tan θ は負</b>、sin θ は正のまま。` :
+      t === 90 ? `θ = 90° のとき P(0, 1)。cos 90° = 0 で、tan 90° は定義されない（0 で割れない）。` :
+      `0° ≦ θ ≦ 180° では sin θ はいつも 0 以上。${$('#ucm').checked ? `<br>灰色の点は 180° − θ。<b>sin は同じ、cos は符号だけ逆</b>になる。` : ''}`;
+  }
+  $('#uct', uc).oninput = drawUc; $('#ucm', uc).onchange = drawUc;
+  $$('[data-a]', uc).forEach(b => b.onclick = () => { $('#uct').value = b.dataset.a; drawUc(); });
+  drawUc();
+  root.appendChild(trap(`${R(3)}/2 と 1/2 の取り違えに注意。<b>30° の sin は 1/2</b>（小さい角は小さい値）。迷ったら単位円で「P の高さ」を思い浮かべよう。`));
+
+  /* --- 三角形の計算 --- */
+  const tr = labCard('実験', '2辺と間の角から三角形を求める', '余弦定理で残りの辺 a、面積の公式で S、正弦定理で外接円の半径 R');
+  tr.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('trb', 'b = CA =', 1, 8, 1, 5)}${slider('trc', 'c = AB =', 1, 8, 1, 3)}<label class="ctl" for="tra">A =<select id="tra">${[30, 45, 60, 90, 120, 135, 150].map(a => `<option ${a === 60 ? 'selected' : ''}>${a}</option>`).join('')}</select></label></div>
+    <div class="lab-split"><svg class="plot" id="trsvg" viewBox="0 0 420 300" role="img" aria-label="三角形"></svg>
+    <ol class="steps fx" id="trs" style="font-size:1rem"></ol></div>`);
+  root.appendChild(tr);
+  function drawTr() {
+    const b = +$('#trb').value, c = +$('#trc').value, A = +$('#tra').value;
+    $('#trb-v').textContent = b; $('#trc-v').textContent = c;
+    const r = A * Math.PI / 180;
+    const pA = [0, 0], pB = [c, 0], pC = [b * Math.cos(r), b * Math.sin(r)];
+    const xs = [pA[0], pB[0], pC[0]], ys = [pA[1], pB[1], pC[1]];
+    const minx = Math.min(...xs), maxx = Math.max(...xs), maxy = Math.max(...ys);
+    const sc = Math.min(340 / (maxx - minx), 220 / maxy);
+    const P = p => [40 + (p[0] - minx) * sc, 260 - p[1] * sc];
+    const [a1, b1, c1] = [P(pA), P(pB), P(pC)];
+    let g = `<polygon points="${a1} ${b1} ${c1}" style="fill:var(--cobalt-soft);stroke:var(--ink);stroke-width:2"/>`;
+    g += `<path d="M${a1[0] + 28} ${a1[1]} A28 28 0 0 0 ${a1[0] + 28 * Math.cos(r)} ${a1[1] - 28 * Math.sin(r)}" style="fill:none;stroke:var(--accent);stroke-width:2"/>`;
+    g += `<text class="lbl" x="${a1[0] - 8}" y="${a1[1] + 16}">A</text><text class="lbl" x="${b1[0] + 6}" y="${b1[1] + 16}">B</text><text class="lbl" x="${c1[0]}" y="${c1[1] - 8}" text-anchor="middle">C</text>`;
+    g += `<text class="lbl" x="${(a1[0] + b1[0]) / 2}" y="${a1[1] + 18}" text-anchor="middle" style="fill:var(--cobalt)">c = ${c}</text>`;
+    g += `<text class="lbl" x="${(a1[0] + c1[0]) / 2 - 10}" y="${(a1[1] + c1[1]) / 2}" text-anchor="end" style="fill:var(--cobalt)">b = ${b}</text>`;
+    g += `<text class="lbl" x="${(b1[0] + c1[0]) / 2 + 10}" y="${(b1[1] + c1[1]) / 2}" style="fill:var(--accent)">a = ?</text>`;
+    g += `<text class="lbl" x="${a1[0] + 34}" y="${a1[1] - 8}" style="fill:var(--accent)">${A}°</text>`;
+    $('#trsvg').innerHTML = g;
+    const [[sq, sk], [cq, ck]] = TRIGQ[A];
+    // a² = b² + c² − 2bc cos A = N − 2bc·cq√ck
+    const N = b * b + c * c, coef = qmul(Q(-2 * b * c), cq);
+    const a2v = N - 2 * b * c * Math.cos(r), av = Math.sqrt(a2v);
+    let a2s, as;
+    if (ck === 1) { const t = qadd(Q(N), coef); a2s = qs(t); as = t.d === 1 ? surd(Q(1), t.n) : `√(${qs(t)})`; if (t.d === 1) { const [k, m] = simpSqrt(t.n); as = m === 1 ? String(k) : `${k === 1 ? '' : k}√${m}`; } }
+    else { a2s = `${N} ${coef.n < 0 ? '−' : '+'} ${surd(Q(Math.abs(coef.n), coef.d), ck)}`; as = `√(${a2s})`; }
+    const S = qmul(Q(b * c, 2), sq); // S = bc/2 · sinA
+    const Sv = b * c / 2 * Math.sin(r), Rv = av / (2 * Math.sin(r));
+    $('#trs').innerHTML = `<li><span>a² = b² + c² − 2bc cos A<br>= ${b}² + ${c}² − 2·${b}·${c}·(${TRIG[A][1]})<br>= <mark>${a2s}</mark><span class="why">余弦定理。cos ${A}° = ${TRIG[A][1]}${A > 90 ? '（負なので引き算がたし算になる）' : ''}</span></span></li>
+      <li><span>a = <mark>${as}</mark>${Number.isInteger(+as) ? '' : '　≒ ' + fmt(av)}<span class="why">a &gt; 0 なので正の方</span></span></li>
+      <li><span>S = ${F(1, 2)}·${b}·${c}·sin ${A}° = <mark>${surd(S, sk)}</mark>　≒ ${fmt(Sv)}<span class="why">sin ${A}° = ${TRIG[A][0]}</span></span></li>
+      <li><span>2R = ${F('a', 'sin A')}　より　R ≒ ${fmt(Rv)}<span class="why">正弦定理（外接円の半径）</span></span></li>`;
+  }
+  ['#trb', '#trc'].forEach(i => $(i, tr).oninput = drawTr); $('#tra', tr).onchange = drawTr; drawTr();
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('keiryo'));
+};
+/* ===== 単元5 データの分析 ===== */
+const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+function median(a) { const s = a.slice().sort((x, y) => x - y), n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; }
+function quart(a) { // 教科書の方法：中央値で前半・後半に分け（奇数個なら中央値を除く）、それぞれの中央値
+  const s = a.slice().sort((x, y) => x - y), n = s.length, k = Math.floor(n / 2);
+  const lo = s.slice(0, k), hi = s.slice(n % 2 ? k + 1 : k);
+  return { s, min: s[0], q1: median(lo), q2: median(s), q3: median(hi), max: s[n - 1] };
+}
+function corr(xs, ys) { const mx = mean(xs), my = mean(ys); let sxy = 0, sx = 0, sy = 0; xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sx += (x - mx) ** 2; sy += (ys[i] - my) ** 2; }); return { r: sxy / Math.sqrt(sx * sy), cov: sxy / xs.length, sx: Math.sqrt(sx / xs.length), sy: Math.sqrt(sy / xs.length) }; }
+VIEWS.data = (root) => {
+  root.appendChild(sectionHead('UNIT 5', 'データの分析', '代表値・四分位数・箱ひげ図・分散と標準偏差・相関係数、そして仮説検定の考え方。数値を自分で変えて、指標の動きを確かめよう。'));
+  root.appendChild(points([
+    ['代表値', `<p><mark>平均値</mark>：合計 ÷ 個数<br><mark>中央値</mark>：大きさ順でまん中の値（偶数個ならまん中2つの平均）<br><mark>最頻値</mark>：いちばん多く現れる値</p>`],
+    ['四分位数と箱ひげ図', `<p>データを4等分する位置の値 Q₁・Q₂（中央値）・Q₃。<br>四分位範囲 ＝ Q₃ − Q₁<br>Q₁ − 1.5×(Q₃ − Q₁) 以下、Q₃ + 1.5×(Q₃ − Q₁) 以上の値を<mark>外れ値</mark>とすることが多い。</p>`],
+    ['分散・標準偏差', `<p>分散 s² ＝（偏差）² の平均<br>　　　 ＝（x² の平均）−（x の平均）²<br>標準偏差 s ＝ ${R('分散')}　（もとのデータと同じ単位）</p>`],
+    ['相関係数', `<p class="fx" style="font-size:1rem">r = ${F('共分散 s<sub>xy</sub>', 's<sub>x</sub> s<sub>y</sub>')}</p><p>−1 ≦ r ≦ 1。1 に近いほど強い正の相関、−1 に近いほど強い負の相関。</p>`],
+  ]));
+
+  /* --- 箱ひげ図 --- */
+  const PRE = { a: ['テストの点（11人）', '52, 61, 64, 68, 70, 72, 75, 77, 80, 85, 98'], b: ['外れ値あり（10人）', '58, 62, 63, 65, 66, 68, 69, 71, 73, 99'], c: ['同じ平均・ちがう散らばり', '70, 70, 69, 71, 70, 70, 71, 69, 70, 70'] };
+  const bx = labCard('実験', '数値を変えると箱ひげ図が動く', 'データはカンマ区切りで自由に書きかえられる');
+  bx.insertAdjacentHTML('beforeend', `<div class="row">${Object.entries(PRE).map(([k, v]) => `<button class="btn ghost sm" data-pre="${k}">${v[0]}</button>`).join('')}</div>
+    <label class="ctl" for="bxin">データ<textarea id="bxin" class="datain">${PRE.a[1]}</textarea></label>
+    <svg class="plot" id="bxsvg" viewBox="0 0 560 170" role="img" aria-label="ドットプロットと箱ひげ図"></svg>
+    <div class="stat-grid" id="bxst"></div>
+    <details><summary class="small" style="cursor:pointer;font-weight:700">分散の計算表（偏差と偏差の2乗）を開く</summary><div class="scroll-x" id="bxtbl" style="margin-top:8px"></div></details>
+    <div class="note" id="bxn"></div>`);
+  root.appendChild(bx);
+  function drawBx() {
+    const a = $('#bxin').value.split(/[,、，\s]+/).filter(t => t.trim() !== '').map(t => Number(t.replace(/[０-９．－]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)))).filter(x => isFinite(x));
+    if (a.length < 4) { $('#bxst').innerHTML = ''; $('#bxsvg').innerHTML = '<text x="20" y="40">4個以上の数を入れてね</text>'; return; }
+    const st = quart(a), m = mean(a), v = mean(a.map(x => (x - m) ** 2)), sd = Math.sqrt(v), iqr = st.q3 - st.q1;
+    const lo = st.q1 - 1.5 * iqr, hi = st.q3 + 1.5 * iqr, out = st.s.filter(x => x < lo || x > hi);
+    const span = st.max - st.min || 1, x0 = st.min - span * .08, x1 = st.max + span * .08;
+    const X = x => 30 + (x - x0) / (x1 - x0) * 500;
+    let s = '';
+    const cnt = {}; st.s.forEach(x => { cnt[x] = (cnt[x] || 0) + 1; s += `<circle cx="${X(x)}" cy="${62 - (cnt[x] - 1) * 11}" r="5" style="fill:var(${out.includes(x) ? '--bad' : '--cobalt'})"/>`; });
+    const y = 110;
+    s += `<line x1="${X(st.min)}" y1="${y}" x2="${X(st.q1)}" y2="${y}" style="stroke:var(--ink);stroke-width:2"/><line x1="${X(st.q3)}" y1="${y}" x2="${X(st.max)}" y2="${y}" style="stroke:var(--ink);stroke-width:2"/>`;
+    s += `<rect x="${X(st.q1)}" y="${y - 16}" width="${Math.max(1, X(st.q3) - X(st.q1))}" height="32" style="fill:var(--accent-soft);stroke:var(--ink);stroke-width:2"/>`;
+    s += `<line x1="${X(st.q2)}" y1="${y - 16}" x2="${X(st.q2)}" y2="${y + 16}" style="stroke:var(--accent);stroke-width:3"/>`;
+    [st.min, st.max].forEach(x => s += `<line x1="${X(x)}" y1="${y - 10}" x2="${X(x)}" y2="${y + 10}" style="stroke:var(--ink);stroke-width:2"/>`);
+    s += `<path d="M${X(m)} ${y + 22} l-6 10 h12 z" style="fill:var(--good)"/>`;
+    [['最小', st.min], ['Q₁', st.q1], ['Q₂', st.q2], ['Q₃', st.q3], ['最大', st.max]].forEach(([k, x], i) => s += `<text class="tk" x="${X(x)}" y="${i % 2 ? 160 : 150}" text-anchor="middle">${k}</text>`);
+    $('#bxsvg').innerHTML = s;
+    const c = (k, v, col) => `<div class="var"><div class="k" ${col ? `style="color:var(${col})"` : ''}>${k}</div><div class="v">${fmt(v)}</div></div>`;
+    $('#bxst').innerHTML = c('個数', a.length) + c('平均値 ▲', m, '--good') + c('中央値 Q₂', st.q2, '--accent') + c('第1四分位数 Q₁', st.q1) + c('第3四分位数 Q₃', st.q3) + c('範囲', st.max - st.min) + c('四分位範囲', iqr) + c('分散', v) + c('標準偏差', sd);
+    $('#bxtbl').innerHTML = `<table class="tbl ctr"><thead><tr><th>x</th><th>偏差 x − ${fmt(m)}</th><th>偏差²</th></tr></thead><tbody>${a.map(x => `<tr><td>${fmt(x)}</td><td>${fmt(x - m)}</td><td>${fmt((x - m) ** 2)}</td></tr>`).join('')}<tr><td><b>平均</b></td><td>0</td><td><b>${fmt(v)}</b>（分散）</td></tr></tbody></table>`;
+    $('#bxn').innerHTML = (out.length ? `赤い点 <b>${out.join(', ')}</b> は外れ値（${fmt(lo)} より小さいか ${fmt(hi)} より大きい）。` : '外れ値はない。') +
+      ` 平均値と中央値の差は ${fmt(Math.abs(m - st.q2))}。${Math.abs(m - st.q2) > sd * .3 ? '極端な値に引っぱられて<b>平均値の方が動きやすい</b>。' : ''}`;
+  }
+  $('#bxin', bx).oninput = drawBx;
+  $$('[data-pre]', bx).forEach(b => b.onclick = () => { $('#bxin').value = PRE[b.dataset.pre][1]; drawBx(); });
+  drawBx();
+  root.appendChild(trap('箱ひげ図から読み取れるのは5つの値（最小・Q₁・中央値・Q₃・最大）だけ。<b>平均値は箱ひげ図からはわからない</b>（図に平均を書き足すこともある）。'));
+
+  /* --- 散布図と相関係数 --- */
+  const sc = labCard('実験', '散布図と相関係数', '相関の強さを動かして、点の散らばり方と r の値を見比べよう');
+  sc.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('scr', '相関の強さ（目標）', -1, 1, 0.1, 0.7)}<div class="row" style="align-self:end"><button class="btn ghost sm" id="scnew">別のデータ</button></div></div>
+    <div class="lab-split"><svg class="plot" id="scsvg" viewBox="0 0 400 360" role="img" aria-label="散布図"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="big-num tnum" id="scv"></div><div class="stat-grid" id="scst"></div><div class="note" id="scn"></div></div></div>`);
+  root.appendChild(sc);
+  let seed = 7;
+  function drawSc() {
+    const t = +$('#scr').value; $('#scr-v').textContent = fmt(t, 1);
+    const g = rng(seed), xs = [], ys = [];
+    for (let i = 0; i < 30; i++) { const z1 = gauss(g), z2 = gauss(g); xs.push(Math.round(Math.max(5, Math.min(100, 60 + 13 * z1)))); ys.push(Math.round(Math.max(5, Math.min(100, 60 + 13 * (t * z1 + Math.sqrt(Math.max(0, 1 - t * t)) * z2))))); }
+    const { r, cov, sx, sy } = corr(xs, ys);
+    const X = x => 40 + x / 100 * 340, Y = y => 320 - y / 100 * 300;
+    let s = '';
+    for (let k = 0; k <= 100; k += 20) s += `<line class="g" x1="${X(k)}" y1="${Y(0)}" x2="${X(k)}" y2="${Y(100)}"/><line class="g" x1="${X(0)}" y1="${Y(k)}" x2="${X(100)}" y2="${Y(k)}"/><text class="tk" x="${X(k)}" y="${Y(0) + 14}" text-anchor="middle">${k}</text><text class="tk" x="${X(0) - 5}" y="${Y(k) + 4}" text-anchor="end">${k}</text>`;
+    const mx = mean(xs), my = mean(ys);
+    s += `<line x1="${X(mx)}" y1="${Y(0)}" x2="${X(mx)}" y2="${Y(100)}" class="cv2"/><line x1="${X(0)}" y1="${Y(my)}" x2="${X(100)}" y2="${Y(my)}" class="cv2"/>`;
+    xs.forEach((x, i) => s += `<circle cx="${X(x)}" cy="${Y(ys[i])}" r="5" style="fill:var(--cobalt);opacity:.8"/>`);
+    s += `<text class="tk" x="${X(100)}" y="${Y(0) + 30}" text-anchor="end">数学の点 x</text><text class="tk" x="${X(0)}" y="${Y(100) - 6}">理科の点 y</text>`;
+    $('#scsvg').innerHTML = s;
+    $('#scv').innerHTML = `r = ${fmt(r)}`;
+    $('#scst').innerHTML = `<div class="var"><div class="k">共分散 s<sub>xy</sub></div><div class="v">${fmt(cov, 1)}</div></div><div class="var"><div class="k">標準偏差 s<sub>x</sub></div><div class="v">${fmt(sx, 1)}</div></div><div class="var"><div class="k">標準偏差 s<sub>y</sub></div><div class="v">${fmt(sy, 1)}</div></div>`;
+    const ar = Math.abs(r), w = ar >= .7 ? '強い' : ar >= .4 ? 'やや強い' : ar >= .2 ? '弱い' : null;
+    $('#scn').innerHTML = `${w ? `<b>${w}${r > 0 ? '正' : '負'}の相関</b>がある（目安）。` : '<b>ほとんど相関がない</b>（目安）。'}<br>点線は x と y の平均。右上と左下に点が多いと共分散は正、左上と右下に多いと負になる。`;
+  }
+  $('#scr', sc).oninput = drawSc; $('#scnew', sc).onclick = () => { seed = Math.floor(Math.random() * 1e6); drawSc(); }; drawSc();
+  root.appendChild(trap('相関があっても<b>因果関係があるとは限らない</b>。たとえば「アイスの売上」と「水の事故」は正の相関があるが、どちらも「気温」の影響を受けているだけ。'));
+
+  /* --- 仮説検定の考え方 --- */
+  const ht = labCard('実験', '仮説検定の考え方', '「新しい味の方がおいしい」は本当？ 20人中 k 人が新しい味を選んだとき、偶然でも起こりそうかをコイン投げで調べる');
+  ht.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('htk', '新しい味を選んだ人数 k =', 10, 20, 1, 15)}<div class="row" style="align-self:end"><button class="btn" id="htrun">コイン20枚投げを1000回</button></div></div>
+    <div class="lab-split"><svg class="plot" id="htsvg" viewBox="0 0 520 260" role="img" aria-label="シミュレーション結果のヒストグラム"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="res" id="htres">ボタンを押すと、「どちらの味も同じくらい好まれる（選ばれる確率 1/2）」と仮定したときの結果を1000回ためす。</div><div class="note small">基準となる確率（有意水準）は 5% とする。k 人以上になった割合が 5% 以下なら「偶然とは考えにくい」と判断する。</div></div></div>`);
+  root.appendChild(ht);
+  let hist = null;
+  function drawHt() {
+    const k = +$('#htk').value; $('#htk-v').textContent = k + ' 人';
+    const W = 520, X = i => 30 + i * 22.5, base = 225;
+    let s = `<line class="ax" x1="20" y1="${base}" x2="510" y2="${base}"/>`;
+    for (let i = 0; i <= 20; i++) s += `<text class="tk" x="${X(i) + 10}" y="${base + 15}" text-anchor="middle">${i}</text>`;
+    if (hist) {
+      const mx = Math.max(...hist);
+      hist.forEach((c, i) => s += `<rect x="${X(i)}" y="${base - c / mx * 190}" width="20" height="${c / mx * 190}" style="fill:var(${i >= k ? '--accent' : '--cobalt-soft'})"/>`);
+      const ge = hist.slice(k).reduce((a, b) => a + b, 0), p = ge / 1000;
+      let ex = 0; const C = (n, r) => { let v = 1; for (let i = 0; i < r; i++) v = v * (n - i) / (i + 1); return v; }; for (let i = k; i <= 20; i++) ex += C(20, i); ex /= 2 ** 20;
+      $('#htres').className = 'res ' + (p <= 0.05 ? 'ok' : 'ng');
+      $('#htres').innerHTML = `<span>${k} 人以上になったのは 1000 回中 <b>${ge} 回</b>（${fmt(p * 100, 1)}%）</span><span class="small muted">理論上の確率は約 ${fmt(ex * 100, 1)}%</span><span>${p <= 0.05 ? '→ 5% 以下。<b>偶然とは考えにくい</b>ので、「新しい味の方がおいしい」と判断してよさそう。' : '→ 5% より大きい。<b>偶然でも起こりうる</b>ので、「新しい味の方がおいしい」とは判断できない。'}</span>`;
+    }
+    s += `<text class="tk" x="510" y="${base + 30}" text-anchor="end">20人中、新しい味を選んだ人数</text>`;
+    $('#htsvg').innerHTML = s;
+  }
+  $('#htrun', ht).onclick = () => { hist = Array(21).fill(0); for (let t = 0; t < 1000; t++) { let c = 0; for (let i = 0; i < 20; i++) if (Math.random() < .5) c++; hist[c]++; } drawHt(); };
+  $('#htk', ht).oninput = drawHt; drawHt();
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('data'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から） ===== */
+const NS4 = ['必要十分条件である', '必要条件であるが、十分条件ではない', '十分条件であるが、必要条件ではない', '必要条件でも十分条件でもない'];
+const QUESTIONS = [
+/* ---------- 数と式 ---------- */
+{ id: 's1', unit: 'shiki', type: '展開', lv: 1, inUnit: true,
+  stem: '<p>(2x − 3)² を展開したものはどれか。</p>',
+  choices: ['4x² − 9', '4x² − 6x + 9', '4x² − 12x + 9', '2x² − 12x + 9'], ans: 2,
+  exp: '<p>(a − b)² = a² − 2ab + b² に a = 2x、b = 3 を入れる。(2x)² − 2·2x·3 + 3² = <mark>4x² − 12x + 9</mark>。<br>⓪ は (a + b)(a − b) の公式とまちがえた形。まん中の項 −12x を忘れないこと。</p>' },
+{ id: 's2', unit: 'shiki', type: '因数分解', lv: 1, inUnit: true,
+  stem: '<p>x² − 5x + 6 を因数分解したものはどれか。</p>',
+  choices: ['(x + 2)(x + 3)', '(x − 2)(x − 3)', '(x − 1)(x − 6)', '(x + 1)(x − 6)'], ans: 1,
+  exp: '<p>かけて +6、たして −5 になる2数は −2 と −3。よって <mark>(x − 2)(x − 3)</mark>。<br>展開して確かめると x² − 3x − 2x + 6 = x² − 5x + 6。</p>' },
+{ id: 's3', unit: 'shiki', type: 'たすき掛け', lv: 2, inUnit: true,
+  stem: '<p>3x² + 5x − 2 を因数分解したものはどれか。</p>',
+  choices: ['(3x + 1)(x − 2)', '(3x − 1)(x + 2)', '(3x + 2)(x − 1)', '(3x − 2)(x + 1)'], ans: 1,
+  exp: '<p>たすき掛けで 3 = 3×1、−2 = (−1)×2 と分けると、ななめの和は 3×2 + 1×(−1) = 5。<br>よって <mark>(3x − 1)(x + 2)</mark>。⓪ を展開すると 3x² − 5x − 2 で、x の係数の符号が逆になる。</p>' },
+{ id: 's4', unit: 'shiki', type: '有理化', lv: 2, inUnit: true,
+  stem: `<p>${F(2, R(5) + ' − ' + R(3))} の分母を有理化したものはどれか。</p>`,
+  choices: [R(5) + ' − ' + R(3), R(5) + ' + ' + R(3), `2(${R(5)} + ${R(3)})`, F(R(5) + ' + ' + R(3), 2)], ans: 1,
+  exp: `<p>分母・分子に ${R(5)} + ${R(3)} をかける。分母は (${R(5)})² − (${R(3)})² = 5 − 3 = 2。<br>${F(`2(${R(5)} + ${R(3)})`, 2)} = <mark>${R(5)} + ${R(3)}</mark>。最後に約分するのを忘れずに（② は約分前）。</p>` },
+{ id: 's5', unit: 'shiki', type: '1次不等式', lv: 1, inUnit: true,
+  stem: '<p>不等式 −3x + 5 &gt; 11 を解け。</p>',
+  choices: ['x &gt; −2', 'x &lt; −2', 'x &gt; 2', 'x &lt; 2'], ans: 1,
+  exp: '<p>−3x &gt; 6。両辺を <b>負の数</b> −3 で割るので不等号の向きが逆になり、<mark>x &lt; −2</mark>。</p>' },
+{ id: 's6', unit: 'shiki', type: '絶対値', lv: 2, inUnit: true,
+  stem: '<p>不等式 |x − 1| &lt; 4 を解け。</p>',
+  choices: ['−3 &lt; x &lt; 5', '−5 &lt; x &lt; 3', 'x &lt; −3, 5 &lt; x', '−4 &lt; x &lt; 4'], ans: 0,
+  exp: '<p>|x − 1| は x と 1 の距離。距離が 4 より小さいので −4 &lt; x − 1 &lt; 4。各辺に 1 をたして <mark>−3 &lt; x &lt; 5</mark>。<br>「&lt;」なら内側、「&gt;」なら外側（②）。</p>' },
+{ id: 's7', unit: 'shiki', type: '実数', lv: 1,
+  stem: '<p>次のうち、<b>無理数</b>であるものはどれか。</p>',
+  choices: ['0.333…（3がくり返す）', R(9), '−' + F(2, 7), R(12)], ans: 3,
+  exp: `<p>⓪ は ${F(1, 3)}、① は 3、② は分数なので、どれも有理数。<br>${R(12)} = 2${R(3)} は分数で表せないので <mark>無理数</mark>。循環小数は有理数であることに注意。</p>` },
+{ id: 's8', unit: 'shiki', type: '根号と絶対値', lv: 2,
+  stem: `<p>a &lt; 3 のとき、${R('(a − 3)²')} を簡単にしたものはどれか。</p>`,
+  choices: ['a − 3', '3 − a', '|a| − 3', 'a + 3'], ans: 1,
+  exp: `<p>${R('A²')} = |A|。a &lt; 3 なので a − 3 &lt; 0。よって |a − 3| = −(a − 3) = <mark>3 − a</mark>。<br>「${R('A²')} = A」としてしまうのがよくあるまちがい。</p>` },
+{ id: 's9', unit: 'shiki', type: '展開', lv: 2,
+  stem: '<p>(a + b)(a − b)(a² + b²) を展開したものはどれか。</p>',
+  choices: ['a⁴ − b⁴', 'a⁴ + b⁴', 'a⁴ − 2a²b² + b⁴', 'a⁴ + 2a²b² + b⁴'], ans: 0,
+  exp: '<p>前の2つをまとめて (a + b)(a − b) = a² − b²。次に (a² − b²)(a² + b²) = <mark>a⁴ − b⁴</mark>。<br>和と差の積の公式を2回使う。順番を工夫すると計算が短くなる。</p>' },
+{ id: 's10', unit: 'shiki', type: '式の値', lv: 3,
+  stem: `<p>x = ${F(1, R(3) + ' − ' + R(2))} のとき、x² + ${F(1, 'x²')} の値はどれか。</p>`,
+  choices: ['10', '12', '2' + R(6), '8'], ans: 0,
+  exp: `<p>有理化すると x = ${R(3)} + ${R(2)}、${F(1, 'x')} = ${R(3)} − ${R(2)}。<br>x + ${F(1, 'x')} = 2${R(3)} なので、x² + ${F(1, 'x²')} = (x + ${F(1, 'x')})² − 2 = 12 − 2 = <mark>10</mark>。<br>対称式は「和」と「積（x · ${F(1, 'x')} = 1）」で表すと楽。</p>` },
+{ id: 's11', unit: 'shiki', type: '因数分解', lv: 2,
+  stem: '<p>x² − y² + 4y − 4 を因数分解したものはどれか。</p>',
+  choices: ['(x + y − 2)(x − y + 2)', '(x + y + 2)(x − y − 2)', '(x − y − 2)(x − y + 2)', '(x + y − 2)(x + y + 2)'], ans: 0,
+  exp: '<p>y の項をまとめると −(y² − 4y + 4) = −(y − 2)²。<br>x² − (y − 2)² = {x + (y − 2)}{x − (y − 2)} = <mark>(x + y − 2)(x − y + 2)</mark>。</p>' },
+{ id: 's12', unit: 'shiki', type: '連立不等式', lv: 2,
+  stem: '<p>連立不等式 2x − 1 &gt; 3、x + 4 ≧ 3x − 2 を解け。</p>',
+  choices: ['2 &lt; x ≦ 3', 'x &gt; 2', 'x ≦ 3', '2 ≦ x &lt; 3'], ans: 0,
+  exp: '<p>1つ目：2x &gt; 4 より x &gt; 2。2つ目：−2x ≧ −6 より x ≦ 3。<br>両方を満たす範囲（共通部分）は <mark>2 &lt; x ≦ 3</mark>。端の値をふくむかどうか（&lt; と ≦）に注意。</p>' },
+{ id: 's13', unit: 'shiki', type: '不等式の応用', lv: 3,
+  stem: '<p>不等式 3x − 7 &lt; x + 5 を満たす<b>自然数</b> x は何個あるか。</p>',
+  choices: ['4個', '5個', '6個', '7個'], ans: 1,
+  exp: '<p>2x &lt; 12 より x &lt; 6。自然数は 1, 2, 3, 4, 5 の <mark>5個</mark>。<br>x = 6 は「&lt;」なのでふくまない。0 は自然数ではない。</p>' },
+{ id: 's14', unit: 'shiki', type: '循環小数', lv: 1,
+  stem: '<p>循環小数 0.454545…（45 がくり返す）を分数で表したものはどれか。</p>',
+  choices: [F(5, 11), F(9, 20), F(45, 100), F(4, 9)], ans: 0,
+  exp: `<p>x = 0.4545… とおくと 100x = 45.4545…。引くと 99x = 45 なので x = ${F(45, 99)} = <mark>${F(5, 11)}</mark>。</p>` },
+{ id: 's15', unit: 'shiki', type: '根号の計算', lv: 1,
+  stem: `<p>(${R(3)} + 1)² を計算したものはどれか。</p>`,
+  choices: ['4 + 2' + R(3), '4', '2 + 2' + R(3), '4 + ' + R(3)], ans: 0,
+  exp: `<p>(${R(3)})² + 2·${R(3)}·1 + 1² = 3 + 2${R(3)} + 1 = <mark>4 + 2${R(3)}</mark>。まん中の 2ab を忘れると ① になる。</p>` },
+{ id: 's16', unit: 'shiki', type: '絶対値', lv: 3,
+  stem: '<p>方程式 |2x − 3| = 5 の解はどれか。</p>',
+  choices: ['x = 4', 'x = 4, −1', 'x = −4, 1', 'x = 1, 4'], ans: 1,
+  exp: '<p>2x − 3 = 5 または 2x − 3 = −5。それぞれ x = 4、x = −1。答えは <mark>x = 4, −1</mark>。<br>絶対値の方程式は「+ と − の2通り」を考える。</p>' },
+
+/* ---------- 集合と命題 ---------- */
+{ id: 'g1', unit: 'shugo', type: '共通部分', lv: 1, inUnit: true,
+  stem: '<p>全体集合 U = {1, 2, 3, …, 10}、A = {1, 2, 3, 4, 5}、B = {2, 4, 6, 8, 10} とする。A∩B はどれか。</p>',
+  choices: ['{2, 4}', '{1, 3, 5}', '{1, 2, 3, 4, 5, 6, 8, 10}', '{6, 8, 10}'], ans: 0,
+  exp: '<p>A∩B は A と B の両方に入る要素。<mark>{2, 4}</mark>。② は和集合 A∪B。</p>' },
+{ id: 'g2', unit: 'shugo', type: '補集合', lv: 1, inUnit: true,
+  stem: `<p>全体集合 U = {1, 2, 3, …, 10}、A = {1, 2, 3, 4, 5}、B = {2, 4, 6, 8, 10} とする。${BAR('A')}∩B はどれか。</p>`,
+  choices: ['{2, 4}', '{7, 9}', '{6, 8, 10}', '{1, 3, 5}'], ans: 2,
+  exp: `<p>${BAR('A')} = {6, 7, 8, 9, 10}。このうち B にも入るのは <mark>{6, 8, 10}</mark>。ベン図でいうと「B だけ」の部分。</p>` },
+{ id: 'g3', unit: 'shugo', type: 'ド・モルガン', lv: 2, inUnit: true,
+  stem: `<p>全体集合 U = {1, 2, 3, …, 10}、A = {1, 2, 3, 4, 5}、B = {2, 4, 6, 8, 10} とする。${BAR('A∪B')} はどれか。</p>`,
+  choices: ['{2, 4}', '{7, 9}', '{1, 3, 5, 6, 7, 8, 9, 10}', '∅（空集合）'], ans: 1,
+  exp: `<p>A∪B = {1, 2, 3, 4, 5, 6, 8, 10} なので、その補集合は <mark>{7, 9}</mark>。<br>ド・モルガンの法則 ${BAR('A∪B')} = ${BAR('A')}∩${BAR('B')} で考えても同じ結果になる。</p>` },
+{ id: 'g4', unit: 'shugo', type: '必要・十分', lv: 1, inUnit: true,
+  stem: '<p>x は実数とする。「x = 3」は「x² = 9」であるための何か。</p>',
+  choices: NS4, ans: 2,
+  exp: '<p>x = 3 ⇒ x² = 9 は真。x² = 9 ⇒ x = 3 は偽（反例 x = −3）。<br>矢印の出発点の「x = 3」は <mark>十分条件であるが、必要条件ではない</mark>。</p>' },
+{ id: 'g5', unit: 'shugo', type: '必要・十分', lv: 2, inUnit: true,
+  stem: '<p>x は実数とする。「x &gt; 2」は「x &gt; 5」であるための何か。</p>',
+  choices: NS4, ans: 1,
+  exp: '<p>x &gt; 5 ⇒ x &gt; 2 は真（せまい範囲 ⇒ 広い範囲）。x &gt; 2 ⇒ x &gt; 5 は偽（反例 x = 3）。<br>矢印の到着点の「x &gt; 2」は <mark>必要条件であるが、十分条件ではない</mark>。</p>' },
+{ id: 'g6', unit: 'shugo', type: '必要・十分', lv: 2,
+  stem: '<p>x は実数とする。「x² = x」は「x = 1」であるための何か。</p>',
+  choices: NS4, ans: 1,
+  exp: '<p>x = 1 ⇒ x² = x は真。x² = x ⇒ x = 1 は偽（x² = x の解は x = 0, 1 なので反例 x = 0）。<br>よって「x² = x」は <mark>必要条件であるが、十分条件ではない</mark>。</p>' },
+{ id: 'g7', unit: 'shugo', type: '必要・十分', lv: 2,
+  stem: '<p>△ABC において、「AB = AC」は「∠B = ∠C」であるための何か。</p>',
+  choices: NS4, ans: 0,
+  exp: '<p>二等辺三角形の性質（2辺が等しい ⇒ 底角が等しい）と、その逆（2角が等しい ⇒ 2辺が等しい）はどちらも成り立つ。<br>よって <mark>必要十分条件</mark>（同値）。</p>' },
+{ id: 'g8', unit: 'shugo', type: '必要・十分', lv: 2,
+  stem: '<p>x, y は実数とする。「x = 0」は「xy = 0」であるための何か。</p>',
+  choices: NS4, ans: 2,
+  exp: '<p>x = 0 ⇒ xy = 0 は真。xy = 0 ⇒ x = 0 は偽（反例 x = 1, y = 0）。<br>よって「x = 0」は <mark>十分条件であるが、必要条件ではない</mark>。</p>' },
+{ id: 'g9', unit: 'shugo', type: '反例', lv: 1,
+  stem: '<p>命題「x² = 1 ならば x = 1」の反例はどれか。</p>',
+  choices: ['x = 1', 'x = −1', 'x = 0', 'x = 2'], ans: 1,
+  exp: '<p>反例は「仮定（x² = 1）を満たすのに、結論（x = 1）を満たさない例」。<mark>x = −1</mark> がそれにあたる。<br>② と ③ はそもそも仮定 x² = 1 を満たさないので反例にならない。</p>' },
+{ id: 'g10', unit: 'shugo', type: '対偶', lv: 2,
+  stem: '<p>命題「x + y &gt; 2 ならば x &gt; 1 または y &gt; 1」の対偶はどれか。</p>',
+  choices: ['x &gt; 1 または y &gt; 1 ならば x + y &gt; 2', 'x + y ≦ 2 ならば x ≦ 1 かつ y ≦ 1', 'x ≦ 1 または y ≦ 1 ならば x + y ≦ 2', 'x ≦ 1 かつ y ≦ 1 ならば x + y ≦ 2'], ans: 3,
+  exp: '<p>対偶は「結論の否定 ⇒ 仮定の否定」。「x &gt; 1 または y &gt; 1」の否定は「x ≦ 1 <b>かつ</b> y ≦ 1」。<br>よって <mark>x ≦ 1 かつ y ≦ 1 ならば x + y ≦ 2</mark>。⓪ は逆、① は裏。</p>' },
+{ id: 'g11', unit: 'shugo', type: '否定', lv: 1,
+  stem: '<p>条件「x &gt; 0 かつ y &gt; 0」の否定はどれか。</p>',
+  choices: ['x ≦ 0 かつ y ≦ 0', 'x ≦ 0 または y ≦ 0', 'x &lt; 0 または y &lt; 0', 'x &gt; 0 または y &gt; 0'], ans: 1,
+  exp: '<p>否定すると「かつ」は「または」に、「&gt;」は「≦」になる。<mark>x ≦ 0 または y ≦ 0</mark>。<br>② は「= 0」の場合がぬけている。</p>' },
+{ id: 'g12', unit: 'shugo', type: '証明', lv: 2,
+  stem: '<p>n は整数とする。命題「n² が偶数ならば n は偶数」を証明するのに、もっとも適した方法はどれか。</p>',
+  choices: ['逆「n が偶数ならば n² は偶数」を示す', '対偶「n が奇数ならば n² は奇数」を示す', '裏「n² が奇数ならば n は奇数」を示す', 'n = 2 のときに成り立つことを示す'], ans: 1,
+  exp: '<p>もとの命題と対偶は真偽が一致するので、<mark>対偶を示せばよい</mark>。n = 2k + 1 とおくと n² = 2(2k² + 2k) + 1 で奇数。<br>逆や裏が真でも、もとの命題が真とは言えない。1つの例だけでは証明にならない。</p>' },
+{ id: 'g13', unit: 'shugo', type: '背理法', lv: 3,
+  stem: `<p>「${R(2)} は無理数である」を背理法で証明するとき、最初に仮定することはどれか。</p>`,
+  choices: [`${R(2)} は無理数である`, `${R(2)} = 1.41… である`, `${R(2)} は有理数である、つまり ${R(2)} = ${F('m', 'n')}（m, n は互いに素な自然数）と表せる`, `${R(2)} は整数である`], ans: 2,
+  exp: `<p>背理法は「示したいことの<b>否定</b>」を仮定して矛盾を導く方法。「無理数である」の否定は <mark>有理数である</mark>。<br>${R(2)} = ${F('m', 'n')} から m² = 2n² を導き、m も n も偶数になって「互いに素」と矛盾する。</p>` },
+{ id: 'g14', unit: 'shugo', type: '部分集合', lv: 2,
+  stem: '<p>A = {x | −1 &lt; x &lt; 3}、B = {x | 0 &lt; x &lt; 2}（x は実数）のとき、正しいものはどれか。</p>',
+  choices: ['A ⊂ B', 'B ⊂ A', 'A = B', 'A∩B = ∅'], ans: 1,
+  exp: '<p>数直線にかくと、B の範囲 0 &lt; x &lt; 2 は A の範囲 −1 &lt; x &lt; 3 にすっぽり入る。よって <mark>B ⊂ A</mark>（B は A の部分集合）。</p>' },
+{ id: 'g15', unit: 'shugo', type: '必要・十分', lv: 3,
+  stem: '<p>x は実数とする。「|x| &lt; 1」は「x &lt; 1」であるための何か。</p>',
+  choices: NS4, ans: 2,
+  exp: '<p>|x| &lt; 1 は −1 &lt; x &lt; 1。これは x &lt; 1 にふくまれるので「|x| &lt; 1 ⇒ x &lt; 1」は真。逆は偽（反例 x = −2）。<br>よって <mark>十分条件であるが、必要条件ではない</mark>。</p>' },
+
+/* ---------- 2次関数 ---------- */
+{ id: 'k1', unit: 'kansu', type: '頂点', lv: 1, inUnit: true,
+  stem: '<p>放物線 y = 2(x − 3)² + 1 の頂点の座標はどれか。</p>',
+  choices: ['(−3, 1)', '(3, 1)', '(3, −1)', '(−3, −1)'], ans: 1,
+  exp: '<p>y = a(x − p)² + q の頂点は (p, q)。かっこの中が「x − 3」なので p = 3。頂点は <mark>(3, 1)</mark>。</p>' },
+{ id: 'k2', unit: 'kansu', type: '平方完成', lv: 2, inUnit: true,
+  stem: '<p>放物線 y = x² − 6x + 5 の頂点の座標はどれか。</p>',
+  choices: ['(3, −4)', '(−3, −4)', '(3, 5)', '(6, 5)'], ans: 0,
+  exp: '<p>x² − 6x = (x − 3)² − 9 なので、y = (x − 3)² − 9 + 5 = (x − 3)² − 4。頂点は <mark>(3, −4)</mark>。<br>頂点の x 座標は −b/2a = 6/2 = 3 でも求められる。</p>' },
+{ id: 'k3', unit: 'kansu', type: '平方完成', lv: 2, inUnit: true,
+  stem: '<p>y = 2x² + 8x + 3 を平方完成したものはどれか。</p>',
+  choices: ['y = 2(x + 2)² − 5', 'y = 2(x + 4)² − 13', 'y = 2(x + 2)² + 3', 'y = 2(x − 2)² − 5'], ans: 0,
+  exp: '<p>y = 2(x² + 4x) + 3 = 2{(x + 2)² − 4} + 3 = 2(x + 2)² − 8 + 3 = <mark>2(x + 2)² − 5</mark>。<br>中かっこをはずすとき、−4 にも 2 をかけるのを忘れないこと（忘れると 2(x + 2)² − 1 になってしまう）。</p>' },
+{ id: 'k4', unit: 'kansu', type: '平行移動', lv: 1, inUnit: true,
+  stem: '<p>放物線 y = x² を x 軸方向に 2、y 軸方向に −3 だけ平行移動した放物線の式はどれか。</p>',
+  choices: ['y = (x + 2)² − 3', 'y = (x − 2)² − 3', 'y = (x − 2)² + 3', 'y = (x + 2)² + 3'], ans: 1,
+  exp: '<p>頂点が (0, 0) から (2, −3) に移るので <mark>y = (x − 2)² − 3</mark>。<br>x 軸方向に +2 動かすと、式では x が「x − 2」になる。</p>' },
+{ id: 'k5', unit: 'kansu', type: '最大・最小', lv: 2, inUnit: true,
+  stem: '<p>関数 y = x² − 4x + 1（0 ≦ x ≦ 3）の<b>最大値</b>はどれか。</p>',
+  choices: ['1', '−2', '−3', '3'], ans: 0,
+  exp: '<p>y = (x − 2)² − 3。軸 x = 2 は範囲の中にある。軸から遠いのは x = 0 の方（距離 2）で、x = 0 のとき y = 1。最大値は <mark>1</mark>。<br>② の −3 は最小値（x = 2）、① は x = 3 のときの値。</p>' },
+{ id: 'k6', unit: 'kansu', type: '2次方程式', lv: 1,
+  stem: '<p>2次方程式 x² − 3x − 10 = 0 の解はどれか。</p>',
+  choices: ['x = −5, 2', 'x = 10, −1', 'x = 5, −2', 'x = 5, 2'], ans: 2,
+  exp: '<p>かけて −10、たして −3 になる2数は −5 と 2。(x − 5)(x + 2) = 0 より <mark>x = 5, −2</mark>。</p>' },
+{ id: 'k7', unit: 'kansu', type: '解の公式', lv: 2,
+  stem: '<p>2次方程式 x² − 4x + 1 = 0 の解はどれか。</p>',
+  choices: ['x = 2 ± ' + R(3), 'x = −2 ± ' + R(3), 'x = 4 ± ' + R(3), 'x = 2 ± ' + R(5)], ans: 0,
+  exp: `<p>解の公式より x = ${F('4 ± ' + R('16 − 4'), 2)} = ${F('4 ± 2' + R(3), 2)} = <mark>2 ± ${R(3)}</mark>。<br>b が偶数のときは x = −b' ± ${R("b'² − ac")}（b = 2b'）を使うと速い。</p>` },
+{ id: 'k8', unit: 'kansu', type: '判別式', lv: 2,
+  stem: '<p>2次方程式 2x² + 3x + k = 0 が実数解をもたないような定数 k の値の範囲はどれか。</p>',
+  choices: ['k &gt; ' + F(9, 8), 'k &lt; ' + F(9, 8), 'k ≧ ' + F(9, 8), 'k &gt; ' + F(8, 9)], ans: 0,
+  exp: `<p>実数解をもたない ⇔ D &lt; 0。D = 3² − 4·2·k = 9 − 8k &lt; 0 より <mark>k &gt; ${F(9, 8)}</mark>。</p>` },
+{ id: 'k9', unit: 'kansu', type: '2次不等式', lv: 2,
+  stem: '<p>2次不等式 x² − x − 6 &lt; 0 を解け。</p>',
+  choices: ['x &lt; −2, 3 &lt; x', '−2 &lt; x &lt; 3', '−3 &lt; x &lt; 2', 'x &lt; −3, 2 &lt; x'], ans: 1,
+  exp: '<p>(x + 2)(x − 3) &lt; 0。グラフは x = −2, 3 で x 軸と交わる下に凸の放物線。x 軸より下にあるのは間の部分なので <mark>−2 &lt; x &lt; 3</mark>。</p>' },
+{ id: 'k10', unit: 'kansu', type: '2次不等式', lv: 2,
+  stem: '<p>2次不等式 x² − 4x + 4 &gt; 0 の解はどれか。</p>',
+  choices: ['x = 2', '2 以外のすべての実数', 'すべての実数', '解なし'], ans: 1,
+  exp: '<p>(x − 2)² &gt; 0。2乗は 0 以上で、0 になるのは x = 2 のときだけ。よって <mark>2 以外のすべての実数</mark>。<br>グラフは x = 2 で x 軸に接し、それ以外では x 軸より上にある。</p>' },
+{ id: 'k11', unit: 'kansu', type: '2次不等式', lv: 2,
+  stem: '<p>2次不等式 x² + 2x + 3 ≦ 0 の解はどれか。</p>',
+  choices: ['すべての実数', '解なし', 'x = −1', '−3 ≦ x ≦ 1'], ans: 1,
+  exp: '<p>D = 4 − 12 = −8 &lt; 0 なので、グラフは x 軸と共有点をもたず、つねに x 軸より上。0 以下になることはないので <mark>解なし</mark>。<br>（x² + 2x + 3 = (x + 1)² + 2 ≧ 2 でも確かめられる）</p>' },
+{ id: 'k12', unit: 'kansu', type: '判別式', lv: 3,
+  stem: '<p>放物線 y = x² + kx + 9 が x 軸に接するような定数 k の値はどれか。</p>',
+  choices: ['k = ±6', 'k = 6', 'k = ±3', 'k = ±9'], ans: 0,
+  exp: '<p>x 軸に接する ⇔ D = 0。D = k² − 36 = 0 より <mark>k = ±6</mark>。<br>k = 6 だけでなく、k = −6 のとき（y = (x − 3)²）も接する。</p>' },
+{ id: 'k13', unit: 'kansu', type: '最大・最小', lv: 3,
+  stem: `<p>関数 y = x² − 2x（0 ≦ x ≦ ${F(1, 2)}）の最小値はどれか。</p>`,
+  choices: ['−' + F(3, 4), '−1', '0', '−' + F(1, 2)], ans: 0,
+  exp: `<p>y = (x − 1)² − 1。軸 x = 1 は範囲 0 ≦ x ≦ ${F(1, 2)} より右にあるので、範囲の中ではグラフは右下がり。<br>最小は右はし x = ${F(1, 2)} で、y = ${F(1, 4)} − 1 = <mark>−${F(3, 4)}</mark>。① の −1 は頂点の値で、範囲に入っていない。</p>` },
+{ id: 'k14', unit: 'kansu', type: '最大・最小', lv: 2,
+  stem: '<p>関数 y = −x² + 6x − 5 の最大値はどれか。</p>',
+  choices: ['−5', '3', '4', '9'], ans: 2,
+  exp: '<p>y = −(x² − 6x) − 5 = −(x − 3)² + 9 − 5 = −(x − 3)² + 4。上に凸なので頂点で最大、最大値は <mark>4</mark>（x = 3）。</p>' },
+{ id: 'k15', unit: 'kansu', type: '式の決定', lv: 2,
+  stem: '<p>頂点が (1, −2) で、点 (3, 6) を通る放物線の式はどれか。</p>',
+  choices: ['y = 2x² − 4x', 'y = x² − 2x − 1', 'y = 2x² + 4x', 'y = 2x² − 4x + 2'], ans: 0,
+  exp: '<p>y = a(x − 1)² − 2 とおく。(3, 6) を通るので 6 = 4a − 2、a = 2。<br>y = 2(x − 1)² − 2 = <mark>2x² − 4x</mark>。① も頂点は (1, −2) だが (3, 6) を通らない。</p>' },
+{ id: 'k16', unit: 'kansu', type: 'グラフと x 軸', lv: 3,
+  stem: '<p>放物線 y = x² − 2x − 8 が x 軸から切り取る線分の長さはどれか。</p>',
+  choices: ['6', '8', '2', '4'], ans: 0,
+  exp: '<p>x² − 2x − 8 = (x − 4)(x + 2) = 0 より、x 軸との交点は x = −2, 4。線分の長さは 4 − (−2) = <mark>6</mark>。</p>' },
+
+/* ---------- 図形と計量 ---------- */
+{ id: 't1', unit: 'keiryo', type: '三角比の値', lv: 1, inUnit: true,
+  stem: '<p>sin 30° の値はどれか。</p>',
+  choices: [F(R(3), 2), F(1, 2), F(1, R(2)), R(3)], ans: 1,
+  exp: `<p>30°・60°・90° の直角三角形の辺の比は 1 : ${R(3)} : 2。30° の向かいの辺が 1 なので sin 30° = <mark>${F(1, 2)}</mark>。⓪ は sin 60°。</p>` },
+{ id: 't2', unit: 'keiryo', type: '鈍角の三角比', lv: 1, inUnit: true,
+  stem: '<p>cos 120° の値はどれか。</p>',
+  choices: [F(1, 2), '−' + F(1, 2), F(R(3), 2), '−' + F(R(3), 2)], ans: 1,
+  exp: `<p>cos(180° − θ) = −cos θ より cos 120° = −cos 60° = <mark>−${F(1, 2)}</mark>。<br>単位円で 120° の点は左側（x &lt; 0）にあるので、cos は負になる。</p>` },
+{ id: 't3', unit: 'keiryo', type: '相互関係', lv: 2, inUnit: true,
+  stem: `<p>0° &lt; θ &lt; 90° で sin θ = ${F(3, 5)} のとき、tan θ の値はどれか。</p>`,
+  choices: [F(3, 4), F(4, 3), F(4, 5), F(3, 5)], ans: 0,
+  exp: `<p>cos²θ = 1 − ${F(9, 25)} = ${F(16, 25)}。θ は鋭角なので cos θ = ${F(4, 5)}。<br>tan θ = ${F('sin θ', 'cos θ')} = ${F(3, 5)} ÷ ${F(4, 5)} = <mark>${F(3, 4)}</mark>。辺の比 3 : 4 : 5 の直角三角形を思い浮かべてもよい。</p>` },
+{ id: 't4', unit: 'keiryo', type: '余弦定理', lv: 2, inUnit: true,
+  stem: '<p>△ABC で b = 3、c = 5、A = 120° のとき、a の値はどれか。</p>',
+  choices: ['7', R(19), '8', R(34)], ans: 0,
+  exp: `<p>a² = 3² + 5² − 2·3·5·cos 120° = 9 + 25 − 30·(−${F(1, 2)}) = 34 + 15 = 49。a &gt; 0 より <mark>a = 7</mark>。<br>cos 120° を ${F(1, 2)} としてしまうと ① の ${R(19)} になる。</p>` },
+{ id: 't5', unit: 'keiryo', type: '正弦定理', lv: 2, inUnit: true,
+  stem: '<p>△ABC で a = 6、A = 30° のとき、外接円の半径 R はどれか。</p>',
+  choices: ['3', '6', '12', '6' + R(3)], ans: 1,
+  exp: `<p>正弦定理 ${F('a', 'sin A')} = 2R より 2R = 6 ÷ ${F(1, 2)} = 12。よって <mark>R = 6</mark>。② は 2R の値。</p>` },
+{ id: 't6', unit: 'keiryo', type: '面積', lv: 2,
+  stem: '<p>△ABC で b = 4、c = 6、A = 45° のとき、面積 S はどれか。</p>',
+  choices: ['6' + R(2), '12' + R(2), '6', '12'], ans: 0,
+  exp: `<p>S = ${F(1, 2)}bc sin A = ${F(1, 2)}·4·6·${F(R(2), 2)} = <mark>6${R(2)}</mark>。</p>` },
+{ id: 't7', unit: 'keiryo', type: '三角比の利用', lv: 1,
+  stem: '<p>水平面に対して 30° の傾きの坂道を、坂にそって 10 m 進んだ。何 m 高い位置に来たか。</p>',
+  choices: ['5 m', '5' + R(3) + ' m', F('10' + R(3), 3) + ' m', '20 m'], ans: 0,
+  exp: `<p>坂の長さが斜辺、高さが向かいの辺なので 10 × sin 30° = 10 × ${F(1, 2)} = <mark>5 m</mark>。① は水平方向に進んだ距離（10 cos 30°）。</p>` },
+{ id: 't8', unit: 'keiryo', type: '180° − θ', lv: 2,
+  stem: '<p>sin 140° と等しいものはどれか。</p>',
+  choices: ['sin 40°', '−sin 40°', 'cos 40°', '−cos 40°'], ans: 0,
+  exp: '<p>sin(180° − θ) = sin θ より sin 140° = <mark>sin 40°</mark>。<br>cos の場合は cos(180° − θ) = −cos θ となり、符号が変わる。</p>' },
+{ id: 't9', unit: 'keiryo', type: '相互関係', lv: 2,
+  stem: `<p>0° ≦ θ ≦ 180° で cos θ = −${F(1, 3)} のとき、sin θ の値はどれか。</p>`,
+  choices: [F('2' + R(2), 3), '−' + F('2' + R(2), 3), F(2, 3), F(R(2), 3)], ans: 0,
+  exp: `<p>sin²θ = 1 − ${F(1, 9)} = ${F(8, 9)}。0° ≦ θ ≦ 180° では sin θ ≧ 0 なので sin θ = <mark>${F('2' + R(2), 3)}</mark>。<br>鈍角でも sin は正。負になるのは cos と tan。</p>` },
+{ id: 't10', unit: 'keiryo', type: '相互関係', lv: 3,
+  stem: '<p>0° ≦ θ ≦ 180° で tan θ = −2 のとき、cos θ の値はどれか。</p>',
+  choices: ['−' + F(1, R(5)), F(1, R(5)), '−' + F(2, R(5)), F(2, R(5))], ans: 0,
+  exp: `<p>1 + tan²θ = ${F(1, 'cos²θ')} より ${F(1, 'cos²θ')} = 5、cos²θ = ${F(1, 5)}。<br>tan θ &lt; 0 なので θ は鈍角で cos θ &lt; 0。よって cos θ = <mark>−${F(1, R(5))}</mark>（= −${F(R(5), 5)}）。</p>` },
+{ id: 't11', unit: 'keiryo', type: '三角比と角', lv: 2,
+  stem: `<p>0° ≦ θ ≦ 180° で sin θ = ${F(1, 2)} を満たす θ はどれか。</p>`,
+  choices: ['θ = 30° のみ', 'θ = 30°, 150°', 'θ = 60°, 120°', 'θ = 150° のみ'], ans: 1,
+  exp: `<p>単位円で高さ（y 座標）が ${F(1, 2)} になる点は、右側と左側に1つずつある。<mark>θ = 30°, 150°</mark>。<br>sin の方程式は答えが2つになることが多い。</p>` },
+{ id: 't12', unit: 'keiryo', type: '余弦定理', lv: 3,
+  stem: '<p>3辺の長さが a = 7、b = 3、c = 5 の △ABC で、角 A の大きさはどれか。</p>',
+  choices: ['60°', '120°', '135°', '150°'], ans: 1,
+  exp: `<p>cos A = ${F('b² + c² − a²', '2bc')} = ${F('9 + 25 − 49', '30')} = −${F(1, 2)}。よって <mark>A = 120°</mark>。<br>いちばん長い辺の向かいの角がいちばん大きい。cos が負なら鈍角。</p>` },
+{ id: 't13', unit: 'keiryo', type: '正弦定理', lv: 2,
+  stem: '<p>△ABC で A = 45°、B = 60°、a = 2 のとき、b の値はどれか。</p>',
+  choices: [R(6), R(3), '2' + R(3), R(2)], ans: 0,
+  exp: `<p>${F('a', 'sin A')} = ${F('b', 'sin B')} より b = ${F('a sin B', 'sin A')} = 2·${F(R(3), 2)} ÷ ${F(R(2), 2)} = ${F('2' + R(3), R(2))} = <mark>${R(6)}</mark>。</p>` },
+{ id: 't14', unit: 'keiryo', type: '内接円', lv: 3,
+  stem: '<p>3辺の長さが 3、4、5 の三角形の内接円の半径 r はどれか。</p>',
+  choices: ['1', '2', F(3, 2), F(5, 2)], ans: 0,
+  exp: `<p>3² + 4² = 5² なので直角三角形で、面積 S = ${F(1, 2)}·3·4 = 6。<br>S = ${F(1, 2)}r(a + b + c) より 6 = ${F(1, 2)}·r·12、<mark>r = 1</mark>。③ の ${F(5, 2)} は外接円の半径。</p>` },
+{ id: 't15', unit: 'keiryo', type: '三角比の利用', lv: 2,
+  stem: '<p>木の根もとから水平に 20 m はなれた地点で、木の先を見上げる角が 30° だった。木の高さはどれか（目の高さは考えない）。</p>',
+  choices: [F('20' + R(3), 3) + ' m', '10 m', '20' + R(3) + ' m', '10' + R(3) + ' m'], ans: 0,
+  exp: `<p>高さ = 20 × tan 30° = 20 × ${F(1, R(3))} = <mark>${F('20' + R(3), 3)} m</mark>（約 11.5 m）。<br>水平距離と高さの関係なので tan を使う。</p>` },
+{ id: 't16', unit: 'keiryo', type: '相互関係', lv: 1,
+  stem: `<p>${F(1, 'cos²θ')} − tan²θ を簡単にしたものはどれか（θ ≠ 90°）。</p>`,
+  choices: ['1', '0', 'tan²θ', 'sin²θ'], ans: 0,
+  exp: `<p>1 + tan²θ = ${F(1, 'cos²θ')} を変形すると ${F(1, 'cos²θ')} − tan²θ = <mark>1</mark>。</p>` },
+
+/* ---------- データの分析 ---------- */
+{ id: 'd1', unit: 'data', type: '中央値', lv: 1, inUnit: true,
+  stem: '<p>データ 3, 7, 8, 2, 9, 5 の中央値はどれか。</p>',
+  choices: ['5', '6', '7', '5.5'], ans: 1,
+  exp: '<p>大きさの順に並べると 2, 3, 5, 7, 8, 9。6個（偶数個）なので、まん中の2つ 5 と 7 の平均 <mark>6</mark>。<br>並べかえずに、書かれた順のまま3番目と4番目（8 と 2）をとるのはよくあるまちがい。</p>' },
+{ id: 'd2', unit: 'data', type: '分散', lv: 1, inUnit: true,
+  stem: '<p>データ 4, 6, 8, 10, 12 の分散はどれか。</p>',
+  choices: ['8', '2' + R(2), '40', '10'], ans: 0,
+  exp: '<p>平均は 8。偏差は −4, −2, 0, 2, 4、その2乗は 16, 4, 0, 4, 16 で合計 40。<br>分散 = 40 ÷ 5 = <mark>8</mark>。① は標準偏差、② は偏差の2乗の合計。</p>' },
+{ id: 'd3', unit: 'data', type: '四分位数', lv: 2, inUnit: true,
+  stem: '<p>データ 1, 2, 4, 5, 7, 8, 9, 11, 12 の四分位範囲はどれか。</p>',
+  choices: ['7', '6', '8', '11'], ans: 0,
+  exp: '<p>9個なので中央値は5番目の 7。前半 1, 2, 4, 5 の中央値が Q₁ = 3、後半 8, 9, 11, 12 の中央値が Q₃ = 10。<br>四分位範囲 = 10 − 3 = <mark>7</mark>。③ の 11 は範囲（最大 − 最小）。</p>' },
+{ id: 'd4', unit: 'data', type: '外れ値', lv: 2, inUnit: true,
+  stem: '<p>あるデータの第1四分位数が 20、第3四分位数が 30 だった。「Q₁ − 1.5×(Q₃ − Q₁) 以下、または Q₃ + 1.5×(Q₃ − Q₁) 以上」を外れ値とするとき、外れ値であるものはどれか。</p>',
+  choices: ['6', '12', '44', '47'], ans: 3,
+  exp: '<p>四分位範囲は 10。下の基準は 20 − 15 = 5、上の基準は 30 + 15 = 45。<br>5 以下または 45 以上が外れ値なので <mark>47</mark>。</p>' },
+{ id: 'd5', unit: 'data', type: '相関係数', lv: 2, inUnit: true,
+  stem: '<p>2つの変量 x, y の共分散が 12、x の標準偏差が 4、y の標準偏差が 5 のとき、相関係数はどれか。</p>',
+  choices: ['0.6', '0.24', '2.4', '0.06'], ans: 0,
+  exp: `<p>r = ${F('共分散', 'x の標準偏差 × y の標準偏差')} = ${F(12, '4 × 5')} = <mark>0.6</mark>。相関係数はかならず −1 以上 1 以下になる（② はありえない値）。</p>` },
+{ id: 'd6', unit: 'data', type: '変量変換', lv: 2,
+  stem: '<p>変量 x の平均値が 50、標準偏差が 8 である。y = 2x + 10 とするとき、y の平均値と標準偏差の組はどれか。</p>',
+  choices: ['平均値 110、標準偏差 16', '平均値 110、標準偏差 26', '平均値 100、標準偏差 16', '平均値 110、標準偏差 32'], ans: 0,
+  exp: '<p>平均値は 2 × 50 + 10 = 110。標準偏差は「全体を2倍」にした分だけ2倍になり、「+10」では変わらないので 2 × 8 = 16。<br>答えは <mark>平均値 110、標準偏差 16</mark>。③ の 32 は分散が4倍になることと混同している。</p>' },
+{ id: 'd7', unit: 'data', type: '分散', lv: 2,
+  stem: '<p>変量 x について、x² の平均値が 30、x の平均値が 5 であった。x の分散はどれか。</p>',
+  choices: ['5', '25', R(5), '55'], ans: 0,
+  exp: '<p>分散 =（x² の平均値）−（x の平均値）² = 30 − 5² = <mark>5</mark>。</p>' },
+{ id: 'd8', unit: 'data', type: '相関', lv: 1,
+  stem: '<p>2つの変量について、「一方が大きいほど、もう一方が小さい傾向がある」とき、どのような相関があるといえるか。</p>',
+  choices: ['正の相関', '負の相関', '相関がない', '因果関係がある'], ans: 1,
+  exp: '<p>散布図で右下がりに点が並ぶ傾向は <mark>負の相関</mark>。相関係数は負の値になる。相関があっても因果関係があるとは限らない。</p>' },
+{ id: 'd9', unit: 'data', type: '箱ひげ図', lv: 2,
+  stem: '<p>30人のテストの点数について、第1四分位数が 40 点、中央値が 55 点、第3四分位数が 70 点だった。このとき、かならず正しいといえるものはどれか。</p>',
+  choices: ['平均点は 55 点である', '70 点以上の生徒はちょうど 8 人である', '40 点以下の生徒が半数をこえる', '55 点以上の生徒は少なくとも 15 人いる'], ans: 3,
+  exp: '<p>30人の中央値は15番目と16番目の平均。中央値が 55 点なら16番目は 55 点以上なので、16〜30番目の <mark>15人は 55 点以上</mark>。<br>平均点は箱ひげ図の値からはわからない（⓪）。同じ点の人がいると人数はちょうどにならない（①）。</p>' },
+{ id: 'd10', unit: 'data', type: '仮説検定', lv: 3,
+  stem: '<p>ある主張について、「主張は正しくない（結果は偶然である）」と仮定して調べたところ、実際の結果以上のことが偶然起こる確率は約 3% だった。基準となる確率を 5% とするとき、正しい結論はどれか。</p>',
+  choices: ['3% は 5% より小さいので、偶然とは考えにくく、主張は正しいと判断できる', '3% は小さいので、最初の仮定（偶然である）が正しいと判断できる', '3% は 0% ではないので、何も判断できない', '主張が正しい確率は 97% である'], ans: 0,
+  exp: '<p>仮定のもとで起こる確率が基準（5%）以下なら「偶然とは考えにくい」として仮定を否定し、<mark>主張は正しいと判断する</mark>。<br>③ のように「主張が正しい確率」を求めているわけではない点に注意。</p>' },
+{ id: 'd11', unit: 'data', type: '仮説検定', lv: 2,
+  stem: '<p>同じように調べたところ、実際の結果以上のことが偶然起こる確率は約 12% だった。基準を 5% とするとき、正しい結論はどれか。</p>',
+  choices: ['12% は小さいので、主張は正しいと判断できる', '主張はまちがいだと判断できる', '偶然でも起こりうるので、主張が正しいとは判断できない', '主張が正しい確率は 88% である'], ans: 2,
+  exp: '<p>12% は基準の 5% より大きいので「偶然でも十分起こりうる」。だから <mark>主張が正しいとは判断できない</mark>。<br>ただし「まちがいだ」と言い切れるわけでもない（①）。</p>' },
+{ id: 'd12', unit: 'data', type: '代表値', lv: 1,
+  stem: '<p>データ 2, 3, 3, 5, 5, 5, 7, 8 の最頻値はどれか。</p>',
+  choices: ['3', '5', '4.75', '4'], ans: 1,
+  exp: '<p>最頻値はいちばん多く現れる値。5 が3回でいちばん多いので <mark>5</mark>。② は平均値（38 ÷ 8）。</p>' },
+{ id: 'd13', unit: 'data', type: '代表値', lv: 2,
+  stem: '<p>9人のデータ 30, 35, 40, 42, 45, 46, 48, 49, 50 のうち、最大の 50 が 95 に入れかわった。変わらないものはどれか。</p>',
+  choices: ['平均値', '中央値', '範囲', '標準偏差'], ans: 1,
+  exp: '<p>中央値は5番目の値（45）で、いちばん大きい値が変わっても順番は変わらない。よって <mark>中央値</mark>は変わらない。<br>平均値・範囲・標準偏差はすべて大きくなる。中央値は外れ値の影響を受けにくい。</p>' },
+{ id: 'd14', unit: 'data', type: '共分散', lv: 3,
+  stem: '<p>3組のデータ (x, y) = (1, 2), (2, 4), (3, 9) について、x と y の共分散はどれか。</p>',
+  choices: [F(7, 3), '7', '3', F(7, 2)], ans: 0,
+  exp: `<p>x の平均 2、y の平均 5。偏差の組は (−1, −3), (0, −1), (1, 4)。積は 3, 0, 4 で合計 7。<br>共分散 = 7 ÷ 3 = <mark>${F(7, 3)}</mark>。① は合計を個数で割り忘れたもの。</p>` },
+{ id: 'd15', unit: 'data', type: '変量変換', lv: 1,
+  stem: '<p>あるデータのすべての値に 5 を加えた。平均値と標準偏差はどうなるか。</p>',
+  choices: ['平均値も標準偏差も 5 増える', '平均値は 5 増え、標準偏差は変わらない', '平均値は変わらず、標準偏差は 5 増える', 'どちらも変わらない'], ans: 1,
+  exp: '<p>全体が 5 ずれるだけで、散らばり方（平均からのはなれ方）は変わらない。<mark>平均値は 5 増え、標準偏差は変わらない</mark>。</p>' },
+{ id: 'd16', unit: 'data', type: '相関係数', lv: 1,
+  stem: '<p>相関係数の値として<b>ありえない</b>ものはどれか。</p>',
+  choices: ['−0.9', '0', '0.98', '1.2'], ans: 3,
+  exp: '<p>相関係数 r はつねに −1 ≦ r ≦ 1。<mark>1.2</mark> はありえない。計算して範囲外になったら、どこかでまちがえている。</p>' },
+];
+
+/* ===== 公式カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['shiki', '(a + b)² の展開', 'a² + 2ab + b²'],
+  ['shiki', '(a + b)(a − b) の展開', 'a² − b²'],
+  ['shiki', '(x + a)(x + b) の展開', 'x² + (a + b)x + ab'],
+  ['shiki', '(ax + b)(cx + d) の展開', 'acx² + (ad + bc)x + bd'],
+  ['shiki', '(a + b + c)² の展開', 'a² + b² + c² + 2ab + 2bc + 2ca'],
+  ['shiki', `${R('a²')} の値`, '|a|（a ≧ 0 なら a、a &lt; 0 なら −a）'],
+  ['shiki', `${F(1, R('a') + ' + ' + R('b'))} の有理化`, F(R('a') + ' − ' + R('b'), 'a − b')],
+  ['shiki', '不等式の両辺に負の数をかけると？', '不等号の向きが逆になる'],
+  ['shugo', BAR('A∪B') + ' のド・モルガンの法則', BAR('A') + ' ∩ ' + BAR('B')],
+  ['shugo', BAR('A∩B') + ' のド・モルガンの法則', BAR('A') + ' ∪ ' + BAR('B')],
+  ['shugo', 'p ⇒ q が真のとき、p は q の？', '十分条件（q は p の必要条件）'],
+  ['shugo', '「p ⇒ q」の対偶', BAR('q') + ' ⇒ ' + BAR('p') + '（もとの命題と真偽が一致）'],
+  ['shugo', '「p かつ q」の否定', BAR('p') + ' または ' + BAR('q')],
+  ['kansu', 'y = a(x − p)² + q の頂点と軸', '頂点 (p, q)、軸 x = p'],
+  ['kansu', 'y = ax² + bx + c の頂点の x 座標', '−' + F('b', '2a')],
+  ['kansu', '2次方程式 ax² + bx + c = 0 の解の公式', 'x = ' + F('−b ± ' + R('b² − 4ac'), '2a')],
+  ['kansu', '判別式 D と x 軸との共有点', 'D &gt; 0：2個　D = 0：1個（接する）　D &lt; 0：0個'],
+  ['kansu', 'α &lt; β、(x − α)(x − β) &gt; 0 の解', 'x &lt; α, β &lt; x'],
+  ['kansu', 'α &lt; β、(x − α)(x − β) &lt; 0 の解', 'α &lt; x &lt; β'],
+  ['kansu', 'y = f(x) を x 軸方向に p、y 軸方向に q 平行移動', 'y − q = f(x − p)'],
+  ['keiryo', 'sin θ・cos θ・tan θ（直角三角形）', `sin θ = ${F('対辺', '斜辺')}　cos θ = ${F('底辺', '斜辺')}　tan θ = ${F('対辺', '底辺')}`],
+  ['keiryo', 'sin²θ + cos²θ = ?', '1'],
+  ['keiryo', 'tan θ を sin θ、cos θ で表す', F('sin θ', 'cos θ')],
+  ['keiryo', '1 + tan²θ = ?', F(1, 'cos²θ')],
+  ['keiryo', 'sin(180° − θ)・cos(180° − θ)', 'sin θ、−cos θ'],
+  ['keiryo', '正弦定理', `${F('a', 'sin A')} = ${F('b', 'sin B')} = ${F('c', 'sin C')} = 2R`],
+  ['keiryo', '余弦定理（a² = ?）', 'a² = b² + c² − 2bc cos A'],
+  ['keiryo', '余弦定理（cos A = ?）', 'cos A = ' + F('b² + c² − a²', '2bc')],
+  ['keiryo', '三角形の面積（2辺と間の角）', 'S = ' + F(1, 2) + 'bc sin A'],
+  ['keiryo', '内接円の半径 r と面積', 'S = ' + F(1, 2) + 'r(a + b + c)'],
+  ['keiryo', 'sin 60°・cos 60°・tan 60°', `${F(R(3), 2)}、${F(1, 2)}、${R(3)}`],
+  ['keiryo', 'sin 45°・cos 45°・tan 45°', `${F(1, R(2))}、${F(1, R(2))}、1`],
+  ['data', '分散（2通りの求め方）', '（偏差）² の平均 ＝（x² の平均）−（x の平均）²'],
+  ['data', '標準偏差', R('分散')],
+  ['data', '四分位範囲', 'Q₃ − Q₁'],
+  ['data', '外れ値の基準（よく使うもの）', 'Q₁ − 1.5(Q₃ − Q₁) 以下、Q₃ + 1.5(Q₃ − Q₁) 以上'],
+  ['data', '共分散', '（x の偏差）×（y の偏差）の平均'],
+  ['data', '相関係数 r', 'r = ' + F('共分散', 'x の標準偏差 × y の標準偏差') + '（−1 ≦ r ≦ 1）'],
+  ['data', 'y = ax + b のときの平均・標準偏差', '平均 a × x̄ + b、標準偏差 |a| × s<sub>x</sub>'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['単項式', 'たんこうしき', 'shiki', '数や文字をかけ合わせただけの式。3x²、−5ab など。'],
+  ['多項式', 'たこうしき', 'shiki', 'いくつかの単項式の和で表された式。x² + 3x − 2 など。'],
+  ['次数', 'じすう', 'shiki', '単項式でかけ合わせた文字の個数。多項式では各項の次数のうち最大のもの。'],
+  ['係数', 'けいすう', 'shiki', '単項式で、文字以外の数の部分。−5x² の係数は −5。'],
+  ['同類項', 'どうるいこう', 'shiki', '文字の部分が同じ項。3x と −2x など。まとめて x にできる。'],
+  ['展開', 'てんかい', 'shiki', 'かっこのついた積の形を、かっこのない和の形にすること。'],
+  ['因数分解', 'いんすうぶんかい', 'shiki', '多項式をいくつかの式の積の形に表すこと。展開の逆。'],
+  ['たすき掛け', 'たすきがけ', 'shiki', 'ax² + bx + c を因数分解するとき、係数をななめにかけて和が b になる組を探す方法。'],
+  ['有理数', 'ゆうりすう', 'shiki', '整数 m と 0 でない整数 n で ' + F('m', 'n') + ' と表せる数。整数・有限小数・循環小数。'],
+  ['無理数', 'むりすう', 'shiki', `分数で表せない実数。${R(2)}、π など。小数にすると循環しない無限小数。`],
+  ['実数', 'じっすう', 'shiki', '有理数と無理数を合わせたもの。数直線上の点で表せる数。'],
+  ['循環小数', 'じゅんかんしょうすう', 'shiki', '同じ数字の並びが限りなくくり返す小数。0.333… など。有理数である。'],
+  ['絶対値', 'ぜったいち', 'shiki', '数直線上で原点からの距離。|a| と書く。|x − a| は x と a の距離。'],
+  ['平方根', 'へいほうこん', 'shiki', '2乗すると a になる数。a &gt; 0 のとき ±' + R('a') + ' の2つ。'],
+  ['有理化', 'ゆうりか', 'shiki', '分母に根号をふくむ式を、分母に根号をふくまない形に変形すること。'],
+  ['1次不等式', 'いちじふとうしき', 'shiki', '移項して整理すると ax + b &gt; 0 などの形になる不等式。'],
+  ['連立不等式', 'れんりつふとうしき', 'shiki', 'いくつかの不等式を組にしたもの。それぞれの解の共通部分が解。'],
+  ['集合', 'しゅうごう', 'shugo', '範囲がはっきりしたものの集まり。'],
+  ['要素', 'ようそ', 'shugo', '集合をつくっている1つ1つのもの。a が A の要素のとき a ∈ A と書く。'],
+  ['部分集合', 'ぶぶんしゅうごう', 'shugo', 'B のすべての要素が A の要素であるとき、B は A の部分集合。B ⊂ A と書く。'],
+  ['共通部分', 'きょうつうぶぶん', 'shugo', 'A と B の両方に属する要素全体。A∩B と書く。'],
+  ['和集合', 'わしゅうごう', 'shugo', 'A と B の少なくとも一方に属する要素全体。A∪B と書く。'],
+  ['全体集合', 'ぜんたいしゅうごう', 'shugo', '考える対象全体の集合。U で表すことが多い。'],
+  ['補集合', 'ほしゅうごう', 'shugo', `全体集合 U のうち、A に属さない要素全体。${BAR('A')} と書く。`],
+  ['空集合', 'くうしゅうごう', 'shugo', '要素を1つももたない集合。∅ と書く。'],
+  ['ド・モルガンの法則', 'どもるがんのほうそく', 'shugo', `${BAR('A∪B')} = ${BAR('A')}∩${BAR('B')}、${BAR('A∩B')} = ${BAR('A')}∪${BAR('B')}。`],
+  ['命題', 'めいだい', 'shugo', '正しいか正しくないか（真か偽か）がはっきり決まる文や式。'],
+  ['条件', 'じょうけん', 'shugo', '文字をふくみ、その値によって真偽が決まる文や式。'],
+  ['反例', 'はんれい', 'shugo', '命題「p ⇒ q」で、p を満たすが q を満たさない例。1つあれば命題は偽。'],
+  ['必要条件', 'ひつようじょうけん', 'shugo', 'p ⇒ q が真のとき、q は p であるための必要条件。'],
+  ['十分条件', 'じゅうぶんじょうけん', 'shugo', 'p ⇒ q が真のとき、p は q であるための十分条件。'],
+  ['必要十分条件', 'ひつようじゅうぶんじょうけん', 'shugo', 'p ⇒ q と q ⇒ p がともに真のこと。p と q は同値という。'],
+  ['同値', 'どうち', 'shugo', 'p ⇔ q が成り立つこと。2つの条件が表す範囲が同じ。'],
+  ['逆', 'ぎゃく', 'shugo', '命題「p ⇒ q」に対する「q ⇒ p」。'],
+  ['裏', 'うら', 'shugo', `命題「p ⇒ q」に対する「${BAR('p')} ⇒ ${BAR('q')}」。`],
+  ['対偶', 'たいぐう', 'shugo', `命題「p ⇒ q」に対する「${BAR('q')} ⇒ ${BAR('p')}」。もとの命題と真偽が一致する。`],
+  ['背理法', 'はいりほう', 'shugo', '示したいことが成り立たないと仮定して矛盾を導き、もとの主張が正しいと示す証明法。'],
+  ['否定', 'ひてい', 'shugo', '条件 p に対して「p でない」こと。' + BAR('p') + ' と書く。'],
+  ['関数', 'かんすう', 'kansu', 'x の値を決めると y の値がただ1つ決まるとき、y は x の関数という。y = f(x)。'],
+  ['定義域', 'ていぎいき', 'kansu', '関数で、x がとりうる値の範囲。'],
+  ['値域', 'ちいき', 'kansu', '定義域の x に対して、y がとりうる値の範囲。'],
+  ['放物線', 'ほうぶつせん', 'kansu', '2次関数のグラフの形。'],
+  ['頂点', 'ちょうてん', 'kansu', '放物線と軸との交点。2次関数が最大または最小になる点。'],
+  ['軸', 'じく', 'kansu', '放物線の対称の軸。y = a(x − p)² + q では直線 x = p。'],
+  ['平方完成', 'へいほうかんせい', 'kansu', 'ax² + bx + c を a(x − p)² + q の形に変形すること。'],
+  ['平行移動', 'へいこういどう', 'kansu', '図形の形と向きを変えずに、一定の方向に一定の距離だけ動かすこと。'],
+  ['下に凸', 'したにとつ', 'kansu', 'a &gt; 0 のときの放物線の形。頂点がいちばん下。'],
+  ['上に凸', 'うえにとつ', 'kansu', 'a &lt; 0 のときの放物線の形。頂点がいちばん上。'],
+  ['最大値', 'さいだいち', 'kansu', '関数がとる値のうちでもっとも大きい値。'],
+  ['最小値', 'さいしょうち', 'kansu', '関数がとる値のうちでもっとも小さい値。'],
+  ['判別式', 'はんべつしき', 'kansu', '2次方程式 ax² + bx + c = 0 の D = b² − 4ac。実数解の個数がわかる。'],
+  ['解の公式', 'かいのこうしき', 'kansu', 'ax² + bx + c = 0 の解 x = ' + F('−b ± ' + R('b² − 4ac'), '2a') + '。'],
+  ['共有点', 'きょうゆうてん', 'kansu', '2つのグラフが共通にもつ点。放物線と x 軸の共有点の x 座標は2次方程式の実数解。'],
+  ['2次不等式', 'にじふとうしき', 'kansu', 'ax² + bx + c &gt; 0 のような不等式。グラフが x 軸より上か下かで解く。'],
+  ['三角比', 'さんかくひ', 'keiryo', 'sin（正弦）・cos（余弦）・tan（正接）をまとめたよび方。'],
+  ['正弦', 'せいげん', 'keiryo', 'sin（サイン）。単位円上の点の y 座標。'],
+  ['余弦', 'よげん', 'keiryo', 'cos（コサイン）。単位円上の点の x 座標。'],
+  ['正接', 'せいせつ', 'keiryo', 'tan（タンジェント）。sin θ ÷ cos θ。原点と単位円上の点を結ぶ直線の傾き。'],
+  ['単位円', 'たんいえん', 'keiryo', '原点を中心とする半径 1 の円。三角比を 0°〜180° に広げて考えるのに使う。'],
+  ['鋭角', 'えいかく', 'keiryo', '0° より大きく 90° より小さい角。'],
+  ['鈍角', 'どんかく', 'keiryo', '90° より大きく 180° より小さい角。cos と tan が負になる。'],
+  ['正弦定理', 'せいげんていり', 'keiryo', `${F('a', 'sin A')} = ${F('b', 'sin B')} = ${F('c', 'sin C')} = 2R（R は外接円の半径）。`],
+  ['余弦定理', 'よげんていり', 'keiryo', 'a² = b² + c² − 2bc cos A。2辺と間の角から残りの辺を求められる。'],
+  ['外接円', 'がいせつえん', 'keiryo', '三角形の3つの頂点を通る円。'],
+  ['内接円', 'ないせつえん', 'keiryo', '三角形の3辺すべてに接する円。'],
+  ['変量', 'へんりょう', 'data', '身長や点数のように、調査の対象の特性を表す数量。'],
+  ['度数分布表', 'どすうぶんぷひょう', 'data', 'データをいくつかの階級に分け、各階級の度数（個数）をまとめた表。'],
+  ['ヒストグラム', 'ひすとぐらむ', 'data', '度数分布表を柱状のグラフに表したもの。'],
+  ['平均値', 'へいきんち', 'data', 'データの値の合計を個数で割った値。x̄ と書く。'],
+  ['中央値', 'ちゅうおうち', 'data', 'データを大きさの順に並べたとき中央にくる値。メジアン。'],
+  ['最頻値', 'さいひんち', 'data', 'データの中でもっとも多く現れる値。モード。'],
+  ['範囲', 'はんい', 'data', 'データの最大値と最小値の差。'],
+  ['四分位数', 'しぶんいすう', 'data', 'データを大きさの順に並べて4等分する位置の値。小さい方から Q₁、Q₂（中央値）、Q₃。'],
+  ['四分位範囲', 'しぶんいはんい', 'data', 'Q₃ − Q₁。真ん中の約半分のデータの散らばりを表す。'],
+  ['箱ひげ図', 'はこひげず', 'data', '最小値・Q₁・中央値・Q₃・最大値を箱と線（ひげ）で表した図。'],
+  ['外れ値', 'はずれち', 'data', 'ほかの値から極端にはなれた値。Q₁ − 1.5×四分位範囲 以下、Q₃ + 1.5×四分位範囲 以上を基準にすることが多い。'],
+  ['偏差', 'へんさ', 'data', '各データの値から平均値を引いた値。偏差の合計はつねに 0。'],
+  ['分散', 'ぶんさん', 'data', '偏差の2乗の平均値。データの散らばりの大きさを表す。'],
+  ['標準偏差', 'ひょうじゅんへんさ', 'data', '分散の正の平方根。もとのデータと同じ単位で散らばりを表す。'],
+  ['散布図', 'さんぷず', 'data', '2つの変量の組を座標平面上の点で表した図。'],
+  ['共分散', 'きょうぶんさん', 'data', '2つの変量の偏差の積の平均値。正なら正の相関、負なら負の相関の傾向。'],
+  ['相関係数', 'そうかんけいすう', 'data', '共分散を2つの標準偏差の積で割った値。−1 以上 1 以下で、直線的な関係の強さを表す。'],
+  ['仮説検定', 'かせつけんてい', 'data', 'ある主張が正しいかどうかを、データにもとづいて判断する方法。「偶然である」と仮定して、その確率が小さいかで判断する。'],
+  ['有意水準', 'ゆういすいじゅん', 'data', '仮説検定で「めったに起こらない」とみなす確率の基準。5% や 1% がよく使われる。'],
+];
+/* ===== ホーム ===== */
+const STATIONS = [
+  { id: 'shiki', code: '第1章', name: '数と式', desc: '展開を面積図で、因数分解をたすき掛けで。絶対値の不等式は数直線で' },
+  { id: 'shugo', code: '第2章', name: '集合と命題', desc: 'ベン図をぬって集合を表す。必要・十分条件を数直線で判定する' },
+  { id: 'kansu', code: '第3章', name: '2次関数', desc: '放物線を動かし、平方完成・最大最小・2次不等式をグラフで解く' },
+  { id: 'keiryo', code: '第4章', name: '図形と計量', desc: '単位円で三角比を見て、正弦定理・余弦定理・面積を求める' },
+  { id: 'data', code: '第5章', name: 'データの分析', desc: '箱ひげ図・分散・相関係数を数値を変えて確かめる。仮説検定の考え方も' },
+];
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">高校1年「数学Ⅰ」の実験室</div>
+      <h1 class="hero-title">動かしてわかる、<br><span class="hl">数学Ⅰ</span></h1>
+      <p class="lead">グラフを動かす、ベン図をぬる、数値を書きかえる。式だけではわかりにくいところを、手を動かして確かめる教材。授業の予習・復習やテスト前に、自分のペースで使おう。</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">数学Ⅰ、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>数学Ⅰの地図</h3><span class="muted small">5つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${STATIONS.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">
+      <div class="point"><h4>つながり①</h4><p class="small">「数と式」の因数分解は、「2次関数」で x 軸との交点や2次不等式を解くときに使う。</p></div>
+      <div class="point"><h4>つながり②</h4><p class="small">「集合と命題」の考え方は、不等式の解（範囲）を数直線で考えるときの土台になる。</p></div>
+      <div class="point"><h4>つながり③</h4><p class="small">「2次関数」の平方完成は「データの分析」の分散の式や、数学Ⅱ以降でもずっと使う。</p></div>
+    </div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', '各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、公式の暗記は「公式カード」で。'));
+  const st = h('<div class="stations"></div>');
+  STATIONS.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.values(S.ans).filter(v => v === true).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '公式カード', `覚えておきたい公式と値 ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `5単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と公式カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = p.slice().sort(() => Math.random() - 0.5).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 公式カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '公式カード', `覚えておきたい公式・値 ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">公式カード</span><h3>公式フラッシュ</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const seg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', seg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; seg.appendChild(b); });
+  function build() {
+    deck = CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok'));
+    deck.sort(() => Math.random() - 0.5); ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div class="fx" style="font-size:1.1rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">一覧</span><h3>三角比の表（0° 〜 180°）</h3></div>
+    <div class="scroll-x"><table class="tbl ctr"><thead><tr><th>θ</th>${Object.keys(TRIG).map(a => `<th>${a}°</th>`).join('')}</tr></thead><tbody>
+    ${['sin θ', 'cos θ', 'tan θ'].map((n, j) => `<tr><th>${n}</th>${Object.values(TRIG).map(v => `<td>${v[j] === 'なし' ? '／' : v[j]}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div><p class="small muted">tan 90° は定義されない（表では ／）。</p></section>`));
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `5単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="例：判別式、はんべつしき、外れ値" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const seg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', seg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    seg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    ['単元ページ（5つ）', '<p>上のタブの「数と式」〜「データの分析」。<br>① <b>要点</b>：その単元の公式と考え方<br>② <b>実験</b>：スライダーや数値を動かして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>'],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['公式カード', '<p>表に公式の名前、裏に中身。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。三角比の表もここにある。</p>'],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>公式があやふや</td><td>公式カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+updateXP();
+route();
+</script></body></html>

@@ -1,0 +1,1887 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>化学基礎 ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 白地で読みやすさ優先。重要語は赤の下線、選択肢はマークシート風。上部タブで6つのステーションを行き来する単一ページ */
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F6F7FA;
+  --ink:#161B2B;
+  --muted:#454D61;
+  --line:#D5DAE4;
+  --accent:#D02B62;      /* マークシートの赤：重要語の下線 */
+  --accent-soft:#FCE8EF;
+  --cobalt:#2550B8;      /* コード・データ */
+  --cobalt-soft:#E8EEFB;
+  --marker:#FFD84D;      /* 実行中の行だけに使う */
+  --on-marker:#161B2B;
+  --good:#0B8466;
+  --good-soft:#E2F5EE;
+  --bad:#C9461F;
+  --bad-soft:#FCEBE5;
+  --shadow:0 1px 2px rgba(22,27,43,.06);
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-code:"M PLUS 1 Code","BIZ UDGothic","Osaka-Mono","Consolas",monospace;
+  --r:10px;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.3;letter-spacing:.01em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.45}
+p{margin:0}
+a{color:var(--cobalt)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none}
+code,.mono{font-family:var(--f-code)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.brand .dot{width:22px;height:13px;border:2px solid var(--accent);border-radius:50%;display:inline-block;background:var(--accent)}
+.xp{margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.xp b{font-family:var(--f-code);font-weight:600}
+.xp .rank{background:var(--marker);color:var(--on-marker);padding:2px 8px;border-radius:999px;font-weight:700}
+.tabs{max-width:1040px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:0 2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 12px 10px;font-weight:700;font-size:.92rem;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .tag{font-family:var(--f-code);font-size:.7rem;color:var(--muted);font-weight:400}
+
+/* ---------- generic blocks ---------- */
+.view{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-top:28px}
+.sec-head{display:grid;gap:8px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+.lead{color:var(--muted);max-width:44em;font-size:1.02rem}
+h1,h2,h3,h4,.lead,.station p,.point p{word-break:auto-phrase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.lab{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lab-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lab-head .kind{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--cobalt-soft);color:var(--cobalt)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.points:has(> :nth-child(3):last-child){grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.point{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;min-width:0}
+.point h4{margin:0;font-size:.98rem}
+.point p,.point li{font-size:.97rem}
+.point ul{margin:0;padding-left:1.2em}
+.trap{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.92rem}
+.trap b{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:4px 10px;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+label.ctl{display:grid;gap:4px;font-size:.85rem;color:var(--muted);min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=number],select,textarea{font-family:var(--f-code);font-size:.95rem;padding:6px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:0;max-width:100%}
+.readout{font-family:var(--f-code);font-size:1.05rem;font-weight:600}
+.big-num{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);white-space:nowrap}
+.chip.hot{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.scroll-x{overflow-x:auto;min-width:0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{background:var(--marker)}100%{background:transparent}}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-title{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.12;letter-spacing:.01em}
+.hero-title .hl{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.12em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.count{padding:20px;display:grid;gap:8px;align-content:center;background:var(--ink);color:var(--paper);border:0}
+.count .lbl{font-size:.8rem;letter-spacing:.1em;opacity:.8}
+.count .days{font-family:var(--f-display);font-weight:700;font-size:clamp(3.2rem,12vw,5rem);line-height:1}
+.count .days small{font-size:.35em;margin-left:6px}
+.count .sub{font-size:.85rem;opacity:.85}
+.blueprint{display:flex;height:54px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.blueprint div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:.78rem;line-height:1.3;border-right:1.5px solid var(--ink);min-width:0;overflow:hidden}
+.blueprint div:last-child{border-right:0}
+.blueprint b{font-size:.92rem;white-space:nowrap}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.station{appearance:none;text-align:left;cursor:pointer;padding:16px;display:grid;gap:8px;align-content:start;transition:transform .15s}
+.station.wide{grid-column:1/-1}
+@media (min-width:1000px){.station.wide{grid-column:span 2}}
+.gl{margin:0;display:grid}
+.gl-row{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.gl-row{grid-template-columns:minmax(0,1fr)}}
+.gl dt{display:grid;gap:0;align-content:start}
+.gl-term{font-weight:700;font-size:1.08rem;line-height:1.5}
+.gl-yomi{font-size:.8rem;color:var(--muted)}
+.gl dd{margin:0;display:grid;gap:6px;justify-items:start}
+.gl-go{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+mark.hit{background:var(--marker);color:var(--on-marker);text-decoration:none;font-weight:inherit;padding:0 1px}
+.station:hover{transform:translateY(-2px);border-color:var(--ink)}
+.station .ic{font-family:var(--f-code);font-weight:600;font-size:.82rem;color:var(--cobalt)}
+.station h3{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--good);width:0}
+.priority{font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ---------- quiz (マークシート) ---------- */
+.q{padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.q-stem{font-size:1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.tracer>div{grid-template-columns:minmax(0,1fr)}
+.q-choices{display:grid;gap:8px}
+.choice{appearance:none;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--card);cursor:pointer;line-height:1.55;min-width:0}
+.choice:hover{border-color:var(--ink)}
+.oval{flex:none;width:34px;height:20px;border:1.8px solid var(--accent);border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-code);font-size:.75rem;font-weight:600;color:var(--accent);margin-top:2px}
+.choice.picked .oval{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.right .oval{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.choice-body{min-width:0}
+.exp{border-top:1.5px dashed var(--line);padding-top:12px;display:grid;gap:8px;font-size:1rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.2rem}
+.verdict.ok{color:var(--good)}.verdict.ng{color:var(--bad)}
+
+/* ---------- code (共通テスト用プログラム表記) ---------- */
+.code{font-family:var(--f-code);font-size:.88rem;line-height:1.75;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:10px 0;overflow-x:auto;min-width:0}
+.code .ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:4px solid transparent}
+.code .ln .no{color:var(--muted);width:3.4em;flex:none;text-align:right;padding-right:10px;user-select:none}
+.code .ln .gd{color:var(--muted)}
+.code .ln.cur{background:var(--marker);color:var(--on-marker);border-left-color:var(--accent)}
+.code .ln.cur .no,.code .ln.cur .gd{color:var(--on-marker)}
+.code .kw{color:var(--accent);font-weight:600}
+.code .ln.cur .kw{color:var(--on-marker)}
+.code .str{color:var(--good)}
+.code .ln.cur .str{color:var(--on-marker)}
+.code .cmt{color:var(--muted)}
+
+/* ---------- tracer ---------- */
+.tracer{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tracer{grid-template-columns:minmax(0,1fr)}}
+.note{background:var(--cobalt-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.92rem;min-height:3.2em}
+.vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.var{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+.var .k{font-family:var(--f-code);font-size:.78rem;color:var(--muted)}
+.var .v{font-family:var(--f-code);font-weight:600;font-size:1.1rem}
+.var.chg{border-color:var(--accent);background:var(--accent-soft)}
+.var.hide .v{filter:blur(6px)}
+.arr{display:grid;gap:4px;min-width:0}
+.arr .nm{font-family:var(--f-code);font-size:.8rem;color:var(--muted)}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;display:grid;gap:2px;justify-items:center}
+.cell .bx{width:100%;min-height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:6px;font-family:var(--f-code);font-weight:600;background:var(--card);padding:0 6px;position:relative}
+.cell .bx .barfill{position:absolute;left:0;right:0;bottom:0;background:var(--cobalt-soft);border-radius:0 0 4px 4px;z-index:0}
+.cell .bx span{position:relative;z-index:1}
+.cell.chg .bx{background:var(--accent-soft);border-color:var(--accent)}
+.cell .ix{font-family:var(--f-code);font-size:.7rem;color:var(--muted)}
+.cell .ptr{font-family:var(--f-code);font-size:.7rem;font-weight:600;color:var(--accent);min-height:1.2em;text-align:center;line-height:1.2}
+.console{font-family:var(--f-code);font-size:.86rem;background:var(--ink);color:var(--paper);border-radius:8px;padding:10px 12px;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* ---------- bits ---------- */
+.bits{display:flex;gap:6px;flex-wrap:wrap}
+.bitcol{display:grid;gap:4px;justify-items:center}
+.bit{appearance:none;width:44px;height:52px;border-radius:8px;border:2px solid var(--ink);background:var(--card);font-family:var(--f-code);font-size:1.4rem;font-weight:600;cursor:pointer;transition:background .12s}
+.bit.on{background:var(--ink);color:var(--paper)}
+.bitcol .w{font-family:var(--f-code);font-size:.72rem;color:var(--muted)}
+@media (max-width:440px){.bit{width:34px;height:44px;font-size:1.15rem}}
+.pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:100%;max-width:210px;aspect-ratio:1}
+.pix button{appearance:none;border:1px solid var(--line);background:var(--card-2);padding:0;cursor:pointer;border-radius:2px;min-width:0}
+.pix button.on{background:var(--ink);border-color:var(--ink)}
+.pix.res button{cursor:default}
+.pix.res button.on{background:var(--accent);border-color:var(--accent)}
+.pixrow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;max-width:820px}
+.pixrow>div:not(.op){display:grid;gap:6px;justify-items:center;min-width:0}
+.pix-lbl{font-size:.92rem;font-weight:700;white-space:nowrap}
+.seg{justify-self:start}
+@media (max-width:560px){.pix-lbl{font-size:.8rem}}
+.res-wrap .pix-lbl{color:var(--accent)}
+@media (max-width:560px){.pixrow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .pixrow .eq{grid-column:1/-1;justify-self:center;line-height:1}
+  .pixrow .res-wrap{grid-column:1/-1;justify-self:center;width:62%}}
+.op{font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.swatch{width:100%;height:84px;border-radius:8px;border:1.5px solid var(--ink)}
+
+/* ---------- flashcards ---------- */
+.fc{perspective:900px;min-height:200px}
+.fc-in{position:relative;width:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1.5px solid var(--ink);
+  padding:20px;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);text-align:left;place-content:center start}
+.fc-face .term{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.fc-in,.station{transition:none}}
+
+/* ---------- sort game ---------- */
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bin{appearance:none;border:2px dashed var(--line);border-radius:10px;padding:10px;min-height:80px;display:grid;gap:6px;align-content:start;background:var(--card);cursor:pointer;text-align:left}
+.bin:hover{border-color:var(--ink)}
+.bin b{font-size:.92rem}
+.bin .chip{justify-self:start}
+.token{font-family:var(--f-display);font-weight:700;font-size:1.4rem;padding:12px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--marker);color:var(--on-marker);display:inline-block}
+
+.mascot{display:flex;align-items:flex-end;gap:12px}
+.mascot img{width:84px;height:auto;flex:none}
+.mascot.big img{width:128px}
+.mascot.sm img{width:58px}
+.bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-weight:500;line-height:1.7;margin-bottom:14px;min-width:0;display:grid;gap:2px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:14px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.mascot.sm .bubble{margin-bottom:6px;padding:8px 14px}
+.mascot.sm .bubble::before{bottom:10px}
+.mascot.hop img{animation:hop .5s ease}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.mascot.hop img{animation:none}}
+@media (max-width:480px){.mascot img{width:64px}.mascot.big img{width:92px}}
+.hero-pal{display:grid;justify-items:center;align-content:center;gap:6px}
+.hero-pal img{width:min(220px,60%);height:auto}
+.hero-pal .bubble{margin:0 0 12px}
+.hero-pal .bubble::before{left:50%;bottom:-9px;margin-left:-7px;transform:rotate(-45deg)}
+@media (max-width:760px){.hero-pal{grid-template-columns:auto minmax(0,1fr);align-items:end;justify-items:start;gap:12px}
+  .hero-pal img{width:92px;order:-1}.hero-pal .bubble{margin:0 0 14px}
+  .hero-pal .bubble::before{left:-9px;bottom:14px;margin:0;transform:rotate(45deg)}}
+.bubble{word-break:auto-phrase}
+.dblab .tbl th,.dblab .tbl td{padding:4px 8px;line-height:1.5}
+.q-stem .tbl th,.q-stem .tbl td{white-space:nowrap}
+.start-card{border:2px solid var(--accent);background:var(--accent-soft)}
+.vis-pix{display:grid;grid-template-columns:repeat(8,22px);gap:2px}
+.vis-pix i{display:block;width:22px;height:22px;border-radius:2px}
+.vis-cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+.vis-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vis-flow span{border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);font-weight:500}
+.vis-flow span.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.vis-flow b{color:var(--muted);font-weight:400}
+.station .vis-flow span{font-size:.75rem;padding:1px 7px}
+.story-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.story-strip button{appearance:none;flex:none;border:1.5px solid var(--line);border-radius:999px;background:var(--card);padding:4px 12px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
+.story-strip button.done{color:var(--good);border-color:var(--good)}
+.story-strip button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.story-h{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.story-vis{background:var(--card-2);border-radius:10px;padding:16px;min-width:0}
+.story-body{font-size:1.06rem;line-height:2;max-width:44em}
+.kw{cursor:pointer;font-family:inherit;color:var(--cobalt)}
+.pg{width:22px;height:22px;flex:none;display:block}
+.pg.big{width:44px;height:44px}
+.scene{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card-2);border-radius:12px;padding:18px 16px}
+.sc-item{display:grid;justify-items:center;gap:6px;text-align:center;min-width:84px;max-width:132px;padding:10px 8px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.sc-item span{font-size:.82rem;font-weight:700;line-height:1.35;word-break:auto-phrase}
+.sc-item.hi{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sc-item.hi span{color:var(--ink)}
+.sc-arrow{font-size:1.4rem;color:var(--muted);font-weight:700}
+@media (max-width:560px){.scene{flex-direction:column;align-items:stretch;gap:4px;padding:12px}.sc-item{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;text-align:left;max-width:none;min-width:0;gap:12px;padding:8px 12px}.sc-item span{font-size:.9rem}.pg.big{width:32px;height:32px}.sc-arrow{transform:rotate(90deg);align-self:center;line-height:1;font-size:1.1rem}}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.story-top{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.mini-flow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;color:var(--ink)}
+.mini-flow span{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.mini-flow i{color:var(--muted);font-style:normal}
+.story-strip{align-items:center}
+.story-strip .strip-arrow{color:var(--muted);font-style:normal;flex:none}
+.story-strip button .pg{width:18px;height:18px}
+.prologue{padding:28px clamp(18px,4vw,40px);display:grid;gap:18px;border-top:6px solid var(--accent)}
+.pro-head{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.pro-head h2{color:var(--ink)}
+.pro-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted)}
+.pro-meta span{display:inline-flex;align-items:center;gap:6px}
+.pro-meta .pg{width:18px;height:18px}
+.pro-text{display:grid;gap:14px;max-width:40em;font-size:1.1rem;line-height:2.05}
+.pro-hook{font-weight:700;border-left:4px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink)}
+.pro-map{display:grid;gap:8px;background:var(--card-2);border-radius:12px;padding:14px 16px}
+.pro-go{font-size:1.05rem;padding:10px 22px}
+.nar{font-size:1.02rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:0;max-width:44em}
+.pro-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.story-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.xp-rate{display:inline-flex;align-items:center;gap:6px}
+.xp-lbl{color:var(--muted)}
+.xp-bar{width:64px;height:7px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;display:inline-block}
+.xp-bar i{display:block;height:100%;width:0;background:var(--good);transition:width .4s}
+@media (max-width:420px){.xp-bar{width:32px}.xp-lbl{display:none}.brand{font-size:.98rem;gap:6px}.brand .dot{width:16px;height:10px}.xp{gap:6px}.xp .rank{font-size:.7rem;padding:2px 6px}.top-in{gap:8px}}
+@media (max-width:640px){
+  .top{position:relative}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding-block:6px 8px}
+  .tab{justify-content:center;text-align:center;padding:8px 2px;font-size:min(.8rem,3.05vw);letter-spacing:0;border:1.5px solid var(--line);border-radius:8px;white-space:nowrap;line-height:1.3}
+  .tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dchal{top:0 !important}
+}
+.scene-story{background:var(--card-2);border-radius:12px;padding:16px 18px;display:grid;gap:8px;border-left:4px solid var(--accent)}
+.scene-story p{margin:0;font-size:1.07rem;line-height:2.05;max-width:42em}
+.ss-label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ss-label .pg{width:16px;height:16px}
+.ss-turn{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.ss-turn::before,.ss-turn::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+.ask-head{display:flex;gap:12px;align-items:center;background:#fff7e0;border:1.5px solid #f3d27a;border-radius:12px;padding:12px 16px}.ask-head svg{width:30px;height:30px;flex:none;color:var(--accent)}.ask-head div{display:grid;gap:2px}.ask-head b{font-size:1.02rem}
+.mech[hidden]{display:none!important}
+.mech{animation:mechIn .5s ease both;border-top:4px solid var(--accent)}@keyframes mechIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.epilogue{border-top-color:var(--good)}
+.epilogue .pro-head{color:var(--good)}
+.epi-img{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:12px;display:block;filter:saturate(.85) brightness(1.04)}
+.pro-end{text-align:center;font-weight:700;letter-spacing:.4em;color:var(--muted)}
+.boot{padding:24px;border:2px dashed var(--line);border-radius:12px;line-height:1.9;color:var(--muted)}
+.ref-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.92rem}
+.ref-list a{overflow-wrap:anywhere}
+.footer{margin-top:28px;font-size:.8rem;color:var(--muted);display:grid;gap:6px}
+/* ===== 使い方ガイド ===== */
+.guide 
+.guide h1,.guide h2,.guide h3{text-wrap:balance;line-height:1.35;margin:0}
+.guide p{margin:0}
+.guide mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
+.guide b{font-weight:700}
+.guide .code{font-family:var(--f-code);font-size:.92em;background:var(--card-2);padding:1px 6px;border-radius:4px}
+.guide 
+.guide .gtop-in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700}
+.guide .dot{width:22px;height:12px;border-radius:6px;background:var(--accent);display:inline-block}
+.guide .gtop-in small{color:var(--muted);font-weight:500;margin-left:auto;font-size:.82rem}
+.guide .hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:28px;align-items:center;padding-block:40px 28px}
+.guide .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide .hero h1{font-size:clamp(1.9rem,4.6vw,2.7rem);font-weight:900;margin-top:6px}
+.guide .hero .lead{margin-top:14px;color:var(--muted);max-width:40em}
+.guide .hero img{width:100%;max-width:190px;height:auto;justify-self:center}
+.guide 
+.guide .toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:var(--card-2);border-radius:12px}
+.guide .toc span{width:100%;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.guide .toc button{font:inherit;font-size:.88rem;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.guide .toc button:hover,.guide .toc button:focus-visible{border-color:var(--ink);outline:none}
+.guide section.block{padding-top:56px;display:grid;gap:20px;scroll-margin-top:12px}
+.guide .sec-label{font-size:.78rem;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.guide section.block>h2{font-size:clamp(1.45rem,3.2vw,1.85rem);font-weight:900;margin-top:-14px}
+.guide .intro{color:var(--muted);max-width:44em}
+.guide 
+.guide .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .three div{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.guide .three h3{font-size:1.05rem}
+.guide .three p{font-size:.93rem;color:var(--muted)}
+.guide 
+.guide .routes{display:grid;gap:14px}
+.guide .route{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;border-radius:12px;padding:18px 20px;background:var(--card-2)}
+.guide .route .who{font-weight:900;font-size:1.05rem;line-height:1.5}
+.guide .route .who small{display:block;font-weight:500;font-size:.82rem;color:var(--muted);margin-top:4px}
+.guide .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-weight:700}
+.guide .steps i{font-style:normal;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:3px 10px}
+.guide .steps em{font-style:normal;color:var(--muted);font-weight:500}
+.guide .route p{grid-column:2;font-size:.92rem;color:var(--muted)}
+.guide .times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guide .times div{border-left:4px solid var(--cobalt);padding:4px 0 4px 14px;display:grid;gap:4px}
+.guide .times b{font-family:var(--f-code);color:var(--cobalt);font-size:1.1rem}
+.guide .times p{font-size:.93rem}
+.guide 
+.guide .topic{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:32px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.guide .topic.multi{grid-template-columns:minmax(0,1fr)}
+.guide .tbody{display:grid;gap:16px;min-width:0}
+.guide .thead{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.guide .thead h3{font-size:1.4rem;font-weight:900}
+.guide .tag{font-size:.78rem;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--cobalt-soft);color:var(--cobalt)}
+.guide .tag.red{background:var(--accent-soft);color:var(--accent)}
+.guide .what{font-size:1.02rem}
+.guide .kv{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:.95rem}
+.guide .kv dt{font-weight:700;color:var(--muted);font-size:.85rem;padding-top:2px}
+.guide .kv dd{margin:0}
+.guide ol.how{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.guide ol.how li{counter-increment:s;position:relative;padding-left:38px;font-size:.95rem;min-height:28px}
+.guide ol.how li::before{content:counter(s);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:.82rem;display:grid;place-items:center;position:absolute;left:0;top:2px;font-family:var(--f-code)}
+.guide ul.list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:.95rem}
+.guide .hint{background:var(--good-soft);border-radius:10px;padding:12px 16px;font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.guide .hint::before{content:"コツ";font-weight:900;color:var(--good);font-size:.85rem;padding-top:1px}
+.guide figure{margin:0;display:grid;gap:8px;justify-items:center}
+.guide .phone{width:100%;max-width:270px;border:1.5px solid var(--line);border-radius:18px;padding:8px;background:var(--paper);box-shadow:0 6px 18px rgba(22,27,43,.07)}
+.guide .phone img{display:block;width:100%;height:auto;border-radius:11px}
+.guide figcaption{font-size:.8rem;color:var(--muted);text-align:center;max-width:270px}
+.guide .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.guide .shots.two{grid-template-columns:repeat(2,minmax(0,270px))}
+.guide 
+.guide .tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+.guide table{border-collapse:collapse;width:100%;font-size:.93rem}
+.guide th,.guide td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.guide tr:last-child td{border-bottom:0}
+.guide th{background:var(--card-2);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.guide td.num{font-family:var(--f-code);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--cobalt);font-weight:600}
+.guide td.rk{font-weight:700;white-space:nowrap}
+.guide 
+.guide .faq{display:grid;gap:10px}
+.guide details{border:1.5px solid var(--line);border-radius:12px;padding:0 18px}
+.guide summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"Q";color:var(--accent);font-family:var(--f-code)}
+.guide summary::after{content:"＋";color:var(--muted)}
+.guide details[open] summary::after{content:"−"}
+.guide summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+.guide details p{padding:0 0 16px 22px;font-size:.95rem;color:var(--muted)}
+.guide .end{margin-top:56px;padding:20px;border-radius:12px;background:var(--card-2);display:grid;grid-template-columns:80px minmax(0,1fr);gap:16px;align-items:center}
+.guide .end img{width:80px;height:auto}
+.guide .end p{font-size:.95rem}
+.guide .foot{margin-top:28px;font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.guide .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
+.guide .hero img{max-width:130px;justify-self:start;order:-1}
+.guide .three,.guide .times{grid-template-columns:minmax(0,1fr)}
+.guide .route{grid-template-columns:minmax(0,1fr);gap:10px}
+.guide .route p{grid-column:auto}
+.guide .topic{grid-template-columns:minmax(0,1fr);gap:20px}
+.guide .shots,.guide .shots.two{grid-template-columns:minmax(0,1fr)}
+.guide .kv{grid-template-columns:minmax(0,1fr);gap:2px}
+.guide .kv dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.guide *{scroll-behavior:auto!important}}
+.guide{display:grid;gap:0;min-width:0}
+.guide .hero{padding-block:8px 24px}
+.guide .hero img{max-width:170px}
+
+.guide-link{display:flex;justify-content:center}
+
+/* ===== ランクの成長ポップアップ ===== */
+.xp .rank{border:0;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.xp .rank::after{content:"▾";font-size:.75em;opacity:.7}
+.xp .rank:hover,.xp .rank:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#xprate{cursor:pointer}
+.rk-ov{position:fixed;inset:0;background:rgba(22,27,43,.42);z-index:100;display:grid;place-items:start center;padding:72px 16px 24px;overflow-y:auto;animation:rkf .18s ease}
+.rk-box{width:min(460px,100%);background:var(--card);border-radius:16px;box-shadow:0 18px 48px rgba(22,27,43,.25);padding:20px 20px 18px;display:grid;gap:14px;animation:rkup .22s ease}
+@keyframes rkf{from{opacity:0}to{opacity:1}}
+@keyframes rkup{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.rk-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.rk-top img{width:64px;height:auto}
+.rk-top .eyebrow{font-size:.72rem}
+.rk-top h3{font-size:1.3rem;line-height:1.3}
+.rk-x{border:1.5px solid var(--line);background:var(--card);border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:var(--ink);align-self:start}
+.rk-next{background:var(--card-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:.92rem}
+.rk-next b.n{font-size:1.25rem;color:var(--accent)}
+.rk-meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.rk-meter i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.rk-list{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.rk-list li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;position:relative}
+.rk-list li::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--line)}
+.rk-list li:first-child::before{top:50%}.rk-list li:last-child::before{bottom:50%}
+.rk-list .pt{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;color:var(--muted)}
+.rk-list li.done .pt{background:var(--good);border-color:var(--good);color:#fff}
+.rk-list li.now .pt{background:var(--marker);border-color:var(--ink);color:var(--ink)}
+.rk-list .nm{font-weight:700;line-height:1.35}
+.rk-list .nm small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.rk-list li.lock .nm{color:var(--muted)}
+.rk-list .th{font-family:var(--f-code,monospace);font-size:.8rem;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rk-list li.now .th{color:var(--ink);font-weight:700}
+.rk-crs{display:grid;gap:6px}
+.rk-crs>div{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.2em;gap:8px;align-items:center;font-size:.82rem}
+.rk-crs span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk-crs .rk-meter{height:8px}.rk-crs .rk-meter i{background:var(--cobalt)}
+.rk-h{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.rk-ov,.rk-box{animation:none}}
+
+/* ===== 実践演習 ===== */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px}
+.ptabs button{font:inherit;font-size:.9rem;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.ptabs button[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blank{display:inline-grid;place-items:center;min-width:2em;height:1.5em;padding:0 .35em;border:1.8px solid var(--ink);border-radius:4px;font-family:var(--f-body);font-weight:700;font-size:.92em;background:var(--card);color:var(--ink);margin:0 2px;vertical-align:baseline;line-height:1}
+.code .blank{background:var(--marker)}
+.road{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.road-ph{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px}
+.road-n{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--muted);background:var(--card)}
+.road-ph.clear .road-n{background:var(--good);border-color:var(--good);color:#fff}
+.road-b{display:grid;gap:6px;min-width:0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.road-t{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.road-t b{font-size:1.08rem}
+.road-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.road-items li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;background:var(--card-2);border-radius:10px;padding:8px 12px}
+.road-items li.done{background:var(--good-soft)}
+.road-items label{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:1 1 260px;font-size:.93rem;cursor:pointer}
+.road-items input{width:18px;height:18px;margin-top:3px;accent-color:var(--good);flex:none}
+.road-items small{display:block;font-size:.78rem}
+.tm-list{display:grid;gap:10px}
+.tm-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tm-no{font-family:var(--f-code);font-weight:700;font-size:.82rem;color:var(--accent);text-align:center}
+.tm-b{display:grid;gap:2px;min-width:0}
+.tm-b a{color:var(--cobalt);font-weight:700;margin-right:10px}
+@media (max-width:560px){.tm-card{grid-template-columns:minmax(0,1fr)}.tm-no{text-align:left}}
+.tm-part{gap:12px}
+.tm-ph{font-weight:900;font-size:1.05rem;border-left:4px solid var(--accent);padding-left:10px}
+.tm-part p{line-height:1.9}
+.tm-part code{background:var(--card-2);padding:1px 5px;border-radius:4px;font-size:.92em}
+.tm-items{display:grid;gap:12px;border-top:1.5px dashed var(--line);padding-top:12px}
+.tm-item{display:grid;gap:8px;border-radius:10px;padding:10px 12px;background:var(--card-2)}
+.tm-item.ok{background:var(--good-soft)}.tm-item.ng{background:var(--bad-soft)}
+.tm-gun ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.tm-gun li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.oval.sm{width:28px;height:18px;font-size:.72rem;margin-top:3px}
+.mk{display:grid;gap:6px}
+.mk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mk-k{min-width:2em;height:1.6em;display:inline-grid;place-items:center;border:1.8px solid var(--ink);border-radius:4px;font-weight:700;background:var(--card)}
+.mk-ov{display:flex;flex-wrap:wrap;gap:4px}
+.ov{width:32px;height:24px;border-radius:50%;border:1.8px solid var(--accent);background:var(--card);color:var(--accent);font-family:var(--f-code);font-size:.8rem;font-weight:700;cursor:pointer;padding:0}
+.ov.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ov.right{box-shadow:0 0 0 3px var(--good)}
+.ov:disabled{cursor:default}
+.tm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(22,27,43,.3);max-width:calc(100% - 24px)}
+.tm-bar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tm-bar.warn .tm-clock{color:var(--marker)}
+.tm-bar.over{background:var(--bad)}
+.tm-clock{font-family:var(--f-code);font-weight:700;white-space:nowrap}
+.tm-cnt{white-space:nowrap;opacity:.85}
+.tm-score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.tm-score .big{font-size:2.6rem;font-weight:900;color:var(--accent);line-height:1}
+.tm-parts{display:grid;gap:6px}
+.tm-parts>div{display:grid;grid-template-columns:5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;font-size:.88rem}
+.tm-parts span:last-child{text-align:right}
+.tm-parts .rk-meter i{background:var(--cobalt)}
+ol.how-s{margin:0;padding-left:1.4em;display:grid;gap:4px;font-size:.93rem}
+.kk-sheet{display:grid;gap:14px}
+.kk-dai{border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.kk-dh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+.kk-gs{display:flex;flex-wrap:wrap;gap:8px}
+.kk-g{display:flex;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:4px;background:var(--card)}
+.kk-g.ok{border-color:var(--good);background:var(--good-soft)}.kk-g.ng{border-color:var(--bad);background:var(--bad-soft)}.kk-g.part{border-color:var(--marker);background:#FFF7D6}
+.kk-c{display:grid;justify-items:center;gap:1px;font-size:.78rem;font-weight:700}
+.kk-c input{width:30px;height:32px;text-align:center;font-family:var(--f-code);font-size:1rem;font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:0;background:var(--paper);color:var(--ink)}
+.kk-c input:focus{outline:2px solid var(--cobalt);border-color:var(--cobalt)}
+.kk-next{background:var(--cobalt-soft);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.kk-miss summary{cursor:pointer;font-weight:700}
+@media (max-width:440px){.mk-row{flex-wrap:nowrap;gap:6px}.mk-ov{flex-wrap:nowrap;gap:2px}.ov{width:23px;height:21px;font-size:.72rem}.mk-k{min-width:1.8em}.tm-item{padding:10px 8px}.tm-bar{gap:8px;padding-left:14px}.tm-cnt{display:none}}
+</style><style>
+/* ===== 数学Ⅰ ラボ 追加分 ===== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px 1px}
+.fr>span:last-child{padding:1px 3px 0}
+.rt{white-space:nowrap}
+.rt>span{border-top:1.5px solid currentColor;padding:0 2px 0 1px;margin-left:1px}
+.ov-bar{text-decoration:overline}
+.fx{font-family:var(--f-code);font-size:1.12rem;font-weight:600;line-height:2.1;overflow-wrap:anywhere}
+.fx.big{font-size:clamp(1.15rem,3.6vw,1.45rem)}
+.steps{display:grid;gap:6px;counter-reset:st;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.steps li::before{counter-increment:st;content:counter(st);font-family:var(--f-code);font-weight:600;color:var(--accent);font-size:.85rem}
+.steps li .why{display:block;font-size:.82rem;color:var(--muted);font-family:var(--f-body);font-weight:400}
+.plot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;touch-action:none}
+.plot .g{stroke:var(--line);stroke-width:1}
+.plot .ax{stroke:var(--muted);stroke-width:1.5}
+.plot .tk{font-size:11px;fill:var(--muted)}
+.plot .cv{fill:none;stroke:var(--cobalt);stroke-width:3;stroke-linejoin:round}
+.plot .cv2{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.plot .hi{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.plot .dot{fill:var(--accent)}
+.plot .dot2{fill:var(--cobalt)}
+.plot .lbl{font-size:12px;font-weight:700}
+.plot .sh{fill:var(--accent-soft)}
+.plot .shb{fill:var(--cobalt-soft)}
+.plot .axisline{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.ctls .readout{color:var(--ink)}
+.lab-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lab-split{grid-template-columns:minmax(0,1fr)}}
+.res{background:var(--cobalt-soft);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.res.ok{background:var(--good-soft)}.res.ng{background:var(--bad-soft)}
+.tasuki{display:grid;grid-template-columns:auto auto auto auto;gap:8px 12px;align-items:center;justify-content:start;font-family:var(--f-code);font-size:1.1rem;font-weight:600}
+.tasuki input{width:3.4em;text-align:center;font-weight:700}
+.tasuki .x{color:var(--muted);font-size:1.4rem;text-align:center}
+.venn{max-width:440px}
+.venn .rg{cursor:pointer;fill:var(--card);stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.venn .rg:hover{fill:var(--card-2)}
+.venn .rg.on{fill:var(--accent-soft)}
+.venn .rg.on.ok{fill:var(--good-soft)}
+.venn .rg.miss{fill:var(--bad-soft)}
+.venn text{font-weight:700;pointer-events:none}
+.nl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.nl-legend span{display:inline-flex;align-items:center;gap:6px}
+.nl-legend i{display:inline-block;width:22px;height:6px;border-radius:3px}
+.datain{width:100%;font-family:var(--f-code);min-height:4.2em;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.stat-grid .var .v{font-size:1.05rem}
+.tag-ch{font-family:var(--f-code);font-size:.8rem;color:var(--cobalt);font-weight:600}
+.map{display:flex;height:58px;border-radius:8px;overflow:hidden;border:1.5px solid var(--ink)}
+.map button{appearance:none;border:0;border-right:1.5px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;text-align:left;cursor:pointer;background:var(--card);font-size:.78rem;line-height:1.3;min-width:0}
+.map button:last-child{border-right:0}
+.map button:hover{background:var(--card-2)}
+.map b{font-size:.92rem;white-space:nowrap}
+.tbl.ctr td,.tbl.ctr th{text-align:center}
+.sp-tbl td{font-family:var(--f-code);font-weight:600}
+.sp-tbl tr.cur td{background:var(--marker)}
+.ot-ans{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ot-w{appearance:none;border:1.5px solid var(--ink);background:var(--card);border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:1rem;font-family:var(--f-body)}
+.ot-w.on{background:var(--ink);color:var(--paper)}
+.ot-w:hover{filter:brightness(1.1)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pick-grid button{appearance:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;font-weight:700;line-height:1.4}
+.pick-grid button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pick-grid button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tl{display:grid;gap:0;position:relative;padding-left:18px;border-left:3px solid var(--line)}
+.tl-row{position:relative;padding:8px 0 8px 12px}
+.tl-row::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+.tl-era{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+.big-kana{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.3}
+.kanbun{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font-family:var(--f-display)}
+.kb-c{display:grid;justify-items:center;min-width:46px;padding:4px 2px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);position:relative}
+.kb-c .k{font-size:1.9rem;font-weight:700;line-height:1.1}
+.kb-c .mk{font-size:.85rem;color:var(--accent);font-weight:700;min-height:1.2em}
+.kb-c .ok{font-size:.75rem;color:var(--muted);min-height:1.2em}
+.kb-c .no{position:absolute;top:-10px;right:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.72rem;min-width:20px;height:20px;display:grid;place-items:center;font-family:var(--f-code)}
+.kb-c.cur{border-color:var(--accent);background:var(--marker)}
+.kb-c.done{border-color:var(--good);background:var(--good-soft)}
+.kb-c.oki{opacity:.55}
+.conj td,.conj th{text-align:center;white-space:nowrap}
+.conj td b{color:var(--accent)}
+</style>
+</head><body>
+<header class="top" lang="ja">
+  <div class="top-in">
+    <a class="brand" href="#home"><span class="dot" aria-hidden="true"></span>化学基礎 ラボ</a>
+    <div class="xp" aria-live="polite"><button class="rank" id="rank" type="button" aria-haspopup="dialog" title="タップでランクの成長を見る">…</button><span class="xp-rate" id="xprate" role="button" tabindex="0" title="問題のうち正解した問題の割合"><span class="xp-lbl">達成率</span><span class="xp-bar" aria-hidden="true"><i id="xpbar"></i></span><b id="xpn" class="tnum">0%</b></span></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="単元"></nav>
+</header>
+<main class="wrap" lang="ja"><div id="view" class="view"><div class="boot"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div></div>
+  <footer class="footer">
+    <p><a href="../" style="font-weight:700;color:var(--ink)">← 6教科ラボのトップへ</a></p>
+    <p class="guide-link"><button class="btn ghost sm" id="guide-link">使い方ガイドを見る</button></p>
+    <p>問題はすべてこの教材のためのオリジナル問題です。範囲は高等学校学習指導要領（平成30年告示）の「化学基礎」にそろえています。</p><p>原子量・アボガドロ定数・気体の体積などの数値は、高校の教科書で使われる概数（H = 1.0、アボガドロ定数 6.0×10²³/mol、標準状態の気体 1 mol = 22.4 L など）を使っています。</p>
+    <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+  </footer>
+</main>
+<script>
+const MASCOT_SRC = 'data:image/webp;base64,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';
+const SITE = {
+  key: 'chem-lab-v1', subject: '化学基礎',
+  eyebrow: '高校1年「化学基礎」の実験室',
+  heroTitle: '動かしてわかる、<br><span class="hl">化学基礎</span>',
+  lead: '原子の電子をのぞく、反応式の係数を合わせる、中和の滴定をシミュレーションする。目に見えない粒子の世界を、手を動かして確かめる教材。授業の予習・復習やテスト前に使おう。',
+  bubble: '化学基礎、いっしょに攻略しよう！<br>まずは今習っている単元から選んでね。',
+  ranks: [[0, '原子見習い'], [5, '分子使い'], [15, 'イオン使い'], [30, 'モル使い'], [50, '中和マスター'], [75, '酸化還元マスター'], [100, '化学基礎 免許皆伝']],
+  rankNotes: ['物質をつくるいちばん小さな粒', '原子が結びついた粒', '電子を出し入れした粒', '6.0×10²³ 個をひとまとまりに数える', '酸と塩基を打ち消し合わせる', '電子のやりとりを見ぬく', '全問正解！'],
+  courses: { kousei: '物質と原子', ketsugo: '化学結合', mol: '物質量と反応式', san: '酸と塩基', sanka: '酸化還元' },
+  stations: [
+    { id: 'kousei', code: '第1章', name: '物質の構成と原子', tab: '物質と原子', desc: '純物質と混合物、分離の方法。原子の構造と電子配置を周期表から確かめる' },
+    { id: 'ketsugo', code: '第2章', name: '化学結合', desc: 'イオン結合・共有結合・金属結合。イオンを組み合わせて組成式を作る' },
+    { id: 'mol', code: '第3章', name: '物質量と化学反応式', tab: '物質量と反応式', desc: 'mol を中心に質量・粒子数・体積を換算。反応式の係数合わせと過不足' },
+    { id: 'san', code: '第4章', name: '酸と塩基', desc: 'pH と中和。滴定曲線を自分で動かして、指示薬の選び方まで' },
+    { id: 'sanka', code: '第5章', name: '酸化還元', desc: '酸化数の求め方、金属のイオン化傾向、電池のしくみ' },
+  ],
+  links: [
+    ['つながり①', '「原子の電子配置」がわかると、イオンの価数や結合の種類が説明できる。'],
+    ['つながり②', '「物質量」は、中和の計算（酸と塩基）や酸化還元の計算でずっと使う。'],
+    ['つながり③', '中和は H⁺ のやりとり、酸化還元は 電子 のやりとり。どちらも「やりとりの数」をそろえる計算。'],
+  ],
+  tips: {
+    kousei: '原子番号を動かすと、電子が内側の殻から順に入っていくよ。<br>いちばん外側の電子（価電子）に注目しよう！',
+    ketsugo: '金属と非金属ならイオン結合、非金属どうしなら共有結合。<br>まずはこの見分け方から！',
+    mol: '困ったら、まず「mol」に直す。<br>質量も体積も粒子の数も、mol を通れば行き来できるよ。',
+    san: 'pH が 1 ちがうと [H⁺] は 10倍ちがう。<br>滴定曲線を動かして確かめてみよう。',
+    sanka: '酸化数が増えたら「酸化された」、減ったら「還元された」。<br>これだけで判定できるよ。',
+    drill: 'まちがえた問題こそ伸びしろ。<br>解説を読んだら「まちがえた問題だけ」でもう一度！',
+    cards: '暗記カードは「覚えた」「まだ」で仕分けよう。<br>「まだ」だけを何周もするのが近道！',
+    glossary: 'わからない言葉が出てきたら、ここで検索してね。',
+  },
+  glossHint: '例：同位体、どういたい、中和',
+  cardsNote: 'イオン化傾向の並びもここにある。',
+};
+/* ===== 共通部品（数学Ⅰ ラボと同じ仕組み） ===== */
+const RANKS = SITE.ranks, RANK_NOTE = SITE.rankNotes, COURSE_NAME = SITE.courses, TIPS = SITE.tips, STORE_KEY = SITE.key;
+function mascot(text, cls = '') {
+  return h(`<div class="mascot ${cls}"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble">${text}</div></div>`);
+}
+const PRAISE = SITE.praise || ['正解！その調子！', '正解！よくわかってるね', '正解！完ぺき！', '正解！テストでもこの感じで！'];
+const CHEER = ['おしい！ここで直せば次は大丈夫', 'ドンマイ！解説を読んでみよう', 'まちがえた所が伸びるところ！'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+document.documentElement.lang = 'ja';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (str) => { const t = document.createElement('template'); t.innerHTML = str.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const F = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const M = (s) => String(s).replace(/-/g, '−');
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+const S = (() => {
+  let d = { ans: {}, cards: {} };
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) d = Object.assign(d, JSON.parse(raw)); } catch (e) {}
+  return d;
+})();
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} updateXP(); }
+
+function xpStat() {
+  const ids = new Set(QUESTIONS.map(q => q.id));
+  const n = Object.entries(S.ans).filter(([id, v]) => v === true && ids.has(id)).length;
+  const N = QUESTIONS.length, pct = N ? Math.floor(n / N * 100) : 0;
+  let r = 0; RANKS.forEach(([k], i) => { if (pct >= k) r = i; });
+  const need = k => { let m = 0; while (m < N && Math.floor(m / N * 100) < k) m++; return m; };
+  return { n, N, pct, r, need };
+}
+function openRank() {
+  const { n, N, pct, r, need } = xpStat();
+  const nx = RANKS[r + 1];
+  const cur = need(RANKS[r][0]), nxt = nx ? need(nx[0]) : N;
+  const prog = nx ? Math.round((n - cur) / Math.max(1, nxt - cur) * 100) : 100;
+  const crs = Object.keys(COURSE_NAME).map(c => {
+    const qs = QUESTIONS.filter(q => q.unit === c), ok = qs.filter(q => S.ans[q.id] === true).length;
+    return `<div><span>${COURSE_NAME[c]}</span><span class="rk-meter"><i style="width:${qs.length ? ok / qs.length * 100 : 0}%"></i></span><span>${ok}/${qs.length}</span></div>`;
+  }).join('');
+  const ov = h(`<div class="rk-ov" role="dialog" aria-modal="true" aria-label="ランクの成長"><div class="rk-box">
+    <div class="rk-top"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div><div class="eyebrow">いまのランク</div><h3>${RANKS[r][1]}</h3><span class="small muted">達成率 ${pct}%・${n}/${N}問正解</span></div><button class="rk-x" aria-label="閉じる">×</button></div>
+    <div class="rk-next">${nx ? `<div>あと <b class="n">${nxt - n}</b> 問正解で「<b>${nx[1]}</b>」に成長！</div><div class="rk-meter" aria-hidden="true"><i style="width:${prog}%"></i></div>` : '<div><b>最高ランクに到達！</b>全問正解おめでとう。</div>'}</div>
+    <div class="rk-h">成長の道のり</div>
+    <ol class="rk-list">${RANKS.map(([k, name], i) => `<li class="${i < r ? 'done' : i === r ? 'now' : 'lock'}"><span class="pt">${i < r ? '✓' : i + 1}</span><span class="nm">${i > r + 1 ? '？？？' : name}<small>${i > r + 1 ? '正解を増やすと見えてくる' : RANK_NOTE[i]}</small></span><span class="th">${k}%・${need(k)}問</span></li>`).join('')}</ol>
+    <div class="rk-h">単元別の正解数</div>
+    <div class="rk-crs">${crs}</div>
+    <button class="btn" data-g="drill">問題ドリルで正解を増やす →</button>
+  </div></div>`);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', escK); $('#rank').focus(); };
+  const escK = e => { if (e.key === 'Escape') close(); };
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  $('.rk-x', ov).onclick = close;
+  $('[data-g]', ov).onclick = () => { close(); go('drill'); };
+  document.addEventListener('keydown', escK);
+  document.body.appendChild(ov);
+  $('.rk-x', ov).focus();
+}
+function updateXP() {
+  const { n, N, pct } = xpStat();
+  $('#xpn').textContent = pct + '%';
+  $('#xpbar').style.width = pct + '%';
+  $('.xp-rate').title = `問題 ${N} 問中 ${n} 問正解`;
+  let r = RANKS[0][1]; RANKS.forEach(([k, name]) => { if (pct >= k) r = name; });
+  $('#rank').textContent = r;
+}
+
+const UNITS = [{ id: 'home', name: 'ホーム' }, ...SITE.stations.map(s => ({ id: s.id, name: s.tab || s.name })),
+  { id: 'drill', name: '問題ドリル' }, { id: 'cards', name: '暗記カード' }, { id: 'glossary', name: '用語集' }];
+const VIEWS = {};
+function renderTabs(cur) {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  UNITS.forEach(u => {
+    const b = h(`<button class="tab" ${u.id === cur ? 'aria-current="page"' : ''}>${u.name}</button>`);
+    b.onclick = () => go(u.id);
+    nav.appendChild(b);
+  });
+}
+let CUR_VIEW = null;
+// 埋め込み枠（Googleサイトなど）ではURLの書きかえが禁止されることがあるため、表示中のページは変数で持つ
+function go(id) {
+  CUR_VIEW = id;
+  try { if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id); } catch (e) {}
+  route();
+}
+function route() {
+  const id = CUR_VIEW || (location.hash || '#home').slice(1);
+  const v = VIEWS[id] ? id : 'home';
+  renderTabs(v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[v](view);
+  if (TIPS[v]) { const hd = $('.sec-head', view); if (hd) hd.after(mascot(TIPS[v])); }
+  window.scrollTo({ top: 0 });
+}
+
+const MARK = ['⓪', '①', '②', '③', '④', '⑤'];
+function quizCard(q, opts = {}) {
+  const el = h(`<article class="card q" id="q-${q.id}"></article>`);
+  const prev = S.ans[q.id];
+  el.innerHTML = `
+    <div class="q-meta">
+      ${opts.num ? `<span class="chip">問${opts.num}</span>` : ''}
+      <span class="chip">${COURSE_NAME[q.unit]}</span>
+      ${q.type ? `<span class="chip hot">${q.type}</span>` : ''}
+      ${q.lv ? `<span class="chip">${'★'.repeat(q.lv)}${'☆'.repeat(3 - q.lv)}</span>` : ''}
+      ${prev === true ? '<span class="chip ok">正解ずみ</span>' : prev === false ? '<span class="chip">前回まちがい</span>' : ''}
+    </div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="q-choices"></div>
+    <div class="exp" hidden></div>`;
+  const box = $('.q-choices', el);
+  q.choices.forEach((c, i) => {
+    const b = h(`<button class="choice"><span class="oval">${i}</span><span class="choice-body">${c}</span></button>`);
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  function answer(i) {
+    const ok = i === q.ans;
+    $$('.choice', box).forEach((b, j) => {
+      b.disabled = true;
+      if (j === q.ans) b.classList.add('right');
+      if (j === i) { b.classList.add('picked'); if (!ok) b.classList.add('wrong'); }
+    });
+    if (S.ans[q.id] !== true) S.ans[q.id] = ok;
+    save();
+    const ex = $('.exp', el);
+    ex.hidden = false;
+    ex.innerHTML = `<div class="mascot sm hop"><img src="${MASCOT_SRC}" alt="" width="349" height="360"><div class="bubble"><span class="verdict ${ok ? 'ok' : 'ng'}">${ok ? pick(PRAISE) : `正解は ${MARK[q.ans]}`}</span>${ok ? '' : `<span class="small">${pick(CHEER)}</span>`}</div></div><div>${q.exp}</div>
+      ${opts.showLink !== false && q.unit ? `<div><button class="btn ghost sm" data-go="${q.unit}">${COURSE_NAME[q.unit]}のページへ →</button></div>` : ''}`;
+    const lk = $('[data-go]', ex); if (lk) lk.onclick = () => go(lk.dataset.go);
+    if (opts.onAnswer) opts.onAnswer(ok);
+  }
+  return el;
+}
+function unitQuizzes(unit) {
+  const list = QUESTIONS.filter(q => q.unit === unit && q.inUnit);
+  const box = h(`<div style="display:grid;gap:14px"></div>`);
+  list.forEach((q, i) => box.appendChild(quizCard(q, { num: i + 1, showLink: false })));
+  const more = QUESTIONS.filter(q => q.unit === unit).length - list.length;
+  if (more > 0) {
+    const b = h(`<div><button class="btn ghost">この単元の問題をあと ${more} 問、問題ドリルで解く →</button></div>`);
+    $('button', b).onclick = () => { window.__dunit = unit; go('drill'); };
+    box.appendChild(b);
+  }
+  return box;
+}
+function sectionHead(eyebrow, title, lead) {
+  return h(`<div class="sec-head"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`);
+}
+function labCard(kind, title, sub) {
+  return h(`<section class="card lab"><div class="lab-head"><span class="kind">${kind}</span><h3>${title}</h3>${sub ? `<span class="small muted">${sub}</span>` : ''}</div></section>`);
+}
+function points(list) {
+  return h(`<div class="points">${list.map(([t, b]) => `<div class="point"><h4>${t}</h4>${b}</div>`).join('')}</div>`);
+}
+function trap(t) { return h(`<div class="trap"><b>落とし穴</b>　${t}</div>`); }
+function slider(id, label, min, max, step, val) {
+  return `<label class="ctl" for="${id}">${label} <span class="readout" id="${id}-v"></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+}
+const fmt = (x, d = 2) => { const r = Math.round(x * 10 ** d) / 10 ** d; return M(String(Object.is(r, -0) ? 0 : r)); };
+function seg(id, items, cur) { // items: [[value,label],...]
+  return `<div class="seg" id="${id}">${items.map(([v, l]) => `<button aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join('')}</div>`;
+}
+function bindSeg(root, id, fn) {
+  $$(`#${id} button`, root).forEach(b => b.onclick = () => { $$(`#${id} button`, root).forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+}
+/* 並べ替え問題：words を押して文を組み立てる */
+function orderTask(root, items, opts = {}) {
+  // items: [{ja, ans:[tokens], extra?:[], note}]
+  let k = 0, picked = [];
+  const box = h(`<div style="display:grid;gap:12px"><div class="row" style="justify-content:space-between"><b class="ot-q"></b><span class="small muted tnum ot-n"></span></div>
+    <div class="ot-ans" aria-live="polite"></div><div class="ot-pool row" style="gap:8px"></div>
+    <div class="row"><button class="btn ot-chk">答え合わせ</button><button class="btn ghost sm ot-clr">やり直す</button><button class="btn ghost sm ot-next">次の問題</button></div><div class="res ot-res" hidden></div></div>`);
+  root.appendChild(box);
+  let pool = [];
+  function load() {
+    const it = items[k]; picked = [];
+    pool = shuffle([...it.ans, ...(it.extra || [])].map((w, i) => ({ w, i })));
+    $('.ot-q', box).innerHTML = it.ja; $('.ot-n', box).textContent = `${k + 1} / ${items.length}`;
+    $('.ot-res', box).hidden = true; draw();
+  }
+  function draw() {
+    $('.ot-ans', box).innerHTML = picked.length ? picked.map((p, j) => `<button class="ot-w on" data-j="${j}">${p.w}</button>`).join('') : `<span class="small muted">${opts.hint || '下の語句を正しい順に押そう。押した語句をもう一度押すと戻せる。'}</span>`;
+    $('.ot-pool', box).innerHTML = pool.filter(p => !picked.includes(p)).map(p => `<button class="ot-w" data-i="${p.i}">${p.w}</button>`).join('');
+    $$('.ot-ans [data-j]', box).forEach(b => b.onclick = () => { picked.splice(+b.dataset.j, 1); draw(); });
+    $$('.ot-pool [data-i]', box).forEach(b => b.onclick = () => { picked.push(pool.find(p => p.i === +b.dataset.i)); draw(); });
+  }
+  $('.ot-chk', box).onclick = () => {
+    const it = items[k], got = picked.map(p => p.w), ok = got.join(' ') === it.ans.join(' ');
+    const r = $('.ot-res', box); r.hidden = false; r.className = 'res ot-res ' + (ok ? 'ok' : 'ng');
+    r.innerHTML = `<b>${ok ? '正解！' : 'おしい。正しい順は…'}</b><span class="fx" style="font-size:1.05rem">${(opts.join ? it.ans.join(opts.join) : it.ans.join(' '))}${opts.end || ''}</span>${it.note ? `<span class="small">${it.note}</span>` : ''}`;
+  };
+  $('.ot-clr', box).onclick = () => { picked = []; $('.ot-res', box).hidden = true; draw(); };
+  $('.ot-next', box).onclick = () => { k = (k + 1) % items.length; load(); };
+  load();
+}
+/* ===== 化学基礎 共通データ ===== */
+// [記号, 名前, 原子量(教科書の概数), 代表的な質量数, 族, 周期, 区分(m=金属 n=非金属 g=貴ガス), 代表的なイオン]
+const EL = [null,
+  ['H', '水素', 1.0, 1, 1, 1, 'n', 'H⁺'], ['He', 'ヘリウム', 4.0, 4, 18, 1, 'g', '―'],
+  ['Li', 'リチウム', 6.9, 7, 1, 2, 'm', 'Li⁺'], ['Be', 'ベリリウム', 9.0, 9, 2, 2, 'm', 'Be²⁺'], ['B', 'ホウ素', 10.8, 11, 13, 2, 'n', '―'],
+  ['C', '炭素', 12, 12, 14, 2, 'n', '―'], ['N', '窒素', 14, 14, 15, 2, 'n', '―'], ['O', '酸素', 16, 16, 16, 2, 'n', 'O²⁻'],
+  ['F', 'フッ素', 19, 19, 17, 2, 'n', 'F⁻'], ['Ne', 'ネオン', 20, 20, 18, 2, 'g', '―'],
+  ['Na', 'ナトリウム', 23, 23, 1, 3, 'm', 'Na⁺'], ['Mg', 'マグネシウム', 24, 24, 2, 3, 'm', 'Mg²⁺'], ['Al', 'アルミニウム', 27, 27, 13, 3, 'm', 'Al³⁺'],
+  ['Si', 'ケイ素', 28, 28, 14, 3, 'n', '―'], ['P', 'リン', 31, 31, 15, 3, 'n', '―'], ['S', '硫黄', 32, 32, 16, 3, 'n', 'S²⁻'],
+  ['Cl', '塩素', 35.5, 35, 17, 3, 'n', 'Cl⁻'], ['Ar', 'アルゴン', 40, 40, 18, 3, 'g', '―'],
+  ['K', 'カリウム', 39, 39, 1, 4, 'm', 'K⁺'], ['Ca', 'カルシウム', 40, 40, 2, 4, 'm', 'Ca²⁺'],
+];
+const shellsOf = z => z <= 2 ? [z] : z <= 10 ? [2, z - 2] : z <= 18 ? [2, 8, z - 10] : [2, 8, 8, z - 18];
+const valenceOf = z => EL[z][6] === 'g' ? 0 : shellsOf(z).at(-1);
+const ATOMIC = { H: 1.0, He: 4.0, C: 12, N: 14, O: 16, Na: 23, Mg: 24, Al: 27, S: 32, Cl: 35.5, K: 39, Ca: 40, Fe: 56, Cu: 63.5, Zn: 65, Ag: 108 };
+function parseF(f) { // "Ca(OH)2" → {Ca:1, O:2, H:2}
+  const tok = f.match(/[A-Z][a-z]?|\d+|[()]/g); const st = [{}];
+  for (let i = 0; i < tok.length; i++) {
+    const t = tok[i], nx = tok[i + 1], n = /^\d+$/.test(nx || '') ? +nx : 1;
+    if (t === '(') st.push({});
+    else if (t === ')') { const g = st.pop(); for (const k in g) st.at(-1)[k] = (st.at(-1)[k] || 0) + g[k] * n; if (n !== 1 || /^\d+$/.test(nx || '')) i++; }
+    else if (/^[A-Z]/.test(t)) { st.at(-1)[t] = (st.at(-1)[t] || 0) + n; if (/^\d+$/.test(nx || '')) i++; }
+  }
+  return st[0];
+}
+const fH = f => f.replace(/(\d+)/g, '<sub>$1</sub>');
+const molarMass = f => Object.entries(parseF(f)).reduce((s, [k, n]) => s + ATOMIC[k] * n, 0);
+const sci = x => { if (!x) return '0'; const e = Math.floor(Math.log10(Math.abs(x))), m = x / 10 ** e; return `${fmt(m, 2)} × 10<sup>${M(e)}</sup>`; };
+
+/* ===== 第1章 物質の構成と原子 ===== */
+VIEWS.kousei = (root) => {
+  root.appendChild(sectionHead('UNIT 1', '物質の構成と原子', '身のまわりの物質を「混ざっているか」「何の元素でできているか」で分け、原子の中の陽子・中性子・電子の並び方を見る。'));
+  root.appendChild(points([
+    ['物質の分類', '<p><mark>混合物</mark>（空気・海水など）と<mark>純物質</mark>に分かれる。純物質は1種類の元素だけの<mark>単体</mark>（O₂、Fe）と、2種類以上の元素の<mark>化合物</mark>（H₂O、NaCl）に分かれる。</p>'],
+    ['同素体', '<p>同じ元素からなる単体で、性質がちがうもの。<br><b>S</b>（斜方硫黄・単斜硫黄・ゴム状硫黄）、<b>C</b>（ダイヤモンド・黒鉛・フラーレン）、<b>O</b>（酸素・オゾン）、<b>P</b>（黄リン・赤リン）。頭文字で「SCOP（スコップ）」。</p>'],
+    ['原子の構造', '<p>原子核（<mark>陽子</mark>＋<mark>中性子</mark>）のまわりを<mark>電子</mark>が回る。<br>原子番号 ＝ 陽子の数 ＝ 電子の数<br>質量数 ＝ 陽子の数 ＋ 中性子の数</p>'],
+    ['同位体', '<p>原子番号が同じで、<b>中性子の数（質量数）がちがう</b>原子。¹H・²H・³H、¹²C・¹³C・¹⁴C など。化学的な性質はほぼ同じ。</p>'],
+  ]));
+
+  /* --- 原子モデル --- */
+  const at = labCard('実験', '原子の電子配置', '原子番号を動かすと、電子が K殻 → L殻 → M殻 … の順に入っていく（原子番号 1〜20）');
+  at.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('atz', '原子番号 Z =', 1, 20, 1, 11)}</div>
+    <div class="lab-split"><svg class="plot" id="atsvg" viewBox="0 0 320 320" role="img" aria-label="原子の模型"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="big-num" id="atname"></div><div class="stat-grid" id="atinfo"></div><div class="note" id="atnote"></div></div></div>
+    <div class="scroll-x"><table class="tbl ctr" id="atpt" style="min-width:520px"></table></div>`);
+  root.appendChild(at);
+  const cols = [1, 2, 13, 14, 15, 16, 17, 18];
+  $('#atpt', at).innerHTML = `<thead><tr><th></th>${cols.map(c => `<th>${c}族</th>`).join('')}</tr></thead><tbody>${[1, 2, 3, 4].map(p => `<tr><th>第${p}周期</th>${cols.map(c => { const z = EL.findIndex(e => e && e[4] === c && e[5] === p); return z > 0 ? `<td><button class="btn ghost sm" data-z="${z}" style="min-width:3em">${EL[z][0]}</button></td>` : '<td></td>'; }).join('')}</tr>`).join('')}</tbody>`;
+  $$('[data-z]', at).forEach(b => b.onclick = () => { $('#atz').value = b.dataset.z; drawAt(); });
+  function drawAt() {
+    const z = +$('#atz').value, e = EL[z], sh = shellsOf(z), A = e[3], n = A - z;
+    $('#atz-v').textContent = z;
+    let s = `<circle cx="160" cy="160" r="26" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/><text x="160" y="156" text-anchor="middle" font-size="11" font-weight="700">+${z}</text><text x="160" y="171" text-anchor="middle" font-size="10" class="tk">n ${n}</text>`;
+    const names = ['K', 'L', 'M', 'N'];
+    sh.forEach((cnt, i) => {
+      const r = 52 + i * 34;
+      s += `<circle cx="160" cy="160" r="${r}" style="fill:none;stroke:var(--line);stroke-width:1.5"/><text x="${160 + r * .71 + 4}" y="${160 - r * .71 - 2}" class="tk" style="font-size:11px">${names[i]}</text>`;
+      for (let k = 0; k < cnt; k++) { const a = -Math.PI / 2 + k * 2 * Math.PI / cnt; const out = i === sh.length - 1 && e[6] !== 'g'; s += `<circle cx="${160 + r * Math.cos(a)}" cy="${160 + r * Math.sin(a)}" r="6.5" style="fill:var(${out ? '--accent' : '--cobalt'})"/>`; }
+    });
+    $('#atsvg').innerHTML = s;
+    $('#atname').innerHTML = `${e[0]} <span style="font-size:.5em">${e[1]}</span>`;
+    const c = (k, v) => `<div class="var"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+    $('#atinfo').innerHTML = c('陽子', z) + c('中性子', n) + c('電子', z) + c('質量数（例）', A) + c('電子配置', sh.map((x, i) => names[i] + x).join(' ')) + c('価電子', valenceOf(z)) + c('位置', `${e[4]}族・第${e[5]}周期`) + c('イオン', e[7]);
+    const kind = e[6] === 'g' ? '<b>貴ガス</b>。最外殻が安定（閉殻・8個）なので、ほかの原子とほとんど結びつかない。価電子は 0 とする。'
+      : e[6] === 'm' ? `<b>金属元素</b>。価電子 ${valenceOf(z)} 個を失って陽イオン ${e[7]} になりやすい（${e[7] === '―' ? '' : '電子配置が貴ガスと同じになる'}）。`
+      : e[7] === '―' ? '<b>非金属元素</b>。単原子のイオンにはなりにくく、ほかの非金属と電子を共有して結びつく（共有結合）。'
+      : `<b>非金属元素</b>。${z === 1 ? '電子を1個失って H⁺ になる。' : `電子を ${8 - valenceOf(z)} 個受け取って陰イオン ${e[7]} になりやすい。`}`;
+    $('#atnote').innerHTML = `赤い点が価電子（最外殻電子）。${kind}${z === 1 ? '<br>水素の同位体：¹H（ふつうの水素）、²H（重水素）、³H（三重水素）。' : z === 6 ? '<br>炭素の同位体：¹²C、¹³C、¹⁴C（年代測定に使う）。' : z === 17 ? '<br>塩素は ³⁵Cl と ³⁷Cl が約 3 : 1 で存在するので、原子量は 35.5。' : ''}`;
+  }
+  $('#atz', at).oninput = drawAt; drawAt();
+  root.appendChild(trap('質量数 ＝ 陽子 ＋ 中性子。<b>電子の質量はとても小さいので数えない</b>。中性子の数は「質量数 − 原子番号」で求める。'));
+
+  /* --- 分類ゲーム --- */
+  const SORT = [['酸素', 'tan'], ['空気', 'kon'], ['水', 'ka'], ['塩化ナトリウム', 'ka'], ['海水', 'kon'], ['ダイヤモンド', 'tan'], ['二酸化炭素', 'ka'], ['石油', 'kon'], ['鉄', 'tan'], ['エタノール', 'ka'], ['塩酸', 'kon'], ['オゾン', 'tan'], ['アンモニア', 'ka'], ['牛乳', 'kon'], ['黒鉛', 'tan'], ['ドライアイス', 'ka']];
+  const SN = { tan: '単体', ka: '化合物', kon: '混合物' };
+  const SW = { 塩酸: '塩化水素 HCl を水に溶かした水溶液なので混合物。', ドライアイス: '固体の二酸化炭素 CO₂ なので化合物。', 黒鉛: '炭素 C だけでできているので単体（ダイヤモンドの同素体）。', オゾン: '酸素 O だけでできた O₃。酸素 O₂ の同素体。', 牛乳: '水・脂肪・タンパク質などが混ざっている。', 石油: 'いろいろな炭化水素の混合物。分留で分ける。' };
+  const sg = labCard('練習', '単体・化合物・混合物に分ける', '物質名を見て、3つのうちどれかを選ぼう');
+  sg.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><div class="big-kana" id="sgw"></div><span class="small muted tnum" id="sgn"></span></div>
+    <div class="row">${Object.entries(SN).map(([k, v]) => `<button class="btn ghost" data-s="${k}" style="font-size:1rem;padding:10px 18px">${v}</button>`).join('')}</div><div class="res" id="sgr">どれにあてはまるかな？</div>`);
+  root.appendChild(sg);
+  let sq = shuffle(SORT), si = 0, sc = 0;
+  const showSg = () => { $('#sgw').textContent = sq[si % sq.length][0]; $('#sgn').textContent = `${si % sq.length + 1} / ${sq.length}　正解 ${sc}`; };
+  $$('[data-s]', sg).forEach(b => b.onclick = () => {
+    const [w, a] = sq[si % sq.length], ok = b.dataset.s === a; if (ok) sc++;
+    $('#sgr').className = 'res ' + (ok ? 'ok' : 'ng');
+    $('#sgr').innerHTML = `<b>${ok ? '正解！' : `ざんねん。「${w}」は ${SN[a]}`}</b><span class="small">${SW[w] || (a === 'tan' ? '1種類の元素だけでできている。' : a === 'ka' ? '2種類以上の元素が結びついた1種類の物質。' : '2種類以上の物質が混ざっている。')}</span>`;
+    si++; if (si % sq.length === 0) { sq = shuffle(SORT); } showSg();
+  });
+  showSg();
+
+  /* --- 分離 --- */
+  const SEP = [['泥水から砂を取り除く', 'ろ過', 'ろ紙を通らない固体を分ける。'], ['海水から純粋な水を取り出す', '蒸留', '加熱して出てきた蒸気を冷やして液体にする。'], ['液体空気から窒素と酸素を分ける', '分留', '沸点のちがう液体の混合物を、蒸留で順に分ける。'],
+    ['少量の塩化ナトリウムを含む硝酸カリウムを精製する', '再結晶', '温度による溶解度のちがいを利用する。冷やすと硝酸カリウムだけが結晶になる。'], ['ヨウ素と砂の混合物からヨウ素を取り出す', '昇華法', 'ヨウ素は加熱すると固体から直接気体になる（昇華）。'],
+    ['お茶の葉から成分を湯に溶かし出す', '抽出', '目的の物質をよく溶かす溶媒を使って溶かし出す。'], ['水性ペンのインクの色素を分ける', 'クロマトグラフィー', 'ろ紙などへの吸着されやすさのちがいで分ける。'], ['石油からガソリン・灯油・軽油を分ける', '分留', '沸点のちがいで分ける。石油の精製は分留の代表例。']];
+  const METH = ['ろ過', '蒸留', '分留', '再結晶', '昇華法', '抽出', 'クロマトグラフィー'];
+  const sp = labCard('練習', '分離の方法を選ぶ', 'どの方法で分ける？');
+  sp.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><b id="spq" style="font-size:1.1rem"></b><button class="btn ghost sm" id="spn">次の問題</button></div><div class="pick-grid" id="spc">${METH.map(m => `<button data-m="${m}">${m}</button>`).join('')}</div><div class="res" id="spr" hidden></div>`);
+  root.appendChild(sp);
+  let spi = 0;
+  const showSp = () => { $('#spq').textContent = SEP[spi][0]; $('#spr').hidden = true; $$('#spc button').forEach(b => b.setAttribute('aria-pressed', 'false')); };
+  $$('#spc button', sp).forEach(b => b.onclick = () => { $$('#spc button').forEach(x => x.setAttribute('aria-pressed', x === b)); const [, a, w] = SEP[spi], ok = b.dataset.m === a; const r = $('#spr'); r.hidden = false; r.className = 'res ' + (ok ? 'ok' : 'ng'); r.innerHTML = `<b>${ok ? '正解！' : `正解は「${a}」`}</b><span class="small">${w}</span>`; });
+  $('#spn', sp).onclick = () => { spi = (spi + 1) % SEP.length; showSp(); };
+  showSp();
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('kousei'));
+};
+
+/* ===== 第2章 化学結合 ===== */
+const CATS = [['Na⁺', 'Na', 1, 'ナトリウム', 0], ['K⁺', 'K', 1, 'カリウム', 0], ['Ag⁺', 'Ag', 1, '銀', 0], ['NH₄⁺', 'NH4', 1, 'アンモニウム', 1], ['Mg²⁺', 'Mg', 2, 'マグネシウム', 0], ['Ca²⁺', 'Ca', 2, 'カルシウム', 0], ['Cu²⁺', 'Cu', 2, '銅(Ⅱ)', 0], ['Al³⁺', 'Al', 3, 'アルミニウム', 0], ['Fe³⁺', 'Fe', 3, '鉄(Ⅲ)', 0]];
+const ANS = [['Cl⁻', 'Cl', 1, '塩化', 0], ['OH⁻', 'OH', 1, '水酸化', 1], ['NO₃⁻', 'NO3', 1, '硝酸', 1], ['O²⁻', 'O', 2, '酸化', 0], ['S²⁻', 'S', 2, '硫化', 0], ['SO₄²⁻', 'SO4', 2, '硫酸', 1], ['CO₃²⁻', 'CO3', 2, '炭酸', 1], ['PO₄³⁻', 'PO4', 3, 'リン酸', 1]];
+const MOLS = [
+  ['H₂', 'H−H', '直線形', '無極性', 1, 0, '同じ原子どうしなので電子のかたよりがない。'],
+  ['Cl₂', 'Cl−Cl', '直線形', '無極性', 1, 6, '同じ原子どうし。Cl 1個に非共有電子対が3組ずつある。'],
+  ['HCl', 'H−Cl', '直線形', '極性', 1, 3, 'Cl の方が電気陰性度が大きく、共有電子対が Cl 側にかたよる。'],
+  ['H₂O', 'H−O−H', '折れ線形', '極性', 2, 2, 'O−H 結合の極性が、折れ線形なので打ち消されない。'],
+  ['NH₃', 'N と H 3つ', '三角錐形', '極性', 3, 1, 'N の非共有電子対1組があるため、ピラミッド形になる。'],
+  ['CH₄', 'C と H 4つ', '正四面体形', '無極性', 4, 0, 'C−H 結合の極性が、正四面体の対称な形で打ち消し合う。'],
+  ['CO₂', 'O=C=O', '直線形', '無極性', 4, 4, 'C=O 結合には極性があるが、直線形で左右に打ち消し合う。'],
+  ['N₂', 'N≡N', '直線形', '無極性', 3, 2, '三重結合。共有電子対が3組。'],
+];
+VIEWS.ketsugo = (root) => {
+  root.appendChild(sectionHead('UNIT 2', '化学結合', '原子どうしは電子をやりとりしたり、分け合ったりして結びつく。結合の種類がわかると、物質の性質（融点・電気の通しやすさ）も説明できる。'));
+  root.appendChild(points([
+    ['イオン結合', '<p><mark>金属元素 ＋ 非金属元素</mark>。陽イオンと陰イオンが静電気的な力（クーロン力）で引き合う。<br>例：NaCl、MgO、CaCl₂。固体は電気を通さないが、水溶液や融解液は通す。</p>'],
+    ['共有結合', '<p><mark>非金属元素 ＋ 非金属元素</mark>。価電子を出し合って<b>共有電子対</b>をつくる。<br>例：H₂、H₂O、CH₄。ダイヤモンド・ケイ素 Si・二酸化ケイ素 SiO₂ は<b>共有結合の結晶</b>。</p>'],
+    ['金属結合', '<p><mark>金属元素どうし</mark>。<b>自由電子</b>が原子の間を動き回って結びつける。<br>電気・熱をよく通す、金属光沢、展性・延性。</p>'],
+    ['電気陰性度と極性', '<p>電気陰性度：共有電子対を引きつける強さ。<b>F が最大</b>（貴ガスを除き、周期表の右上ほど大きい）。<br>結合に極性があっても、形が対称だと分子全体は<mark>無極性</mark>（CO₂・CH₄）。</p>'],
+  ]));
+
+  /* --- 組成式 --- */
+  const io = labCard('実験', 'イオンを組み合わせて組成式をつくる', '陽イオンと陰イオンを1つずつ選ぶと、電荷の合計が 0 になる組み合わせを作る');
+  io.insertAdjacentHTML('beforeend', `<div class="grid2"><div style="display:grid;gap:6px"><b class="small">陽イオン</b><div class="pick-grid" id="ioc">${CATS.map((c, i) => `<button data-i="${i}" aria-pressed="${i === 4}">${c[0]}<small>${c[3]}イオン</small></button>`).join('')}</div></div>
+    <div style="display:grid;gap:6px"><b class="small">陰イオン</b><div class="pick-grid" id="ioa">${ANS.map((c, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${c[0]}<small>${c[3].replace(/化$/, '化物')}イオン</small></button>`).join('')}</div></div></div>
+    <div class="lab-split"><div class="big-num" id="iof"></div><div class="res" id="ior"></div></div>`);
+  root.appendChild(io);
+  let ci = 4, ai = 0;
+  function drawIo() {
+    const c = CATS[ci], a = ANS[ai];
+    const L = c[2] * a[2] / gcd(c[2], a[2]), nc = L / c[2], na = L / a[2];
+    const part = (x, n) => n === 1 ? fH(x[1]) : x[4] ? `(${fH(x[1])})<sub>${n}</sub>` : `${fH(x[1])}<sub>${n}</sub>`;
+    const name = a[3] + (a[3].endsWith('化') ? '' : '') + c[3].replace('アンモニウム', 'アンモニウム');
+    $('#iof').innerHTML = part(c, nc) + part(a, na);
+    $('#ior').innerHTML = `<b>${name}</b><span>${c[0]} × ${nc} ＝ +${c[2] * nc}、${a[0]} × ${na} ＝ −${a[2] * na}　→ 合計 0</span><span class="small">名前は「陰イオンの名前（〜化、〜酸）＋陽イオンの名前」。式は陽イオンを先に書く。組み合わせの練習なので、実際には水中で分解して存在しないもの（AgOH など）もある。${(c[4] && nc > 1) || (a[4] && na > 1) ? '<br>多原子イオンが2個以上のときは（ ）でくくる。' : ''}</span>`;
+  }
+  function gcd(a, b) { while (b) [a, b] = [b, a % b]; return a; }
+  $$('#ioc button', io).forEach(b => b.onclick = () => { ci = +b.dataset.i; $$('#ioc button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawIo(); });
+  $$('#ioa button', io).forEach(b => b.onclick = () => { ai = +b.dataset.i; $$('#ioa button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawIo(); });
+  drawIo();
+
+  /* --- 分子の形と極性 --- */
+  const mo = labCard('実験', '分子の形と極性', '分子を選ぶと、共有電子対・非共有電子対の数と、形・極性が出る');
+  mo.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="mop">${MOLS.map((m, i) => `<button data-i="${i}" aria-pressed="${i === 3}">${m[0]}</button>`).join('')}</div>
+    <div class="lab-split"><svg class="plot" id="mosvg" viewBox="0 0 300 200" role="img" aria-label="分子の形"></svg><div style="display:grid;gap:10px;align-content:start"><div class="stat-grid" id="moi"></div><div class="note" id="mon"></div></div></div>`);
+  root.appendChild(mo);
+  const shapes = {
+    '直線形': (m) => m[0] === 'CO₂' ? [['O', 60, 100], ['C', 150, 100], ['O', 240, 100]] : [[m[1].split(/[−=≡]/)[0], 100, 100], [m[1].split(/[−=≡]/)[1], 200, 100]],
+    '折れ線形': () => [['O', 150, 70], ['H', 85, 140], ['H', 215, 140]],
+    '三角錐形': () => [['N', 150, 60], ['H', 80, 150], ['H', 150, 170], ['H', 220, 150]],
+    '正四面体形': () => [['C', 150, 100], ['H', 150, 25], ['H', 75, 150], ['H', 225, 150], ['H', 150, 175]],
+  };
+  function drawMo(i) {
+    const m = MOLS[i], at = shapes[m[2]](m);
+    const bondN = m[1].includes('≡') ? 3 : m[1].includes('=') ? 2 : 1;
+    let s = '';
+    const center = m[0] === 'CO₂' ? 1 : 0;
+    const pairs = at.length === 2 ? [[0, 1]] : at.map((_, k) => k).filter(k => k !== center).map(k => [center, k]);
+    pairs.forEach(([i1, i2]) => {
+      const from = at[i1], tgt = at[i2];
+      for (let b = 0; b < bondN; b++) { const off = (b - (bondN - 1) / 2) * 7; const dx = tgt[1] - from[1], dy = tgt[2] - from[2], L = Math.hypot(dx, dy), nx = -dy / L * off, ny = dx / L * off; s += `<line x1="${from[1] + nx}" y1="${from[2] + ny}" x2="${tgt[1] + nx}" y2="${tgt[2] + ny}" style="stroke:var(--ink);stroke-width:3"/>`; }
+    });
+    at.forEach(([e, x, y]) => s += `<circle cx="${x}" cy="${y}" r="${e === 'H' ? 16 : 22}" style="fill:var(${e === 'H' ? '--card-2' : e === 'O' ? '--accent-soft' : e === 'N' ? '--cobalt-soft' : e === 'Cl' ? '--good-soft' : '--marker'});stroke:var(--ink);stroke-width:1.5"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-weight="700">${e}</text>`);
+    $('#mosvg').innerHTML = s;
+    const c = (k, v) => `<div class="var"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+    $('#moi').innerHTML = c('構造式', m[1].includes('と') ? '―' : m[1]) + c('形', m[2]) + c('共有電子対', m[4] + ' 組') + c('非共有電子対', m[5] + ' 組') + c('極性', m[3] === '極性' ? '極性分子' : '無極性分子');
+    $('#mon').innerHTML = m[6];
+  }
+  $$('#mop button', mo).forEach(b => b.onclick = () => { $$('#mop button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawMo(+b.dataset.i); });
+  drawMo(3);
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>結晶の種類と性質</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>結晶</th><th>結びつき</th><th>例</th><th>融点</th><th>電気伝導性（固体）</th></tr></thead><tbody>
+    <tr><td><b>イオン結晶</b></td><td>イオン結合</td><td>NaCl、CaO</td><td>高い</td><td>なし（水溶液・融解液はあり）</td></tr>
+    <tr><td><b>分子結晶</b></td><td>分子間力</td><td>ドライアイス、ヨウ素、氷</td><td>低い（昇華しやすいものも）</td><td>なし</td></tr>
+    <tr><td><b>共有結合の結晶</b></td><td>共有結合</td><td>ダイヤモンド、Si、SiO₂</td><td>非常に高い</td><td>なし（黒鉛は例外であり）</td></tr>
+    <tr><td><b>金属結晶</b></td><td>金属結合</td><td>Fe、Cu、Al</td><td>高いものが多い</td><td>あり</td></tr></tbody></table></div></section>`));
+  root.appendChild(trap('<b>NH₄⁺</b> は非金属だけでできているが、陽イオン。NH₄Cl はイオン結合をふくむ。NH₄⁺ の中の結合の1つは<b>配位結合</b>（N の非共有電子対を H⁺ に提供）。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('ketsugo'));
+};
+
+/* ===== 第3章 物質量と化学反応式 ===== */
+const SUBS = [['H2O', '水', 0], ['CO2', '二酸化炭素', 1], ['O2', '酸素', 1], ['H2', '水素', 1], ['N2', '窒素', 1], ['NH3', 'アンモニア', 1], ['CH4', 'メタン', 1], ['NaCl', '塩化ナトリウム', 0], ['C6H12O6', 'グルコース', 0], ['Fe', '鉄', 0]];
+const RXN = [
+  [['H2', 'O2'], ['H2O'], [2, 1, 2]], [['CH4', 'O2'], ['CO2', 'H2O'], [1, 2, 1, 2]], [['N2', 'H2'], ['NH3'], [1, 3, 2]],
+  [['C3H8', 'O2'], ['CO2', 'H2O'], [1, 5, 3, 4]], [['Al', 'O2'], ['Al2O3'], [4, 3, 2]], [['Zn', 'HCl'], ['ZnCl2', 'H2'], [1, 2, 1, 1]],
+  [['Fe2O3', 'CO'], ['Fe', 'CO2'], [1, 3, 2, 3]], [['C2H6', 'O2'], ['CO2', 'H2O'], [2, 7, 4, 6]], [['Ca(OH)2', 'HCl'], ['CaCl2', 'H2O'], [1, 2, 1, 2]],
+  [['NaHCO3'], ['Na2CO3', 'H2O', 'CO2'], [2, 1, 1, 1]], [['C2H5OH', 'O2'], ['CO2', 'H2O'], [1, 3, 2, 3]],
+];
+VIEWS.mol = (root) => {
+  root.appendChild(sectionHead('UNIT 3', '物質量と化学反応式', '粒子は小さすぎて1個ずつ数えられないので、6.0×10²³ 個を 1 mol としてまとめて数える。化学反応式の係数は「mol の比」を表す。'));
+  root.appendChild(points([
+    ['物質量 mol', '<p>1 mol ＝ <mark>6.0×10²³ 個</mark>（アボガドロ定数 N<sub>A</sub> = 6.0×10²³ /mol）。<br>1 mol の質量 ＝ 原子量・分子量・式量に g をつけた値（<mark>モル質量</mark>）。</p>'],
+    ['気体の体積', '<p>標準状態（0℃、1.013×10⁵ Pa）で、気体 1 mol の体積は種類によらず <mark>22.4 L</mark>。</p>'],
+    ['濃度', `<p>モル濃度 [mol/L] ＝ ${F('溶質の物質量 [mol]', '溶液の体積 [L]')}<br>質量パーセント濃度 [%] ＝ ${F('溶質の質量', '溶液の質量')} × 100</p>`],
+    ['化学反応式の係数', '<p>係数の比 ＝ <mark>物質量（mol）の比</mark>（気体なら同温・同圧での体積の比も同じ）。<br>質量の比ではないことに注意。</p>'],
+  ]));
+
+  /* --- 換算 --- */
+  const cv = labCard('実験', 'mol を中心に換算する', 'どれか1つの数を書きかえると、ほかの3つが計算される');
+  cv.insertAdjacentHTML('beforeend', `<label class="ctl" for="cvs">物質<select id="cvs">${SUBS.map((s, i) => `<option value="${i}">${s[1]}（${s[0].replace(/\d/g, d => '₀₁₂₃₄₅₆₇₈₉'[d])}）</option>`).join('')}</select></label>
+    <div class="ctls"><label class="ctl">質量 [g]<input type="number" id="cvm" step="any"></label><label class="ctl">物質量 [mol]<input type="number" id="cvn" step="any" value="1"></label>
+    <label class="ctl">粒子の数 [× 10²³ 個]<input type="number" id="cvp" step="any"></label><label class="ctl">気体の体積 [L]（標準状態）<input type="number" id="cvv" step="any"></label></div>
+    <svg class="plot" viewBox="0 0 560 150" role="img" aria-label="換算の図" id="cvsvg"></svg><div class="note" id="cvnote"></div>`);
+  root.appendChild(cv);
+  function cvSet(src) {
+    const s = SUBS[+$('#cvs').value], Mm = molarMass(s[0]);
+    let n = +$('#cvn').value;
+    if (src === 'm') n = +$('#cvm').value / Mm; if (src === 'p') n = +$('#cvp').value / 6.0; if (src === 'v') n = +$('#cvv').value / 22.4;
+    if (!isFinite(n)) return;
+    const r = x => Math.round(x * 1000) / 1000;
+    if (src !== 'n') $('#cvn').value = r(n); if (src !== 'm') $('#cvm').value = r(n * Mm); if (src !== 'p') $('#cvp').value = r(n * 6.0);
+    $('#cvv').disabled = !s[2]; if (src !== 'v') $('#cvv').value = s[2] ? r(n * 22.4) : '';
+    const X = [80, 280, 480];
+    $('#cvsvg').innerHTML = `<rect x="220" y="45" width="120" height="56" rx="10" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/><text x="280" y="70" text-anchor="middle" font-weight="700">物質量</text><text x="280" y="90" text-anchor="middle" class="tk">${fmt(n, 3)} mol</text>
+      <rect x="10" y="10" width="140" height="44" rx="10" style="fill:var(--card-2);stroke:var(--ink)"/><text x="80" y="37" text-anchor="middle" font-weight="700">質量 ${fmt(n * Mm, 3)} g</text>
+      <rect x="410" y="10" width="140" height="44" rx="10" style="fill:var(--card-2);stroke:var(--ink)"/><text x="480" y="37" text-anchor="middle" font-weight="700">${fmt(n * 6.0, 3)}×10²³ 個</text>
+      <rect x="10" y="96" width="140" height="44" rx="10" style="fill:var(${s[2] ? '--card-2' : '--paper'});stroke:var(${s[2] ? '--ink' : '--line'})"/><text x="80" y="123" text-anchor="middle" font-weight="700" ${s[2] ? '' : 'class="tk"'}>${s[2] ? `体積 ${fmt(n * 22.4, 3)} L` : '体積（気体のみ）'}</text>
+      <line x1="150" y1="40" x2="220" y2="62" style="stroke:var(--ink)"/><text x="185" y="40" class="tk">×${Mm}</text>
+      <line x1="340" y1="62" x2="410" y2="40" style="stroke:var(--ink)"/><text x="375" y="40" class="tk">×6.0×10²³</text>
+      <line x1="150" y1="118" x2="220" y2="88" style="stroke:var(--ink)"/><text x="185" y="122" class="tk">×22.4</text>`;
+    $('#cvnote').innerHTML = `${s[1]} のモル質量は <b>${Mm} g/mol</b>（${Object.entries(parseF(s[0])).map(([k, c]) => `${k} ${ATOMIC[k]}${c > 1 ? '×' + c : ''}`).join(' ＋ ')}）。mol → 質量は「×モル質量」、質量 → mol は「÷モル質量」。${s[2] ? '' : '<br>この物質は常温で気体ではないので、22.4 L は使えない。'}`;
+  }
+  $('#cvs', cv).onchange = () => cvSet('n');
+  [['#cvm', 'm'], ['#cvn', 'n'], ['#cvp', 'p'], ['#cvv', 'v']].forEach(([i, k]) => $(i, cv).oninput = () => cvSet(k));
+  cvSet('n');
+
+  /* --- 係数合わせ --- */
+  const rx = labCard('練習', '化学反応式の係数を合わせる', '左右で原子の数がそろうように係数を入れる（1 も入れる）');
+  rx.insertAdjacentHTML('beforeend', `<div class="row" style="justify-content:space-between"><span class="small muted tnum" id="rxn"></span><div class="row"><button class="btn ghost sm" id="rxh">答えを見る</button><button class="btn ghost sm" id="rxnext">次の反応</button></div></div>
+    <div class="fx big row" id="rxeq" style="gap:6px"></div><div class="scroll-x" id="rxtbl"></div><div class="res" id="rxres"></div>`);
+  root.appendChild(rx);
+  let ri = 0;
+  function loadRx() {
+    const [L, R] = RXN[ri], all = [...L, ...R];
+    $('#rxn').textContent = `${ri + 1} / ${RXN.length}`;
+    $('#rxeq').innerHTML = all.map((f, i) => `${i === L.length ? '<span>→</span>' : i ? '<span>＋</span>' : ''}<span style="display:inline-flex;align-items:center;gap:2px"><input type="number" min="1" max="20" class="rxc" data-i="${i}" style="width:3.2em;text-align:center;font-weight:700" aria-label="${f} の係数">${fH(f)}</span>`).join('');
+    $$('.rxc', rx).forEach(x => x.oninput = checkRx); checkRx();
+  }
+  function checkRx() {
+    const [L, R, ans] = RXN[ri], all = [...L, ...R];
+    const c = $$('.rxc', rx).map(x => +x.value || 0);
+    const els = [...new Set(all.flatMap(f => Object.keys(parseF(f))))];
+    const cnt = side => els.map(e => side.reduce((s, f) => s + (parseF(f)[e] || 0) * c[all.indexOf(f)], 0));
+    const l = cnt(L), r = cnt(R);
+    $('#rxtbl').innerHTML = `<table class="tbl ctr"><thead><tr><th>原子</th>${els.map(e => `<th>${e}</th>`).join('')}</tr></thead><tbody><tr><th>左辺</th>${l.map((x, i) => `<td style="color:var(${x === r[i] && x ? '--good' : '--ink'});font-weight:700">${x}</td>`).join('')}</tr><tr><th>右辺</th>${r.map((x, i) => `<td style="color:var(${x === l[i] && x ? '--good' : '--ink'});font-weight:700">${x}</td>`).join('')}</tr></tbody></table>`;
+    const res = $('#rxres');
+    if (c.some(x => !x)) { res.className = 'res'; res.innerHTML = 'すべての係数を入れよう。まずは<b>いちばん複雑な物質の係数を 1</b> とおいて、ほかを合わせるのがコツ。'; return; }
+    const ok = l.every((x, i) => x === r[i]);
+    let g = c.reduce((a, b) => { while (b) [a, b] = [b, a % b]; return a; });
+    res.className = 'res ' + (ok && g === 1 ? 'ok' : ok ? '' : 'ng');
+    res.innerHTML = ok ? (g === 1 ? `<b>正解！</b><span class="fx">${all.map((f, i) => `${i === L.length ? ' → ' : i ? ' ＋ ' : ''}${c[i] === 1 ? '' : c[i]}${fH(f)}`).join('')}</span>` : `<b>原子の数はそろっている！</b><span>ただし係数は<b>もっとも簡単な整数の比</b>にする。全部を ${g} で割ろう。</span>`) : `<span>まだそろっていない原子がある（黒い数字）。</span>`;
+  }
+  $('#rxh', rx).onclick = () => { RXN[ri][2].forEach((v, i) => $$('.rxc', rx)[i].value = v); checkRx(); };
+  $('#rxnext', rx).onclick = () => { ri = (ri + 1) % RXN.length; loadRx(); };
+  loadRx();
+
+  /* --- 過不足 --- */
+  const ex = labCard('実験', '反応の過不足', '2H₂ ＋ O₂ → 2H₂O。水素と酸素の量を変えて、どちらが余るかを見る');
+  ex.insertAdjacentHTML('beforeend', `<div class="ctls">${slider('exh', '水素 H₂ [mol]', 0, 4, 0.5, 3)}${slider('exo', '酸素 O₂ [mol]', 0, 3, 0.5, 1)}</div>
+    <svg class="plot" id="exsvg" viewBox="0 0 560 220" role="img" aria-label="反応前後の物質量"></svg><div class="note" id="exnote"></div>`);
+  root.appendChild(ex);
+  function drawEx() {
+    const a = +$('#exh').value, b = +$('#exo').value; $('#exh-v').textContent = a; $('#exo-v').textContent = b;
+    const x = Math.min(a / 2, b); // O2 が反応する量
+    const after = [a - 2 * x, b - x, 2 * x], before = [a, b, 0];
+    const Y = v => 180 - v * 36, cols = ['--cobalt', '--accent', '--good'], nm = ['H₂', 'O₂', 'H₂O'];
+    let s = `<line class="ax" x1="20" y1="180" x2="540" y2="180"/><text x="140" y="210" text-anchor="middle" font-weight="700">反応前</text><text x="420" y="210" text-anchor="middle" font-weight="700">反応後</text>`;
+    [[before, 60], [after, 340]].forEach(([arr, x0]) => arr.forEach((v, i) => { s += `<rect x="${x0 + i * 60}" y="${Y(v)}" width="44" height="${180 - Y(v)}" style="fill:var(${cols[i]})"/><text x="${x0 + i * 60 + 22}" y="${Y(v) - 6}" text-anchor="middle" class="tk">${fmt(v)}</text><text x="${x0 + i * 60 + 22}" y="195" text-anchor="middle" class="tk">${nm[i]}</text>`; }));
+    $('#exsvg').innerHTML = s;
+    const left = after[0] > 0 ? `水素が <b>${fmt(after[0])} mol</b> 余る` : after[1] > 0 ? `酸素が <b>${fmt(after[1])} mol</b> 余る` : 'どちらも余らない（ちょうど反応）';
+    $('#exnote').innerHTML = a + b ? `係数より H₂ : O₂ = 2 : 1 で反応する。${a / 2 < b ? `H₂ ${a} mol と反応する O₂ は ${fmt(a / 2)} mol だけ。` : `O₂ ${b} mol と反応する H₂ は ${fmt(2 * b)} mol。`}<br>→ ${left}。生成する水は <b>${fmt(2 * x)} mol</b>（${fmt(2 * x * 18)} g）。` : '量を入れてみよう。';
+  }
+  ['#exh', '#exo'].forEach(i => $(i, ex).oninput = drawEx); drawEx();
+  root.appendChild(trap('係数の比は<b>物質量の比</b>。2H₂ ＋ O₂ → 2H₂O で「水素 2 g と酸素 1 g が反応する」わけではない（質量比は 4 : 32 = 1 : 8）。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('mol'));
+};
+
+/* ===== 第4章 酸と塩基 ===== */
+const Kw = 1.0e-14;
+function titrPH(acidMol, Ka, baseMol, VL) { // 1価の酸を NaOH で滴定したときの pH（電荷のつり合いを二分法で解く）
+  const cA = acidMol / VL, cNa = baseMol / VL;
+  const f = hh => hh + cNa - Kw / hh - cA * (Ka === Infinity ? 1 : Ka / (Ka + hh));
+  let lo = -15, hi = 1;
+  for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (f(10 ** mid) > 0) hi = mid; else lo = mid; }
+  return -(lo + hi) / 2;
+}
+VIEWS.san = (root) => {
+  root.appendChild(sectionHead('UNIT 4', '酸と塩基', '酸は H⁺ を出すもの、塩基は H⁺ を受け取るもの。pH は水溶液の酸性・塩基性の強さを表す。中和では「酸の H⁺ の物質量 ＝ 塩基の OH⁻ の物質量」。'));
+  root.appendChild(points([
+    ['定義', '<p><b>アレニウス</b>：水に溶けて H⁺ を出すのが酸、OH⁻ を出すのが塩基。<br><b>ブレンステッド・ローリー</b>：H⁺ を<mark>与える</mark>のが酸、<mark>受け取る</mark>のが塩基。</p>'],
+    ['強酸・強塩基', '<p>強酸：HCl、HNO₃、H₂SO₄（電離度がほぼ 1）<br>強塩基：NaOH、KOH、Ca(OH)₂、Ba(OH)₂<br>弱酸：CH₃COOH、H₂CO₃ など　弱塩基：NH₃ など</p>'],
+    ['pH', '<p>[H⁺] = 1.0×10<sup>−n</sup> mol/L のとき <mark>pH = n</mark>。<br>pH &lt; 7 酸性、pH = 7 中性、pH &gt; 7 塩基性（25℃）。<br>[H⁺][OH⁻] = 1.0×10⁻¹⁴（mol/L）²</p>'],
+    ['中和の量的関係', '<p class="fx" style="font-size:1rem">a × c × V ＝ b × c′ × V′</p><p class="small">a, b：酸・塩基の価数　c, c′：モル濃度　V, V′：体積。<br>酸の強弱には関係なく成り立つ。</p>'],
+  ]));
+
+  /* --- 滴定曲線 --- */
+  const tt = labCard('実験', '中和滴定の曲線', '0.10 mol/L の酸 10.0 mL に、0.10 mol/L の NaOH 水溶液を少しずつ加える');
+  tt.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">酸${seg('tta', [['hcl', '塩酸（強酸）'], ['ac', '酢酸（弱酸）']], 'hcl')}</label>${slider('ttv', '加えた NaOH [mL]', 0, 20, 0.1, 5)}</div>
+    <div class="lab-split"><svg class="plot" id="ttsvg" viewBox="0 0 520 360" role="img" aria-label="滴定曲線"></svg>
+    <div style="display:grid;gap:10px;align-content:start"><div class="big-num tnum" id="ttph"></div><div class="stat-grid" id="ttinfo"></div><div class="note" id="ttnote"></div></div></div>`);
+  root.appendChild(tt);
+  let acid = 'hcl';
+  bindSeg(tt, 'tta', v => { acid = v; drawTt(); });
+  function drawTt() {
+    const v = +$('#ttv').value; $('#ttv-v').textContent = v.toFixed(1);
+    const Ka = acid === 'hcl' ? Infinity : 2.7e-5, am = 0.10 * 0.010;
+    const ph = vv => titrPH(am, Ka, 0.10 * vv / 1000, (10 + vv) / 1000);
+    const X = x => 40 + x / 20 * 460, Y = p => 330 - p / 14 * 310;
+    let s = '';
+    [[3.1, 4.4, 'メチルオレンジ', '--accent-soft'], [8.0, 9.8, 'フェノールフタレイン', '--cobalt-soft']].forEach(([a, b, n, c]) => s += `<rect x="40" y="${Y(b)}" width="460" height="${Y(a) - Y(b)}" style="fill:var(${c})" opacity=".8"/><text x="496" y="${Y(b) + 13}" text-anchor="end" class="tk">${n}の変色域</text>`);
+    for (let p = 0; p <= 14; p += 2) s += `<line class="g" x1="40" y1="${Y(p)}" x2="500" y2="${Y(p)}"/><text class="tk" x="34" y="${Y(p) + 4}" text-anchor="end">${p}</text>`;
+    for (let x = 0; x <= 20; x += 5) s += `<text class="tk" x="${X(x)}" y="348" text-anchor="middle">${x}</text>`;
+    s += `<line class="ax" x1="40" y1="330" x2="500" y2="330"/><line class="ax" x1="40" y1="20" x2="40" y2="330"/><line class="axisline" x1="${X(10)}" y1="20" x2="${X(10)}" y2="330"/>`;
+    let d = ''; for (let i = 0; i <= 400; i++) { const x = i / 20; d += (i ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Y(ph(x)).toFixed(1); }
+    s += `<path class="cv" d="${d}"/><circle class="dot" cx="${X(v)}" cy="${Y(ph(v))}" r="7"/><text class="tk" x="40" y="14">pH</text>`;
+    $('#ttsvg').innerHTML = s;
+    const p = ph(v), peq = ph(10);
+    $('#ttph').innerHTML = `pH ${p.toFixed(2)}`;
+    const c = (k, x) => `<div class="var"><div class="k">${k}</div><div class="v">${x}</div></div>`;
+    $('#ttinfo').innerHTML = c('中和点', '10.0 mL') + c('中和点の pH', peq.toFixed(1)) + c('水溶液', p < 6.9 ? '酸性' : p > 7.1 ? '塩基性' : 'ほぼ中性');
+    $('#ttnote').innerHTML = acid === 'hcl' ? '強酸 ＋ 強塩基。中和点付近で pH が <b>約 3 から約 11 まで</b>一気に変わるので、<b>メチルオレンジでもフェノールフタレインでも</b>中和点がわかる。'
+      : `弱酸 ＋ 強塩基。中和点で生じる CH₃COONa の水溶液は<b>塩基性</b>（pH 約 ${peq.toFixed(1)}）。pH が急に変わる範囲が塩基性側にあるので、<b>フェノールフタレイン</b>を使う。<br><span class="small muted">酢酸の電離定数は 2.7×10⁻⁵ mol/L として計算。</span>`;
+  }
+  $('#ttv', tt).oninput = drawTt; drawTt();
+
+  /* --- 中和の計算 --- */
+  const AC = [['HCl', '塩酸', 1], ['H2SO4', '硫酸', 2], ['CH3COOH', '酢酸', 1]], BA = [['NaOH', '水酸化ナトリウム', 1], ['Ca(OH)2', '水酸化カルシウム', 2], ['NH3', 'アンモニア', 1]];
+  const nc = labCard('練習', '中和に必要な体積', '酸の水溶液をちょうど中和する塩基の体積を求める');
+  nc.insertAdjacentHTML('beforeend', `<div class="ctls"><label class="ctl">酸<select id="nca">${AC.map((a, i) => `<option value="${i}">${a[1]}（${a[2]}価）</option>`).join('')}</select></label><label class="ctl">酸の濃度 [mol/L]<input type="number" id="ncc" value="0.10" step="0.01"></label><label class="ctl">酸の体積 [mL]<input type="number" id="ncv" value="10" step="1"></label>
+    <label class="ctl">塩基<select id="ncb">${BA.map((a, i) => `<option value="${i}">${a[1]}（${a[2]}価）</option>`).join('')}</select></label><label class="ctl">塩基の濃度 [mol/L]<input type="number" id="ncd" value="0.10" step="0.01"></label></div>
+    <ol class="steps fx" id="ncs" style="font-size:1rem"></ol>`);
+  root.appendChild(nc);
+  function drawNc() {
+    const a = AC[+$('#nca').value], b = BA[+$('#ncb').value], c = +$('#ncc').value, V = +$('#ncv').value, d = +$('#ncd').value;
+    const hm = a[2] * c * V / 1000, Vb = hm / (b[2] * d) * 1000;
+    $('#ncs').innerHTML = `<li><span>酸が出す H⁺ ＝ ${a[2]} × ${c} mol/L × ${F(V, 1000)} L ＝ ${sci(hm)} mol<span class="why">価数 × 濃度 × 体積（L に直す）</span></span></li>
+      <li><span>塩基が受け取る H⁺ ＝ ${b[2]} × ${d} mol/L × ${F('V′', 1000)} L<span class="why">求める体積を V′ [mL] とおく</span></span></li>
+      <li><span>${a[2]} × ${c} × ${V} ＝ ${b[2]} × ${d} × V′　→　V′ ＝ <mark>${isFinite(Vb) ? fmt(Vb, 2) : '―'} mL</mark><span class="why">中和点では両者が等しい（両辺の 1/1000 は消える）</span></span></li>`;
+  }
+  ['#nca', '#ncb'].forEach(i => $(i, nc).onchange = drawNc); ['#ncc', '#ncv', '#ncd'].forEach(i => $(i, nc).oninput = drawNc); drawNc();
+  root.appendChild(trap('中和の計算には<b>酸・塩基の強弱は関係ない</b>。0.1 mol/L の酢酸 10 mL も 0.1 mol/L の塩酸 10 mL も、中和に必要な NaOH の量は同じ。ちがうのは中和点の pH。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('san'));
+};
+
+/* ===== 第5章 酸化還元 ===== */
+const OXN = [
+  ['H₂O', [['H', '+1', 2], ['O', '−2', 1]], 'H は +1、O は −2（基本ルール）。'],
+  ['H₂O₂', [['H', '+1', 2], ['O', '−1', 2]], '過酸化水素は例外。H が +1 なので 2×(+1) + 2x = 0 より O は −1。'],
+  ['CO₂', [['C', '+4', 1], ['O', '−2', 2]], 'x + 2×(−2) = 0 より x = +4。'],
+  ['CH₄', [['C', '−4', 1], ['H', '+1', 4]], 'x + 4×(+1) = 0 より x = −4。'],
+  ['NH₃', [['N', '−3', 1], ['H', '+1', 3]], 'x + 3×(+1) = 0 より x = −3。'],
+  ['HNO₃', [['H', '+1', 1], ['N', '+5', 1], ['O', '−2', 3]], '(+1) + x + 3×(−2) = 0 より x = +5。'],
+  ['H₂SO₄', [['H', '+1', 2], ['S', '+6', 1], ['O', '−2', 4]], '2×(+1) + x + 4×(−2) = 0 より x = +6。'],
+  ['SO₂', [['S', '+4', 1], ['O', '−2', 2]], 'x + 2×(−2) = 0 より x = +4。'],
+  ['H₂S', [['H', '+1', 2], ['S', '−2', 1]], '2×(+1) + x = 0 より x = −2。'],
+  ['KMnO₄', [['K', '+1', 1], ['Mn', '+7', 1], ['O', '−2', 4]], 'K（1族）は +1。(+1) + x + 4×(−2) = 0 より x = +7。'],
+  ['MnO₂', [['Mn', '+4', 1], ['O', '−2', 2]], 'x + 2×(−2) = 0 より x = +4。'],
+  ['K₂Cr₂O₇', [['K', '+1', 2], ['Cr', '+6', 2], ['O', '−2', 7]], '2×(+1) + 2x + 7×(−2) = 0 より x = +6。'],
+  ['Fe₂O₃', [['Fe', '+3', 2], ['O', '−2', 3]], '2x + 3×(−2) = 0 より x = +3。'],
+  ['SO₄²⁻', [['S', '+6', 1], ['O', '−2', 4]], 'イオンは合計が電荷に等しい。x + 4×(−2) = −2 より x = +6。'],
+  ['Cu', [['Cu', '0', 1]], '単体の原子の酸化数は 0。'],
+];
+const SERIES = ['Li', 'K', 'Ca', 'Na', 'Mg', 'Al', 'Zn', 'Fe', 'Ni', 'Sn', 'Pb', '(H₂)', 'Cu', 'Hg', 'Ag', 'Pt', 'Au'];
+const PLATES = [['Mg', 'マグネシウム', 2], ['Zn', '亜鉛', 2], ['Fe', '鉄', 2], ['Cu', '銅', 2], ['Ag', '銀', 1]];
+const SOLS = [['Cu²⁺', '硫酸銅(Ⅱ)水溶液', 'Cu', 2, '青色'], ['Ag⁺', '硝酸銀水溶液', 'Ag', 1, '無色'], ['Zn²⁺', '硫酸亜鉛水溶液', 'Zn', 2, '無色'], ['Fe²⁺', '硫酸鉄(Ⅱ)水溶液', 'Fe', 2, 'うすい緑色'], ['H⁺', '希塩酸', '(H₂)', 1, '無色']];
+VIEWS.sanka = (root) => {
+  root.appendChild(sectionHead('UNIT 5', '酸化還元', '酸化と還元は、電子のやりとりで同時に起こる。酸化数を使えば、どの原子が酸化・還元されたかを機械的に判定できる。'));
+  root.appendChild(points([
+    ['酸化と還元', '<p><b>酸化</b>：酸素を受け取る／水素を失う／<mark>電子を失う</mark>／酸化数が<mark>増える</mark><br><b>還元</b>：その逆。電子を受け取る／酸化数が減る</p>'],
+    ['酸化数のルール', '<p>単体の原子は 0。化合物中の H は +1、O は −2（H₂O₂ の O は −1）。化合物全体の合計は 0、イオンは電荷に等しい。</p>'],
+    ['酸化剤・還元剤', '<p><mark>酸化剤</mark>：相手を酸化し、自分は<b>還元される</b>（KMnO₄、Cl₂ など）。<br><mark>還元剤</mark>：相手を還元し、自分は<b>酸化される</b>（金属、H₂S など）。</p>'],
+    ['イオン化傾向', '<p>水溶液中で陽イオンになりやすい順。<br><span class="fx" style="font-size:.95rem">Li K Ca Na Mg Al Zn Fe Ni Sn Pb (H₂) Cu Hg Ag Pt Au</span><br>「貸そうかな まああてにすな ひどすぎる借金」</p>'],
+  ]));
+
+  /* --- 酸化数 --- */
+  const ox = labCard('実験', '酸化数を求める', '物質を選ぶと、各原子の酸化数と計算のしかたが出る');
+  ox.insertAdjacentHTML('beforeend', `<div class="pick-grid" id="oxp">${OXN.map((o, i) => `<button data-i="${i}" aria-pressed="${i === 9}">${o[0]}</button>`).join('')}</div>
+    <div class="lab-split"><div class="row" id="oxv" style="gap:8px;align-items:flex-end"></div><div class="note" id="oxn"></div></div>`);
+  root.appendChild(ox);
+  function drawOx(i) {
+    const o = OXN[i];
+    $('#oxv').innerHTML = o[1].map(([e, n, c]) => `<div style="display:grid;justify-items:center;gap:2px"><span style="font-family:var(--f-code);font-weight:700;color:var(${n.startsWith('+') ? '--accent' : n === '0' ? '--muted' : '--cobalt'});font-size:1.1rem">${n}</span><span class="big-num" style="font-size:2rem">${e}</span><span class="small muted">${c > 1 ? '× ' + c : ''}</span></div>`).join('');
+    $('#oxn').innerHTML = o[2];
+  }
+  $$('#oxp button', ox).forEach(b => b.onclick = () => { $$('#oxp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawOx(+b.dataset.i); });
+  drawOx(9);
+
+  /* --- イオン化傾向 --- */
+  const it = labCard('実験', '金属板を水溶液に入れると？', '金属のイオン化傾向で、反応が起こるかどうかが決まる');
+  it.insertAdjacentHTML('beforeend', `<div class="grid2"><div style="display:grid;gap:6px"><b class="small">金属板</b><div class="pick-grid" id="itp">${PLATES.map((p, i) => `<button data-i="${i}" aria-pressed="${i === 1}">${p[0]}<small>${p[1]}</small></button>`).join('')}</div></div>
+    <div style="display:grid;gap:6px"><b class="small">水溶液</b><div class="pick-grid" id="its">${SOLS.map((p, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${p[0]}<small>${p[1]}</small></button>`).join('')}</div></div></div>
+    <div class="scroll-x"><div class="row" id="itser" style="gap:4px;flex-wrap:nowrap;min-width:560px"></div></div><div class="res" id="itr"></div>`);
+  root.appendChild(it);
+  let pi = 1, si2 = 0;
+  function drawIt() {
+    const p = PLATES[pi], s = SOLS[si2], a = SERIES.indexOf(p[0]), b = SERIES.indexOf(s[2]);
+    $('#itser').innerHTML = SERIES.map((e, i) => `<span class="chip" style="${i === a ? 'background:var(--accent);color:#fff;border-color:transparent' : i === b ? 'background:var(--cobalt);color:#fff;border-color:transparent' : ''}">${e}</span>`).join('<span class="muted small">›</span>');
+    const r = $('#itr');
+    if (a === b) { r.className = 'res'; r.innerHTML = '<b>変化なし</b><span>同じ金属のイオンなので反応しない。</span>'; return; }
+    if (a < b) {
+      const m = p[2], n = s[3], L = m * n / (m === n ? m : 1), cp = L / m, cs = L / n;
+      const ion = p[0] + (m === 2 ? '²⁺' : '⁺');
+      const prod = s[2] === '(H₂)' ? 'H₂' : s[2];
+      const cprod = s[2] === '(H₂)' ? cs / 2 : cs;
+      const eq = `${cp > 1 ? cp : ''}${p[0]} ＋ ${cs > 1 ? cs : ''}${s[0]} → ${cp > 1 ? cp : ''}${ion} ＋ ${cprod > 1 ? cprod : ''}${prod}`;
+      r.className = 'res ok';
+      r.innerHTML = `<b>反応する</b><span class="fx">${eq}</span><span class="small">${p[1]}（赤）の方がイオン化傾向が大きいので、${p[1]}が電子を失って溶け出し（酸化）、${s[2] === '(H₂)' ? 'H⁺ が電子を受け取って水素が発生する（還元）' : `${s[0]} が電子を受け取って ${s[2]} が析出する（還元）`}。${s[2] === 'Cu' ? '溶液の青色はうすくなる。' : s[2] === 'Ag' ? '金属板の表面に銀が樹木のように析出する（銀樹）。' : ''}</span>`;
+    } else { r.className = 'res ng'; r.innerHTML = `<b>反応しない</b><span class="small">${p[1]}（赤）は、溶液中の ${s[0]}（青）の金属よりイオン化傾向が<b>小さい</b>ので、電子を渡せない。${s[2] === '(H₂)' ? '水素よりイオン化傾向の小さい金属は、希塩酸と反応しない。' : ''}</span>`; }
+  }
+  $$('#itp button', it).forEach(b => b.onclick = () => { pi = +b.dataset.i; $$('#itp button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawIt(); });
+  $$('#its button', it).forEach(b => b.onclick = () => { si2 = +b.dataset.i; $$('#its button').forEach(x => x.setAttribute('aria-pressed', x === b)); drawIt(); });
+  drawIt();
+
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">整理</span><h3>金属の反応性（イオン化傾向の大きい順）</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>金属</th><th>常温の水</th><th>熱水・高温の水蒸気</th><th>希塩酸・希硫酸</th><th>硝酸・熱濃硫酸</th></tr></thead><tbody>
+    <tr><td><b>Li K Ca Na</b></td><td>反応する</td><td>反応する</td><td>反応する</td><td>反応する</td></tr>
+    <tr><td><b>Mg</b></td><td>×</td><td>熱水と反応</td><td>反応する</td><td>反応する</td></tr>
+    <tr><td><b>Al Zn Fe</b></td><td>×</td><td>高温の水蒸気と反応</td><td>反応する</td><td>反応する（Al・Fe は濃硝酸で不動態）</td></tr>
+    <tr><td><b>Ni Sn Pb</b></td><td>×</td><td>×</td><td>反応する（Pb は表面に難溶性の塩ができ、ほぼ反応しない）</td><td>反応する</td></tr>
+    <tr><td><b>Cu Hg Ag</b></td><td>×</td><td>×</td><td>×</td><td>反応する</td></tr>
+    <tr><td><b>Pt Au</b></td><td>×</td><td>×</td><td>×</td><td>王水にだけ溶ける</td></tr></tbody></table></div></section>`));
+  root.appendChild(points([
+    ['電池のしくみ', '<p>イオン化傾向の<b>大きい</b>金属が<mark>負極</mark>（電子を出す＝酸化）、<b>小さい</b>金属が<mark>正極</mark>（電子を受け取る＝還元）。</p>'],
+    ['ダニエル電池', '<p>(−) Zn | ZnSO₄aq | CuSO₄aq | Cu (+)<br>負極：Zn → Zn²⁺ ＋ 2e⁻<br>正極：Cu²⁺ ＋ 2e⁻ → Cu</p>'],
+  ]));
+  root.appendChild(trap('酸化剤は「相手を酸化する」物質なので、<b>自分は還元される</b>（酸化数が減る）。名前と自分の変化が逆になる。'));
+
+  root.appendChild(sectionHead('CHECK', '確認問題'));
+  root.appendChild(unitQuizzes('sanka'));
+};
+/* ===== オリジナル問題（選択肢は ⓪ から） ===== */
+const QUESTIONS = [
+/* ---------- 物質と原子 ---------- */
+{ id: 'k1', unit: 'kousei', type: '物質の分類', lv: 1, inUnit: true,
+  stem: '<p>次のうち、<b>混合物</b>はどれか。</p>', choices: ['空気', '水', '酸素', '二酸化炭素'], ans: 0,
+  exp: '<p>空気は窒素・酸素・アルゴンなどが混ざった<mark>混合物</mark>。水と二酸化炭素は化合物、酸素は単体（どれも純物質）。</p>' },
+{ id: 'k2', unit: 'kousei', type: '同素体', lv: 1, inUnit: true,
+  stem: '<p>たがいに<b>同素体</b>である組み合わせはどれか。</p>', choices: ['ダイヤモンドと黒鉛', '水と氷', '一酸化炭素と二酸化炭素', '³⁵Cl と ³⁷Cl'], ans: 0,
+  exp: '<p>同素体は「同じ元素からなる単体で、性質がちがうもの」。ダイヤモンドと黒鉛はどちらも炭素 C の単体なので<mark>同素体</mark>。<br>① は同じ物質の状態ちがい、② は化合物どうし、③ は<b>同位体</b>。</p>' },
+{ id: 'k3', unit: 'kousei', type: '分離', lv: 1, inUnit: true,
+  stem: '<p>海水から純粋な水を取り出すのに適した方法はどれか。</p>', choices: ['ろ過', '蒸留', '再結晶', '昇華法'], ans: 1,
+  exp: '<p>海水を加熱し、出てきた水蒸気を冷やして水にする<mark>蒸留</mark>。塩類は溶けているので、ろ過では分けられない。</p>' },
+{ id: 'k4', unit: 'kousei', type: '電子配置', lv: 1, inUnit: true,
+  stem: '<p>ナトリウム原子（原子番号 11）の電子配置はどれか。</p>', choices: ['K2 L8 M1', 'K2 L9', 'K1 L8 M2', 'K2 L7 M2'], ans: 0,
+  exp: '<p>K殻には最大 2 個、L殻には最大 8 個入る。11 個の電子は <mark>K2 L8 M1</mark>。価電子は 1 個なので Na⁺ になりやすい。</p>' },
+{ id: 'k5', unit: 'kousei', type: '原子の構造', lv: 2, inUnit: true,
+  stem: '<p>³⁷Cl（塩素の原子番号は 17）の中性子の数はいくつか。</p>', choices: ['17', '20', '37', '54'], ans: 1,
+  exp: '<p>中性子の数 ＝ 質量数 − 陽子の数（原子番号）＝ 37 − 17 ＝ <mark>20</mark>。</p>' },
+{ id: 'k6', unit: 'kousei', type: '同位体', lv: 1,
+  stem: '<p>同位体の説明として正しいものはどれか。</p>', choices: ['原子番号が同じで、質量数が異なる原子', '質量数が同じで、原子番号が異なる原子', '同じ元素からなる単体で、性質が異なるもの', '電子の数が同じで、陽子の数が異なる粒子'], ans: 0,
+  exp: '<p>同位体は陽子の数（原子番号）が同じで、中性子の数がちがうため<mark>質量数が異なる</mark>原子。化学的性質はほとんど同じ。② は同素体の説明。</p>' },
+{ id: 'k7', unit: 'kousei', type: '価電子', lv: 1,
+  stem: '<p>酸素原子（原子番号 8）の価電子の数はいくつか。</p>', choices: ['2', '6', '8', '16'], ans: 1,
+  exp: '<p>電子配置は K2 L6。最外殻の電子 <mark>6 個</mark>が価電子。あと 2 個受け取ると Ne と同じ電子配置になり O²⁻ になる。</p>' },
+{ id: 'k8', unit: 'kousei', type: 'イオン', lv: 2,
+  stem: '<p>Mg²⁺ と同じ電子配置をもつ貴ガス（希ガス）はどれか。</p>', choices: ['He', 'Ne', 'Ar', 'Kr'], ans: 1,
+  exp: '<p>Mg（K2 L8 M2）が価電子 2 個を失うと K2 L8 になり、<mark>Ne</mark> と同じ電子配置になる。</p>' },
+{ id: 'k9', unit: 'kousei', type: 'イオン化エネルギー', lv: 2,
+  stem: '<p>次の原子のうち、<b>イオン化エネルギーがもっとも大きい</b>ものはどれか。</p>', choices: ['Na', 'K', 'Ar', 'Mg'], ans: 2,
+  exp: '<p>イオン化エネルギーは原子から電子1個を取り去るのに必要なエネルギー。電子配置が安定な<mark>貴ガス（Ar）</mark>は大きく、アルカリ金属（Na、K）は小さい。同じ族では下（K）ほど小さい。</p>' },
+{ id: 'k10', unit: 'kousei', type: '炎色反応', lv: 1,
+  stem: '<p>ナトリウムの炎色反応の色はどれか。</p>', choices: ['赤色', '黄色', '赤紫色', '青緑色'], ans: 1,
+  exp: '<p>Na は<mark>黄色</mark>。Li は赤色、K は赤紫色、Cu は青緑色、Ca は橙赤色、Sr は紅色、Ba は黄緑色。</p>' },
+{ id: 'k11', unit: 'kousei', type: '状態変化', lv: 1,
+  stem: '<p>固体が液体を経ずに直接気体になる変化を何というか。</p>', choices: ['融解', '凝縮', '昇華', '蒸発'], ans: 2,
+  exp: '<p>固体 → 気体（およびその逆）は<mark>昇華</mark>。ドライアイスやヨウ素で見られる。融解は固体 → 液体、凝縮は気体 → 液体。</p>' },
+{ id: 'k12', unit: 'kousei', type: '周期表', lv: 1,
+  stem: '<p>周期表の 17 族元素をまとめて何というか。</p>', choices: ['アルカリ金属', 'アルカリ土類金属', 'ハロゲン', '貴ガス'], ans: 2,
+  exp: '<p>17 族（F、Cl、Br、I）は<mark>ハロゲン</mark>。価電子 7 個で 1 価の陰イオンになりやすい。1 族（H 以外）はアルカリ金属、2 族はアルカリ土類金属、18 族は貴ガス。</p>' },
+{ id: 'k13', unit: 'kousei', type: '原子の構造', lv: 2,
+  stem: '<p>⁴⁰Ca（原子番号 20）の陽子・中性子・電子の数の組み合わせはどれか。</p>', choices: ['陽子 20・中性子 20・電子 20', '陽子 20・中性子 40・電子 20', '陽子 40・中性子 20・電子 40', '陽子 20・中性子 20・電子 18'], ans: 0,
+  exp: '<p>陽子 ＝ 電子 ＝ 原子番号 20。中性子 ＝ 40 − 20 ＝ 20。答えは <mark>陽子 20・中性子 20・電子 20</mark>。③ は Ca²⁺ の電子の数。</p>' },
+
+/* ---------- 化学結合 ---------- */
+{ id: 'b1', unit: 'ketsugo', type: '結合の種類', lv: 1, inUnit: true,
+  stem: '<p>塩化ナトリウム NaCl の粒子を結びつけている結合はどれか。</p>', choices: ['イオン結合', '共有結合', '金属結合', '水素結合'], ans: 0,
+  exp: '<p>金属元素 Na と非金属元素 Cl。Na⁺ と Cl⁻ が静電気的な力で引き合う<mark>イオン結合</mark>。</p>' },
+{ id: 'b2', unit: 'ketsugo', type: '結晶', lv: 1, inUnit: true,
+  stem: '<p><b>共有結合の結晶</b>はどれか。</p>', choices: ['ダイヤモンド', 'ドライアイス', '塩化ナトリウム', '鉄'], ans: 0,
+  exp: '<p><mark>ダイヤモンド</mark>は炭素原子が共有結合で立体的につながった結晶。ドライアイスは分子結晶、塩化ナトリウムはイオン結晶、鉄は金属結晶。</p>' },
+{ id: 'b3', unit: 'ketsugo', type: '分子の形', lv: 1, inUnit: true,
+  stem: '<p>水分子 H₂O の形はどれか。</p>', choices: ['直線形', '折れ線形', '三角錐形', '正四面体形'], ans: 1,
+  exp: '<p>O に非共有電子対が 2 組あるので<mark>折れ線形</mark>。そのため結合の極性が打ち消されず、水は極性分子。</p>' },
+{ id: 'b4', unit: 'ketsugo', type: '極性', lv: 2, inUnit: true,
+  stem: '<p><b>無極性分子</b>はどれか。</p>', choices: ['H₂O', 'NH₃', 'HCl', 'CO₂'], ans: 3,
+  exp: '<p>CO₂ の C=O 結合には極性があるが、分子が<b>直線形</b>なので左右で打ち消し合い、<mark>無極性分子</mark>になる。</p>' },
+{ id: 'b5', unit: 'ketsugo', type: '組成式', lv: 1, inUnit: true,
+  stem: '<p>アルミニウムイオン Al³⁺ と酸化物イオン O²⁻ からなる物質の組成式はどれか。</p>', choices: ['AlO', 'Al₃O₂', 'Al₂O₃', 'AlO₃'], ans: 2,
+  exp: '<p>電荷の合計が 0 になるように、(+3)×2 ＋ (−2)×3 ＝ 0。組成式は <mark>Al₂O₃</mark>（酸化アルミニウム）。</p>' },
+{ id: 'b6', unit: 'ketsugo', type: '電子対', lv: 2,
+  stem: '<p>アンモニア NH₃ 分子の<b>非共有電子対</b>の数はいくつか。</p>', choices: ['0 組', '1 組', '2 組', '3 組'], ans: 1,
+  exp: '<p>N の価電子 5 個のうち 3 個を H と共有し、残り 2 個が<mark>非共有電子対 1 組</mark>になる。この電子対のため三角錐形になる。</p>' },
+{ id: 'b7', unit: 'ketsugo', type: '金属', lv: 1,
+  stem: '<p>金属の性質として<b>あてはまらない</b>ものはどれか。</p>', choices: ['電気や熱をよく通す', 'たたくと広がり（展性）、引っぱるとのびる（延性）', '特有の光沢がある', '固体の状態では電気を通さない'], ans: 3,
+  exp: '<p>金属は<b>自由電子</b>があるので、固体でも電気をよく通す。<mark>③ はイオン結晶の性質</mark>。</p>' },
+{ id: 'b8', unit: 'ketsugo', type: '電気陰性度', lv: 1,
+  stem: '<p>電気陰性度がもっとも大きい元素はどれか。</p>', choices: ['O', 'F', 'Cl', 'N'], ans: 1,
+  exp: '<p>電気陰性度は周期表の右上ほど大きく（貴ガスを除く）、<mark>フッ素 F</mark> が最大。</p>' },
+{ id: 'b9', unit: 'ketsugo', type: '配位結合', lv: 2,
+  stem: '<p><b>配位結合</b>をふくむものはどれか。</p>', choices: ['NH₄⁺', 'NH₃', 'CH₄', 'H₂O'], ans: 0,
+  exp: '<p>NH₃ の非共有電子対を H⁺ に提供してできるのが <mark>NH₄⁺</mark>。できた 4 本の N−H 結合は区別できない。H₃O⁺ も配位結合をふくむ。</p>' },
+{ id: 'b10', unit: 'ketsugo', type: '共有結合', lv: 2,
+  stem: '<p><b>三重結合</b>をもつ分子はどれか。</p>', choices: ['O₂', 'N₂', 'CO₂', 'Cl₂'], ans: 1,
+  exp: '<p>窒素 <mark>N₂</mark> は N≡N の三重結合。O₂ と CO₂ は二重結合、Cl₂ は単結合。</p>' },
+{ id: 'b11', unit: 'ketsugo', type: '結晶', lv: 2,
+  stem: '<p>分子結晶の一般的な性質として正しいものはどれか。</p>', choices: ['融点が高く、非常に硬い', '融点が低く、昇華しやすいものもある', '固体でも電気をよく通す', '水に溶けるとかならず電気を通す'], ans: 1,
+  exp: '<p>分子どうしは弱い<b>分子間力</b>で集まっているので、<mark>融点が低く、ドライアイスやヨウ素のように昇華するもの</mark>もある。</p>' },
+{ id: 'b12', unit: 'ketsugo', type: '組成式', lv: 2,
+  stem: '<p>硫酸アンモニウムの組成式はどれか。</p>', choices: ['NH₄SO₄', '(NH₄)₂SO₄', 'NH₄(SO₄)₂', '(NH₃)₂SO₄'], ans: 1,
+  exp: '<p>NH₄⁺（+1）2 個と SO₄²⁻（−2）1 個で電荷 0。多原子イオンが 2 個なので（ ）でくくって <mark>(NH₄)₂SO₄</mark>。</p>' },
+{ id: 'b13', unit: 'ketsugo', type: '電子対', lv: 3,
+  stem: '<p>二酸化炭素 CO₂ 分子の<b>共有電子対</b>の数はいくつか。</p>', choices: ['2 組', '4 組', '6 組', '8 組'], ans: 1,
+  exp: '<p>O=C=O で、二重結合 1 本あたり共有電子対 2 組。全体で <mark>4 組</mark>。非共有電子対は O に 2 組ずつで 4 組。</p>' },
+
+/* ---------- 物質量と反応式 ---------- */
+{ id: 'm1', unit: 'mol', type: '物質量', lv: 1, inUnit: true,
+  stem: '<p>水 H₂O 9.0 g の物質量はいくらか。H = 1.0、O = 16</p>', choices: ['0.25 mol', '0.50 mol', '2.0 mol', '9.0 mol'], ans: 1,
+  exp: '<p>H₂O の分子量 ＝ 1.0×2 ＋ 16 ＝ 18。9.0 ÷ 18 ＝ <mark>0.50 mol</mark>。</p>' },
+{ id: 'm2', unit: 'mol', type: '質量', lv: 1, inUnit: true,
+  stem: '<p>二酸化炭素 CO₂ 0.25 mol の質量はいくらか。C = 12、O = 16</p>', choices: ['7.0 g', '11 g', '22 g', '176 g'], ans: 1,
+  exp: '<p>CO₂ のモル質量は 44 g/mol。44 × 0.25 ＝ <mark>11 g</mark>。</p>' },
+{ id: 'm3', unit: 'mol', type: '気体の体積', lv: 2, inUnit: true,
+  stem: '<p>標準状態で 11.2 L の酸素 O₂ にふくまれる酸素<b>分子</b>の数はいくらか。アボガドロ定数 6.0×10²³ /mol</p>', choices: ['3.0×10²³ 個', '6.0×10²³ 個', '1.2×10²⁴ 個', '1.5×10²³ 個'], ans: 0,
+  exp: '<p>11.2 ÷ 22.4 ＝ 0.50 mol。0.50 × 6.0×10²³ ＝ <mark>3.0×10²³ 個</mark>。「酸素<b>原子</b>」の数なら 2 倍の 6.0×10²³ 個になる。</p>' },
+{ id: 'm4', unit: 'mol', type: 'モル濃度', lv: 2, inUnit: true,
+  stem: '<p>水酸化ナトリウム NaOH 4.0 g を水に溶かして 500 mL にした。この水溶液のモル濃度はいくらか。NaOH = 40</p>', choices: ['0.080 mol/L', '0.10 mol/L', '0.20 mol/L', '8.0 mol/L'], ans: 2,
+  exp: '<p>4.0 ÷ 40 ＝ 0.10 mol。500 mL ＝ 0.500 L なので 0.10 ÷ 0.500 ＝ <mark>0.20 mol/L</mark>。mL を L に直すのを忘れないこと。</p>' },
+{ id: 'm5', unit: 'mol', type: '化学反応式', lv: 2, inUnit: true,
+  stem: '<p>プロパンの燃焼 C₃H₈ ＋ <i>a</i> O₂ → <i>b</i> CO₂ ＋ <i>c</i> H₂O の係数 a, b, c の組み合わせはどれか。</p>', choices: ['a = 5, b = 3, c = 4', 'a = 4, b = 3, c = 4', 'a = 5, b = 3, c = 8', 'a = 10, b = 3, c = 4'], ans: 0,
+  exp: '<p>C の数から b = 3、H の数から c = 4（H₂O 4 個で H 8 個）。右辺の O は 3×2 ＋ 4 ＝ 10 個なので a = <mark>5</mark>。</p>' },
+{ id: 'm6', unit: 'mol', type: '量的関係', lv: 2,
+  stem: '<p>メタン CH₄ 8.0 g を完全燃焼させたとき、生じる二酸化炭素の質量はいくらか。CH₄ + 2O₂ → CO₂ + 2H₂O、H = 1.0、C = 12、O = 16</p>', choices: ['8.0 g', '11 g', '22 g', '44 g'], ans: 2,
+  exp: '<p>CH₄ は 8.0 ÷ 16 ＝ 0.50 mol。係数比 CH₄ : CO₂ ＝ 1 : 1 なので CO₂ も 0.50 mol。44 × 0.50 ＝ <mark>22 g</mark>。</p>' },
+{ id: 'm7', unit: 'mol', type: '過不足', lv: 3,
+  stem: '<p>水素 3.0 mol と酸素 1.0 mol を反応させた（2H₂ ＋ O₂ → 2H₂O）。反応後に残る気体はどれか。</p>', choices: ['水素 1.0 mol', '水素 2.0 mol', '酸素 0.50 mol', '残らない'], ans: 0,
+  exp: '<p>O₂ 1.0 mol と反応する H₂ は 2.0 mol。H₂ は 3.0 − 2.0 ＝ <mark>1.0 mol 余る</mark>。生成する水は 2.0 mol。</p>' },
+{ id: 'm8', unit: 'mol', type: '分子量', lv: 1,
+  stem: '<p>硫酸 H₂SO₄ の分子量はいくらか。H = 1.0、O = 16、S = 32</p>', choices: ['49', '96', '98', '100'], ans: 2,
+  exp: '<p>1.0×2 ＋ 32 ＋ 16×4 ＝ <mark>98</mark>。</p>' },
+{ id: 'm9', unit: 'mol', type: '質量パーセント濃度', lv: 1,
+  stem: '<p>水 80 g に塩化ナトリウム 20 g を溶かした水溶液の質量パーセント濃度はいくらか。</p>', choices: ['20 %', '25 %', '80 %', '16 %'], ans: 0,
+  exp: '<p>溶液の質量は 80 ＋ 20 ＝ 100 g。20 ÷ 100 × 100 ＝ <mark>20 %</mark>。① の 25 % は「溶質 ÷ 溶媒」で計算したまちがい。</p>' },
+{ id: 'm10', unit: 'mol', type: '気体', lv: 2,
+  stem: '<p>標準状態で 1.0 L あたりの質量がもっとも大きい気体はどれか。</p>', choices: ['H₂', 'N₂', 'O₂', 'CO₂'], ans: 3,
+  exp: '<p>同じ体積なら物質量が同じなので、<b>分子量が大きいほど重い</b>。分子量は H₂ 2、N₂ 28、O₂ 32、<mark>CO₂ 44</mark>。</p>' },
+{ id: 'm11', unit: 'mol', type: '原子量', lv: 2,
+  stem: '<p>塩素の原子量が 35.5 と整数にならない理由として正しいものはどれか。</p>', choices: ['塩素原子の中に半分の陽子があるから', '同位体（³⁵Cl と ³⁷Cl）の質量を存在比で平均した値だから', '電子の質量をふくめているから', '塩素が二原子分子だから'], ans: 1,
+  exp: '<p>原子量は<mark>同位体の相対質量を存在比で平均した値</mark>。³⁵Cl が約 75 %、³⁷Cl が約 25 % なので約 35.5 になる。</p>' },
+{ id: 'm12', unit: 'mol', type: '量的関係', lv: 3,
+  stem: '<p>アルミニウム 2.7 g に十分な量の塩酸を加えた（2Al ＋ 6HCl → 2AlCl₃ ＋ 3H₂）。発生する水素の体積は標準状態で何 L か。Al = 27</p>', choices: ['1.12 L', '2.24 L', '3.36 L', '6.72 L'], ans: 2,
+  exp: '<p>Al は 2.7 ÷ 27 ＝ 0.10 mol。係数比 Al : H₂ ＝ 2 : 3 なので H₂ は 0.15 mol。0.15 × 22.4 ＝ <mark>3.36 L</mark>。</p>' },
+{ id: 'm13', unit: 'mol', type: 'アボガドロ定数', lv: 1,
+  stem: '<p>鉄 Fe 1.0 mol にふくまれる鉄原子の数はおよそいくつか。</p>', choices: ['56 個', '6.0×10²³ 個', '22.4×10²³ 個', '3.4×10²⁵ 個'], ans: 1,
+  exp: '<p>どんな物質でも 1 mol は <mark>6.0×10²³ 個</mark>の粒子の集まり。56 は鉄 1 mol の質量（g）。</p>' },
+
+/* ---------- 酸と塩基 ---------- */
+{ id: 's1', unit: 'san', type: '定義', lv: 1, inUnit: true,
+  stem: '<p>アレニウスの定義による<b>酸</b>はどれか。</p>', choices: ['水に溶けて H⁺ を生じる物質', '水に溶けて OH⁻ を生じる物質', 'H⁺ を受け取る物質', '電子を受け取る物質'], ans: 0,
+  exp: '<p>アレニウスの定義では、<mark>水に溶けて H⁺（H₃O⁺）を生じる</mark>のが酸、OH⁻ を生じるのが塩基。② はブレンステッドの塩基。</p>' },
+{ id: 's2', unit: 'san', type: 'pH', lv: 1, inUnit: true,
+  stem: '<p>0.010 mol/L の塩酸の pH はいくらか。塩酸は完全に電離するものとする。</p>', choices: ['1', '2', '10', '12'], ans: 1,
+  exp: '<p>[H⁺] ＝ 0.010 ＝ 1.0×10⁻² mol/L なので <mark>pH 2</mark>。</p>' },
+{ id: 's3', unit: 'san', type: 'pH', lv: 2, inUnit: true,
+  stem: '<p>0.0010 mol/L の水酸化ナトリウム水溶液の pH はいくらか。完全に電離するものとする。</p>', choices: ['3', '7', '11', '13'], ans: 2,
+  exp: '<p>[OH⁻] ＝ 1.0×10⁻³。[H⁺] ＝ 1.0×10⁻¹⁴ ÷ 1.0×10⁻³ ＝ 1.0×10⁻¹¹ なので <mark>pH 11</mark>。</p>' },
+{ id: 's4', unit: 'san', type: '中和の計算', lv: 2, inUnit: true,
+  stem: '<p>0.10 mol/L の硫酸 10 mL をちょうど中和するのに必要な 0.10 mol/L 水酸化ナトリウム水溶液は何 mL か。</p>', choices: ['5.0 mL', '10 mL', '20 mL', '40 mL'], ans: 2,
+  exp: '<p>硫酸は <b>2 価</b>の酸。2 × 0.10 × 10 ＝ 1 × 0.10 × V より V ＝ <mark>20 mL</mark>。</p>' },
+{ id: 's5', unit: 'san', type: '指示薬', lv: 2, inUnit: true,
+  stem: '<p>酢酸水溶液を水酸化ナトリウム水溶液で滴定するとき、適した指示薬と中和点の液性の組み合わせはどれか。</p>', choices: ['フェノールフタレイン・塩基性', 'メチルオレンジ・酸性', 'フェノールフタレイン・中性', 'メチルオレンジ・塩基性'], ans: 0,
+  exp: '<p>中和点で生じる酢酸ナトリウムは水溶液中で<b>塩基性</b>を示す。pH が急変する範囲も塩基性側なので<mark>フェノールフタレイン</mark>を使う。</p>' },
+{ id: 's6', unit: 'san', type: 'ブレンステッド', lv: 2,
+  stem: '<p>NH₃ ＋ H₂O ⇄ NH₄⁺ ＋ OH⁻ の正反応で、H₂O はブレンステッドの定義で何としてはたらくか。</p>', choices: ['酸', '塩基', '酸化剤', '触媒'], ans: 0,
+  exp: '<p>H₂O は NH₃ に H⁺ を<b>与えている</b>ので<mark>酸</mark>。水は相手によって酸にも塩基にもなる。</p>' },
+{ id: 's7', unit: 'san', type: '酸の強弱', lv: 1,
+  stem: '<p><b>強酸</b>はどれか。</p>', choices: ['酢酸', '硫酸', '炭酸', '硫化水素'], ans: 1,
+  exp: '<p>塩酸・硝酸・<mark>硫酸</mark>は強酸。酢酸・炭酸・硫化水素は弱酸。</p>' },
+{ id: 's8', unit: 'san', type: '価数', lv: 1,
+  stem: '<p><b>2 価</b>の塩基はどれか。</p>', choices: ['NaOH', 'KOH', 'Ca(OH)₂', 'NH₃'], ans: 2,
+  exp: '<p><mark>Ca(OH)₂</mark> は 1 つの化学式から OH⁻ を 2 個出すので 2 価。NH₃ は H⁺ を 1 個受け取るので 1 価。</p>' },
+{ id: 's9', unit: 'san', type: '塩', lv: 2,
+  stem: '<p>水溶液が<b>塩基性</b>を示す塩はどれか。</p>', choices: ['NaCl', 'CH₃COONa', 'NH₄Cl', 'KNO₃'], ans: 1,
+  exp: '<p>弱酸（酢酸）と強塩基（NaOH）からできた <mark>CH₃COONa</mark> は塩基性。NH₄Cl は強酸＋弱塩基なので酸性、NaCl・KNO₃ は強酸＋強塩基なので中性。</p>' },
+{ id: 's10', unit: 'san', type: '電離度', lv: 3,
+  stem: '<p>0.10 mol/L の酢酸水溶液の電離度が 0.010 のとき、pH はいくらか。</p>', choices: ['1', '2', '3', '4'], ans: 2,
+  exp: '<p>[H⁺] ＝ 濃度 × 電離度 ＝ 0.10 × 0.010 ＝ 1.0×10⁻³ mol/L。<mark>pH 3</mark>。</p>' },
+{ id: 's11', unit: 'san', type: '希釈', lv: 2,
+  stem: '<p>pH 3 の塩酸を水で 100 倍にうすめると、pH はいくらになるか。</p>', choices: ['1', '3', '5', '7'], ans: 2,
+  exp: '<p>[H⁺] が 1/100 になり 1.0×10⁻⁵ mol/L。<mark>pH 5</mark>。なお、酸をいくらうすめても pH が 7 をこえて塩基性になることはない。</p>' },
+{ id: 's12', unit: 'san', type: '実験器具', lv: 1,
+  stem: '<p>中和滴定で、酸の水溶液を<b>正確に一定体積</b>はかり取るのに使う器具はどれか。</p>', choices: ['ホールピペット', 'ビュレット', 'メスシリンダー', 'ビーカー'], ans: 0,
+  exp: '<p><mark>ホールピペット</mark>は一定体積を正確にはかり取る器具。ビュレットは滴下した体積をはかる。メスフラスコは一定濃度の溶液をつくるのに使う。</p>' },
+{ id: 's13', unit: 'san', type: 'pH', lv: 1,
+  stem: '<p>pH が 1 小さくなると、[H⁺] はどうなるか。</p>', choices: ['10 倍になる', '1/10 になる', '2 倍になる', '1 増える'], ans: 0,
+  exp: '<p>pH ＝ n は [H⁺] ＝ 10⁻ⁿ。pH が 1 小さいと [H⁺] は <mark>10 倍</mark>。</p>' },
+
+/* ---------- 酸化還元 ---------- */
+{ id: 'r1', unit: 'sanka', type: '定義', lv: 1, inUnit: true,
+  stem: '<p>ある原子が<b>酸化された</b>ときの変化として正しいものはどれか。</p>', choices: ['電子を失い、酸化数が増えた', '電子を受け取り、酸化数が増えた', '電子を失い、酸化数が減った', '電子を受け取り、酸化数が減った'], ans: 0,
+  exp: '<p>酸化 ＝ <mark>電子を失う ＝ 酸化数が増える</mark>。還元はその逆。</p>' },
+{ id: 'r2', unit: 'sanka', type: '酸化数', lv: 1, inUnit: true,
+  stem: '<p>硫酸 H₂SO₄ の S の酸化数はいくらか。</p>', choices: ['+2', '+4', '+6', '−2'], ans: 2,
+  exp: '<p>2×(+1) ＋ x ＋ 4×(−2) ＝ 0 より x ＝ <mark>+6</mark>。</p>' },
+{ id: 'r3', unit: 'sanka', type: '酸化剤・還元剤', lv: 2, inUnit: true,
+  stem: '<p>2Mg ＋ O₂ → 2MgO の反応で、<b>還元剤</b>としてはたらいている物質はどれか。</p>', choices: ['Mg', 'O₂', 'MgO', 'どれでもない'], ans: 0,
+  exp: '<p>Mg の酸化数は 0 → +2 に増えている（酸化された）。自分が酸化されて相手を還元する <mark>Mg が還元剤</mark>。O₂ は 0 → −2 で酸化剤。</p>' },
+{ id: 'r4', unit: 'sanka', type: 'イオン化傾向', lv: 1, inUnit: true,
+  stem: '<p>銅板を硝酸銀水溶液に入れたときに起こる変化として正しいものはどれか。</p>', choices: ['銅板の表面に銀が析出し、溶液が青くなる', '銅板の表面に銅が析出する', '水素が発生する', '変化しない'], ans: 0,
+  exp: '<p>イオン化傾向は Cu ＞ Ag。Cu ＋ 2Ag⁺ → Cu²⁺ ＋ 2Ag で、<mark>銀が析出し、Cu²⁺ で溶液が青くなる</mark>。</p>' },
+{ id: 'r5', unit: 'sanka', type: '電池', lv: 2, inUnit: true,
+  stem: '<p>ダニエル電池（亜鉛板と銅板）で<b>負極</b>になる金属と、そこで起こる変化の組み合わせはどれか。</p>', choices: ['亜鉛・酸化', '亜鉛・還元', '銅・酸化', '銅・還元'], ans: 0,
+  exp: '<p>イオン化傾向の大きい<mark>亜鉛が負極</mark>。Zn → Zn²⁺ ＋ 2e⁻ と電子を失うので<mark>酸化</mark>。正極の銅では Cu²⁺ が還元されて Cu が析出する。</p>' },
+{ id: 'r6', unit: 'sanka', type: '酸化数', lv: 2,
+  stem: '<p>過マンガン酸カリウム KMnO₄ の Mn の酸化数はいくらか。</p>', choices: ['+2', '+4', '+6', '+7'], ans: 3,
+  exp: '<p>(+1) ＋ x ＋ 4×(−2) ＝ 0 より x ＝ <mark>+7</mark>。酸性条件では Mn²⁺（+2）に変わる強い酸化剤。</p>' },
+{ id: 'r7', unit: 'sanka', type: 'イオン化傾向', lv: 1,
+  stem: '<p>イオン化傾向がもっとも大きい金属はどれか。</p>', choices: ['Zn', 'Fe', 'Cu', 'Ag'], ans: 0,
+  exp: '<p>順番は … Al ＞ <mark>Zn</mark> ＞ Fe ＞ … ＞ Cu ＞ Hg ＞ Ag …。</p>' },
+{ id: 'r8', unit: 'sanka', type: '金属と酸', lv: 1,
+  stem: '<p>希塩酸に入れても<b>水素を発生しない</b>金属はどれか。</p>', choices: ['マグネシウム', '亜鉛', '鉄', '銅'], ans: 3,
+  exp: '<p>水素よりイオン化傾向の小さい<mark>銅</mark>は、希塩酸と反応しない。銅は硝酸や熱濃硫酸（酸化力の強い酸）には溶ける。</p>' },
+{ id: 'r9', unit: 'sanka', type: '金属と水', lv: 1,
+  stem: '<p>常温の水と激しく反応する金属はどれか。</p>', choices: ['ナトリウム', 'アルミニウム', '鉄', '銅'], ans: 0,
+  exp: '<p>Li・K・Ca・<mark>Na</mark> は常温の水と反応して水素を発生する。2Na ＋ 2H₂O → 2NaOH ＋ H₂</p>' },
+{ id: 'r10', unit: 'sanka', type: '酸化数', lv: 2,
+  stem: '<p>過酸化水素 H₂O₂ の O の酸化数はいくらか。</p>', choices: ['−2', '−1', '0', '+1'], ans: 1,
+  exp: '<p>H が +1 なので 2×(+1) ＋ 2x ＝ 0 より x ＝ <mark>−1</mark>。−1 は −2 と 0 の間なので、H₂O₂ は酸化剤にも還元剤にもなる。</p>' },
+{ id: 'r11', unit: 'sanka', type: '酸化・還元', lv: 3,
+  stem: '<p>Fe₂O₃ ＋ 3CO → 2Fe ＋ 3CO₂ の反応で、<b>酸化された物質</b>はどれか。</p>', choices: ['Fe₂O₃', 'CO', 'Fe', 'CO₂'], ans: 1,
+  exp: '<p>C の酸化数は CO の +2 → CO₂ の +4 に増えているので、<mark>CO が酸化された</mark>。Fe は +3 → 0 で Fe₂O₃ が還元された（鉄の製錬）。</p>' },
+{ id: 'r12', unit: 'sanka', type: '酸化数', lv: 1,
+  stem: '<p>アンモニア NH₃ の N の酸化数はいくらか。</p>', choices: ['+3', '−3', '+5', '0'], ans: 1,
+  exp: '<p>x ＋ 3×(+1) ＝ 0 より x ＝ <mark>−3</mark>。硝酸 HNO₃ では +5 になる。</p>' },
+{ id: 'r13', unit: 'sanka', type: '酸化剤', lv: 2,
+  stem: '<p>酸化剤について正しいものはどれか。</p>', choices: ['相手を酸化し、自分は還元される', '相手を還元し、自分は酸化される', '自分も相手も酸化される', '電子を相手に与える'], ans: 0,
+  exp: '<p>酸化剤は相手から電子を奪う（相手を酸化する）ので、<mark>自分は電子を受け取って還元される</mark>。③ は還元剤のはたらき。</p>' },
+];
+
+/* ===== 暗記カード [単元, 表, 裏] ===== */
+const CARDS = [
+  ['kousei', '同素体をもつ元素（4つ）', 'S・C・O・P（スコップ）'],
+  ['kousei', '炭素の同素体', 'ダイヤモンド、黒鉛、フラーレン、カーボンナノチューブ'],
+  ['kousei', '質量数', '陽子の数 ＋ 中性子の数'],
+  ['kousei', '各電子殻に入る電子の最大数', 'K殻 2、L殻 8、M殻 18（n 番目の殻は 2n² 個）'],
+  ['kousei', '炎色反応　Li・Na・K', 'Li 赤、Na 黄、K 赤紫'],
+  ['kousei', '炎色反応　Ca・Sr・Ba・Cu', 'Ca 橙赤、Sr 紅、Ba 黄緑、Cu 青緑'],
+  ['kousei', 'ろ過', '液体と、溶けていない固体を、ろ紙で分ける'],
+  ['kousei', '再結晶', '温度による溶解度のちがいを利用して、固体を精製する'],
+  ['kousei', 'イオン化エネルギー', '原子から電子1個を取り去って1価の陽イオンにするのに必要なエネルギー。小さいほど陽イオンになりやすい'],
+  ['kousei', '電子親和力', '原子が電子1個を受け取って1価の陰イオンになるときに放出するエネルギー。大きいほど陰イオンになりやすい'],
+  ['ketsugo', 'イオン結合はどの元素の組み合わせ？', '金属元素 ＋ 非金属元素'],
+  ['ketsugo', '共有結合はどの元素の組み合わせ？', '非金属元素 ＋ 非金属元素'],
+  ['ketsugo', '分子の形　H₂O・NH₃・CH₄・CO₂', '折れ線形・三角錐形・正四面体形・直線形'],
+  ['ketsugo', '共有結合の結晶の例', 'ダイヤモンド、黒鉛、ケイ素 Si、二酸化ケイ素 SiO₂'],
+  ['ketsugo', '電気陰性度が最大の元素', 'フッ素 F'],
+  ['ketsugo', '配位結合をふくむイオン', 'NH₄⁺、H₃O⁺'],
+  ['ketsugo', '金属が電気を通す理由', '自由電子が動き回るから'],
+  ['mol', 'アボガドロ定数', '6.0×10²³ /mol'],
+  ['mol', '標準状態の気体 1 mol の体積', '22.4 L（0℃、1.013×10⁵ Pa）'],
+  ['mol', 'モル濃度', '溶質の物質量 [mol] ÷ 溶液の体積 [L]'],
+  ['mol', '化学反応式の係数の比', '物質量の比（気体なら同温・同圧の体積の比）'],
+  ['mol', '原子量', '同位体の相対質量を存在比で平均した値（¹²C = 12 が基準）'],
+  ['san', '強酸（3つ）', '塩酸 HCl、硝酸 HNO₃、硫酸 H₂SO₄'],
+  ['san', '強塩基（4つ）', 'NaOH、KOH、Ca(OH)₂、Ba(OH)₂'],
+  ['san', '中和の公式', 'a × c × V ＝ b × c′ × V′（価数 × 濃度 × 体積）'],
+  ['san', '水のイオン積（25℃）', '[H⁺][OH⁻] ＝ 1.0×10⁻¹⁴ (mol/L)²'],
+  ['san', 'フェノールフタレインの変色域', 'pH 約 8.0〜9.8（無色 → 赤）'],
+  ['san', 'メチルオレンジの変色域', 'pH 約 3.1〜4.4（赤 → 黄）'],
+  ['san', '塩の水溶液の性質（強酸＋弱塩基）', '酸性（例：NH₄Cl）'],
+  ['san', '塩の水溶液の性質（弱酸＋強塩基）', '塩基性（例：CH₃COONa、Na₂CO₃）'],
+  ['sanka', '酸化とは（電子・酸化数）', '電子を失う、酸化数が増える'],
+  ['sanka', '酸化数の基本ルール', '単体 0、化合物中の H は +1・O は −2、合計 0（イオンは電荷）'],
+  ['sanka', 'イオン化傾向の順', 'Li K Ca Na Mg Al Zn Fe Ni Sn Pb (H₂) Cu Hg Ag Pt Au'],
+  ['sanka', '常温の水と反応する金属', 'Li、K、Ca、Na'],
+  ['sanka', '王水にしか溶けない金属', 'Pt、Au'],
+  ['sanka', '濃硝酸で不動態になる金属', 'Al、Fe、Ni'],
+  ['sanka', '電池の負極', 'イオン化傾向の大きい金属。電子を出す（酸化）'],
+];
+
+/* ===== 用語集 [用語, よみ, 単元, 説明] ===== */
+const GLOSSARY = [
+  ['純物質', 'じゅんぶっしつ', 'kousei', '1種類の物質だけでできているもの。融点・沸点が決まっている。'],
+  ['混合物', 'こんごうぶつ', 'kousei', '2種類以上の物質が混ざったもの。空気・海水など。'],
+  ['単体', 'たんたい', 'kousei', '1種類の元素だけからなる純物質。O₂、Fe など。'],
+  ['化合物', 'かごうぶつ', 'kousei', '2種類以上の元素からなる純物質。H₂O、NaCl など。'],
+  ['同素体', 'どうそたい', 'kousei', '同じ元素からなる単体で、性質が異なるもの。S・C・O・P にある。'],
+  ['ろ過', 'ろか', 'kousei', '液体と、溶けていない固体をろ紙で分ける方法。'],
+  ['蒸留', 'じょうりゅう', 'kousei', '液体を加熱して蒸気にし、冷やして再び液体として取り出す方法。'],
+  ['分留', 'ぶんりゅう', 'kousei', '沸点のちがう液体の混合物を蒸留で分ける方法。分別蒸留。'],
+  ['再結晶', 'さいけっしょう', 'kousei', '温度による溶解度の差を利用して、固体の物質を精製する方法。'],
+  ['昇華', 'しょうか', 'kousei', '固体が液体を経ずに直接気体になる変化（その逆も）。'],
+  ['抽出', 'ちゅうしゅつ', 'kousei', '溶媒への溶けやすさのちがいを利用して、目的の物質を溶かし出す方法。'],
+  ['クロマトグラフィー', 'くろまとぐらふぃー', 'kousei', 'ろ紙などへの吸着のされやすさのちがいで、物質を分ける方法。'],
+  ['炎色反応', 'えんしょくはんのう', 'kousei', '特定の元素をふくむ物質を炎に入れると、元素に特有の色が出る現象。'],
+  ['原子番号', 'げんしばんごう', 'kousei', '原子核中の陽子の数。元素の種類を決める。'],
+  ['質量数', 'しつりょうすう', 'kousei', '陽子の数と中性子の数の和。'],
+  ['同位体', 'どういたい', 'kousei', '原子番号が同じで質量数（中性子の数）が異なる原子。アイソトープ。'],
+  ['放射性同位体', 'ほうしゃせいどういたい', 'kousei', '放射線を出して別の原子に変わる同位体。¹⁴C は年代測定に使われる。'],
+  ['電子殻', 'でんしかく', 'kousei', '電子が存在する層。内側から K・L・M・N 殻。'],
+  ['価電子', 'かでんし', 'kousei', '最外殻電子のうち、結合などにかかわる電子。貴ガスは 0 とする。'],
+  ['貴ガス', 'きがす', 'kousei', '18 族元素。電子配置が安定で、ほとんど反応しない。希ガスともいう。'],
+  ['イオン化エネルギー', 'いおんかえねるぎー', 'kousei', '原子から電子1個を取り去るのに必要なエネルギー。'],
+  ['周期律', 'しゅうきりつ', 'kousei', '元素を原子番号の順に並べると、性質が周期的に変化すること。'],
+  ['イオン結合', 'いおんけつごう', 'ketsugo', '陽イオンと陰イオンが静電気的な力で引き合う結合。'],
+  ['共有結合', 'きょうゆうけつごう', 'ketsugo', '原子どうしが価電子を出し合い、電子対を共有してできる結合。'],
+  ['金属結合', 'きんぞくけつごう', 'ketsugo', '自由電子による金属原子どうしの結合。'],
+  ['自由電子', 'じゆうでんし', 'ketsugo', '金属の中を自由に動き回る価電子。電気や熱を伝える。'],
+  ['配位結合', 'はいいけつごう', 'ketsugo', '一方の原子の非共有電子対を、もう一方と共有してできる共有結合。'],
+  ['共有電子対', 'きょうゆうでんしつい', 'ketsugo', '2つの原子の間で共有されている電子対。'],
+  ['非共有電子対', 'ひきょうゆうでんしつい', 'ketsugo', '結合に使われていない電子対。'],
+  ['電気陰性度', 'でんきいんせいど', 'ketsugo', '共有電子対を引きつける強さの尺度。F が最大。'],
+  ['極性分子', 'きょくせいぶんし', 'ketsugo', '分子全体として電荷のかたよりがある分子。H₂O、NH₃、HCl など。'],
+  ['無極性分子', 'むきょくせいぶんし', 'ketsugo', '電荷のかたよりがない分子。H₂、CO₂、CH₄ など。'],
+  ['分子間力', 'ぶんしかんりょく', 'ketsugo', '分子どうしの間にはたらく弱い引力。'],
+  ['組成式', 'そせいしき', 'ketsugo', '物質をつくる原子やイオンの数を、もっとも簡単な整数比で表した式。'],
+  ['物質量', 'ぶっしつりょう', 'mol', '6.0×10²³ 個の粒子の集団を 1 mol として表した量。単位 mol。'],
+  ['アボガドロ定数', 'あぼがどろていすう', 'mol', '1 mol あたりの粒子の数。6.0×10²³ /mol。'],
+  ['モル質量', 'もるしつりょう', 'mol', '物質 1 mol あたりの質量。原子量・分子量・式量に g/mol をつけた値。'],
+  ['原子量', 'げんしりょう', 'mol', '¹²C = 12 を基準とした、同位体の相対質量の平均値。'],
+  ['分子量', 'ぶんしりょう', 'mol', '分子をつくる原子の原子量の総和。'],
+  ['式量', 'しきりょう', 'mol', '組成式やイオンの式をつくる原子の原子量の総和。'],
+  ['モル濃度', 'もるのうど', 'mol', '溶液 1 L あたりに溶けている溶質の物質量。単位 mol/L。'],
+  ['標準状態', 'ひょうじゅんじょうたい', 'mol', '0℃、1.013×10⁵ Pa の状態。気体 1 mol は 22.4 L。'],
+  ['化学反応式', 'かがくはんのうしき', 'mol', '反応物と生成物を化学式で表し、原子の数がつり合うよう係数をつけた式。'],
+  ['酸', 'さん', 'san', '水に溶けて H⁺ を生じる物質（アレニウス）、H⁺ を与える物質（ブレンステッド）。'],
+  ['塩基', 'えんき', 'san', '水に溶けて OH⁻ を生じる物質（アレニウス）、H⁺ を受け取る物質（ブレンステッド）。'],
+  ['価数', 'かすう', 'san', '酸 1 つの化学式が出せる H⁺ の数、または塩基が受け取れる H⁺ の数。'],
+  ['電離度', 'でんりど', 'san', '溶かした電解質のうち、電離したものの割合。'],
+  ['pH', 'ぴーえいち', 'san', '水溶液の酸性・塩基性の強さを表す数値。[H⁺] = 10⁻ⁿ のとき pH = n。'],
+  ['中和', 'ちゅうわ', 'san', '酸と塩基が反応して、たがいの性質を打ち消し合うこと。'],
+  ['塩', 'えん', 'san', '酸の陰イオンと塩基の陽イオンからなる化合物。'],
+  ['中和滴定', 'ちゅうわてきてい', 'san', '濃度のわかった酸（塩基）を使って、塩基（酸）の濃度を求める操作。'],
+  ['指示薬', 'しじやく', 'san', 'pH によって色が変わる物質。フェノールフタレイン、メチルオレンジなど。'],
+  ['滴定曲線', 'てきていきょくせん', 'san', '加えた酸や塩基の体積と、溶液の pH の関係を表したグラフ。'],
+  ['ビュレット', 'びゅれっと', 'san', '滴下した液体の体積を正確にはかる器具。'],
+  ['ホールピペット', 'ほーるぴぺっと', 'san', '一定体積の液体を正確にはかり取る器具。'],
+  ['酸化', 'さんか', 'sanka', '酸素を受け取る、水素を失う、電子を失う、酸化数が増えること。'],
+  ['還元', 'かんげん', 'sanka', '酸素を失う、水素を受け取る、電子を受け取る、酸化数が減ること。'],
+  ['酸化数', 'さんかすう', 'sanka', '原子の酸化の程度を表す数値。'],
+  ['酸化剤', 'さんかざい', 'sanka', '相手を酸化し、自分は還元される物質。'],
+  ['還元剤', 'かんげんざい', 'sanka', '相手を還元し、自分は酸化される物質。'],
+  ['イオン化傾向', 'いおんかけいこう', 'sanka', '金属が水溶液中で陽イオンになろうとする性質の強さ。'],
+  ['不動態', 'ふどうたい', 'sanka', '表面にち密な酸化被膜ができて、内部が反応しなくなった状態。'],
+  ['電池', 'でんち', 'sanka', '酸化還元反応のエネルギーを電気エネルギーとして取り出す装置。'],
+  ['負極', 'ふきょく', 'sanka', '電池で電子が流れ出す電極。酸化反応が起こる。'],
+  ['正極', 'せいきょく', 'sanka', '電池で電子が流れこむ電極。還元反応が起こる。'],
+  ['製錬', 'せいれん', 'sanka', '鉱石から金属の単体を取り出すこと。鉄は鉄鉱石をコークス（CO）で還元する。'],
+];
+/* ===== ホーム ===== */
+function unitProgress(u) { const qs = QUESTIONS.filter(q => q.unit === u); return [qs.filter(q => S.ans[q.id] === true).length, qs.length]; }
+VIEWS.home = (root) => {
+  root.appendChild(h(`
+  <section class="hero">
+    <div class="sec-head" style="align-content:center;gap:14px">
+      <div class="eyebrow">${SITE.eyebrow}</div>
+      <h1 class="hero-title">${SITE.heroTitle}</h1>
+      <p class="lead">${SITE.lead}</p>
+    </div>
+    <div class="hero-pal"><div class="bubble">${SITE.bubble}</div><img src="${MASCOT_SRC}" alt="" width="349" height="360"></div>
+  </section>`));
+  const gd = h(`<section class="card lab start-card"><div class="row" style="justify-content:space-between;gap:16px">
+    <div style="display:grid;gap:6px;min-width:0;flex:1 1 320px"><div class="eyebrow">はじめて使う人へ</div><h3 style="font-size:1.3rem">使い方ガイド</h3>
+    <p class="small">どのページで何ができるか、おすすめの使い方、記録の残り方をまとめた案内。</p></div>
+    <button class="btn" style="font-size:1rem;padding:10px 18px">使い方を見る →</button></div></section>`);
+  $('button', gd).onclick = () => go('guide');
+  root.appendChild(gd);
+
+  const mp = h(`<section class="card lab"><div class="lab-head"><h3>${SITE.subject}の地図</h3><span class="muted small">${SITE.stations.length}つの単元。押すとその単元へ移動する</span></div>
+    <div class="scroll-x"><div class="map" style="min-width:600px">${SITE.stations.map((s, i) => `<button data-go="${s.id}" style="${i % 2 ? 'background:var(--card-2)' : ''}"><b>${s.name}</b><span>${s.code}</span></button>`).join('')}</div></div>
+    <div class="grid3">${SITE.links.map(([t, b]) => `<div class="point"><h4>${t}</h4><p class="small">${b}</p></div>`).join('')}</div></section>`);
+  $$('[data-go]', mp).forEach(b => b.onclick = () => go(b.dataset.go));
+  root.appendChild(mp);
+
+  root.appendChild(sectionHead('UNITS', 'どこから始める？', `各単元に「要点」「動かせる実験」「確認問題」がある。<br>問題をまとめて解くなら「問題ドリル」、覚えることは「暗記カード」で。`));
+  const st = h('<div class="stations"></div>');
+  SITE.stations.forEach(s => {
+    const [ok, n] = unitProgress(s.id);
+    const b = h(`<button class="card station"><span class="ic">${s.code}</span><h3>${s.name}</h3><p class="small muted">${s.desc}</p><div class="bar" aria-label="正解 ${ok}/${n}"><i style="width:${n ? ok / n * 100 : 0}%"></i></div><span class="muted small tnum">問題 ${ok}/${n} 問正解</span></button>`);
+    b.onclick = () => go(s.id); st.appendChild(b);
+  });
+  const all = Object.entries(S.ans).filter(([id, v]) => v === true && QUESTIONS.some(q => q.id === id)).length;
+  [['drill', '問題ドリル', `全${QUESTIONS.length}問のオリジナル問題。10問チャレンジや、まちがえた問題だけの復習も`, `<div class="bar"><i style="width:${all / QUESTIONS.length * 100}%"></i></div><span class="muted small tnum">全体 ${all}/${QUESTIONS.length} 問正解</span>`],
+   ['cards', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。「覚えた」「まだ」で仕分ける`, `<span class="muted small tnum">覚えた ${CARDS.filter((c, i) => S.cards[i] === 'ok').length} / ${CARDS.length} 枚</span>`],
+   ['glossary', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に。検索してすぐ意味を確認できる`, '']].forEach(([id, name, desc, pr]) => {
+    const b = h(`<button class="card station"><span class="ic">TOOL</span><h3>${name}</h3><p class="small muted">${desc}</p>${pr}</button>`);
+    b.onclick = () => go(id); st.appendChild(b);
+  });
+  root.appendChild(st);
+
+  root.appendChild(sectionHead('TODAY', '今日の1問', 'ページを開くたびに入れかわる。'));
+  const pool = QUESTIONS.filter(q => S.ans[q.id] !== true);
+  const p = (pool.length ? pool : QUESTIONS)[Math.floor(Math.random() * (pool.length || QUESTIONS.length))];
+  root.appendChild(quizCard(p));
+};
+
+/* ===== 問題ドリル ===== */
+VIEWS.drill = (root) => {
+  root.appendChild(sectionHead('DRILL', '問題ドリル', `この教材のためのオリジナル問題 ${QUESTIONS.length} 問。★の数はむずかしさの目安。`));
+  const ctl = h(`<section class="card lab">
+    <div class="row"><div class="seg" id="dmode"><button aria-pressed="true" data-m="chal">10問チャレンジ</button><button aria-pressed="false" data-m="list">一覧で解く</button></div></div>
+    <div class="row">
+      <label class="ctl" for="dunit">単元<select id="dunit"><option value="all">すべて</option>${Object.entries(COURSE_NAME).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="ctl" for="dlv">むずかしさ<select id="dlv"><option value="0">すべて</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option></select></label>
+      <label class="ctl" for="dfil">対象<select id="dfil"><option value="all">全問</option><option value="todo">まだ正解していない問題</option><option value="wrong">まちがえた問題</option></select></label>
+      <div class="row" style="align-self:end"><button class="btn" id="dgo">スタート</button><button class="btn ghost sm" id="drs">記録をリセット</button></div>
+    </div>
+    <div id="dconf" class="trap" hidden>正解の記録と暗記カードの記録をすべて消します。<button class="btn sm" id="dyes" style="margin-left:8px">消す</button><button class="btn ghost sm" id="dno">やめる</button></div>
+  </section>`);
+  root.appendChild(ctl);
+  if (window.__dunit) { $('#dunit', ctl).value = window.__dunit; window.__dunit = null; }
+  const area = h('<div style="display:grid;gap:14px"></div>');
+  root.appendChild(area);
+  let mode = 'chal';
+  $$('[data-m]', ctl).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', ctl).forEach(x => x.setAttribute('aria-pressed', x === b)); start(); });
+  function pool() {
+    const u = $('#dunit', ctl).value, f = $('#dfil', ctl).value, lv = +$('#dlv', ctl).value;
+    return QUESTIONS.filter(q => (u === 'all' || q.unit === u) && (!lv || q.lv === lv) && (f === 'all' || (f === 'todo' ? S.ans[q.id] !== true : S.ans[q.id] === false)));
+  }
+  function start() {
+    area.innerHTML = '';
+    let p = pool();
+    if (!p.length) { area.appendChild(h('<div class="card lab"><p>条件に合う問題がない。対象を「全問」にしてみよう。</p></div>')); return; }
+    if (mode === 'list') { p.forEach((q, i) => area.appendChild(quizCard(q, { num: i + 1 }))); return; }
+    p = shuffle(p).slice(0, 10);
+    let done = 0, score = 0;
+    const bar = h(`<div class="card lab dchal" style="position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;padding:12px 20px"><div class="row"><b>${$('#dunit', ctl).selectedOptions[0].textContent}・${p.length}問チャレンジ</b><div class="bar" style="flex:1;min-width:120px"><i></i></div><span class="small tnum" id="dpos"></span></div></div>`);
+    area.appendChild(bar);
+    const tally = () => { $('i', bar).style.width = (done / p.length * 100) + '%'; $('#dpos', bar).textContent = `解答 ${done} / ${p.length}　正解 ${score}`; };
+    tally();
+    p.forEach((q, k) => area.appendChild(quizCard(q, { num: k + 1, onAnswer: ok => { done++; if (ok) score++; tally(); if (done === p.length) finish(); } })));
+    const slot = h('<div style="display:grid;gap:14px"></div>'); area.appendChild(slot);
+    function finish() {
+      const pct = Math.round(score / p.length * 100);
+      slot.appendChild(mascot(pct >= 80 ? 'すごい！よく理解できてるね。次は★の多い問題にも挑戦しよう！' : pct >= 50 ? 'あと一歩！まちがえた問題だけをもう一度解いてみよう。' : 'だいじょうぶ、ここからが本番。単元の実験で手を動かしてから再挑戦しよう！', 'big'));
+      slot.appendChild(h(`<div class="card count" style="text-align:left"><div class="lbl">結果</div><div class="days tnum">${score}<small>/ ${p.length} 問</small></div>
+        <div class="sub">${pct >= 80 ? 'この調子。定期テストの応用問題にも挑戦しよう。' : pct >= 50 ? 'あと一歩。まちがえた問題だけをもう一度解こう。' : 'まずは各単元の実験で手を動かしてから再挑戦しよう。'}</div></div>`));
+      const again = h('<div class="row"><button class="btn">別の10問に挑戦</button><button class="btn ghost">まちがえた問題だけ</button></div>');
+      $$('button', again)[0].onclick = () => { start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      $$('button', again)[1].onclick = () => { $('#dfil', ctl).value = 'wrong'; start(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      slot.appendChild(again);
+      setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    }
+  }
+  ['#dunit', '#dfil', '#dlv'].forEach(i => $(i, ctl).onchange = start);
+  $('#dgo', ctl).onclick = start;
+  $('#drs', ctl).onclick = () => { $('#dconf', ctl).hidden = false; };
+  $('#dno', ctl).onclick = () => { $('#dconf', ctl).hidden = true; };
+  $('#dyes', ctl).onclick = () => { S.ans = {}; S.cards = {}; save(); $('#dconf', ctl).hidden = true; start(); };
+  start();
+};
+
+/* ===== 暗記カード ===== */
+VIEWS.cards = (root) => {
+  root.appendChild(sectionHead('CARDS', '暗記カード', `覚えておきたいこと ${CARDS.length} 枚。表を見て中身を思い出してから、めくって確かめよう。`));
+  const fc = h(`<section class="card lab">
+    <div class="lab-head"><span class="kind">暗記カード</span><h3>フラッシュカード</h3><span class="small muted tnum" id="fcp"></span></div>
+    <div class="row"><div class="seg" id="fccat"></div><label class="row small" for="fcunk" style="gap:6px"><input type="checkbox" id="fcunk"> 「まだ」だけ</label></div>
+    <div class="fc" id="fc" tabindex="0" role="button" aria-label="カードをめくる"><div class="fc-in"><div class="fc-face fc-front"></div><div class="fc-face fc-back"></div></div></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost" id="fcno">まだ</button><button class="btn" id="fcflip">めくる</button><button class="btn ghost" id="fcok">覚えた</button></div>
+  </section>`);
+  root.appendChild(fc);
+  let cat = 'all', deck = [], ci = 0;
+  const sg = $('#fccat', fc);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => { const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`); b.onclick = () => { cat = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); build(); }; sg.appendChild(b); });
+  function build() {
+    deck = shuffle(CARDS.map((c, i) => [i, ...c]).filter(c => (cat === 'all' || c[1] === cat) && (!$('#fcunk', fc).checked || S.cards[c[0]] !== 'ok')));
+    ci = 0; show();
+  }
+  function show() {
+    $('#fc', fc).classList.remove('flip');
+    const known = CARDS.filter((c, i) => S.cards[i] === 'ok').length;
+    $('#fcp', fc).textContent = `覚えた ${known} / ${CARDS.length}`;
+    if (!deck.length) { $('.fc-front', fc).innerHTML = '<div class="term">全部覚えた！</div><div class="small muted">「まだ」だけ のチェックを外すと全カードに戻る</div>'; $('.fc-back', fc).innerHTML = ''; return; }
+    const [i, c, term, def] = deck[ci % deck.length];
+    $('.fc-front', fc).innerHTML = `<span class="chip" style="justify-self:center">${COURSE_NAME[c]}</span><div class="term">${term}</div><div class="small muted">${ci % deck.length + 1} / ${deck.length}　押すとめくれる</div>`;
+    setTimeout(() => { $('.fc-back', fc).innerHTML = `<div style="display:grid;gap:8px"><b>${term}</b><div style="font-size:1.05rem">${def}</div></div>`; }, 150);
+  }
+  const flip = () => $('#fc', fc).classList.toggle('flip');
+  $('#fc', fc).onclick = flip; $('#fc', fc).onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fcflip', fc).onclick = flip;
+  const mark = v => { if (!deck.length) return; S.cards[deck[ci % deck.length][0]] = v; save(); ci++; show(); };
+  $('#fcok', fc).onclick = () => mark('ok'); $('#fcno', fc).onclick = () => mark('ng');
+  $('#fcunk', fc).onchange = build;
+  build();
+  if (SITE.cardsExtra) SITE.cardsExtra(root);
+};
+
+/* ===== 用語集 ===== */
+const GYO = [['あ', 'あいうえお'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでど'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+const gyoOf = (y) => { const c = y[0]; const g = GYO.find(([, s]) => s.includes(c)); return g ? g[0] : 'A–Z'; };
+VIEWS.glossary = (root) => {
+  root.appendChild(sectionHead('GLOSSARY', '用語集', `${SITE.stations.length}単元の用語 ${GLOSSARY.length} 語を50音順に並べた。検索ボックスには用語・読み・説明のどれを入れてもよい。`));
+  const ctl = h(`<section class="card lab">
+    <label class="ctl" for="gq">検索<input type="text" id="gq" placeholder="${SITE.glossHint}" style="font-family:var(--f-body);font-size:1rem;width:100%"></label>
+    <div class="row"><div class="seg" id="gcourse"></div></div>
+    <div class="row" id="gidx" aria-label="50音の索引" style="gap:6px"></div>
+  </section>`);
+  root.appendChild(ctl);
+  const list = h('<div id="glist" style="display:grid;gap:22px"></div>');
+  root.appendChild(list);
+  let course = 'all';
+  const sg = $('#gcourse', ctl);
+  [['all', 'すべて'], ...Object.entries(COURSE_NAME)].forEach(([k, n]) => {
+    const b = h(`<button aria-pressed="${k === 'all'}">${n}</button>`);
+    b.onclick = () => { course = k; $$('button', sg).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); };
+    sg.appendChild(b);
+  });
+  $('#gq', ctl).oninput = draw;
+  const hl = (html, q) => {
+    if (!q) return html;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return html.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : p.replace(re, m => `<mark class="hit">${m}</mark>`)).join('');
+  };
+  function draw() {
+    const q = $('#gq', ctl).value.trim(), ql = q.toLowerCase();
+    const items = GLOSSARY.filter(([t, y, c, d]) => (course === 'all' || c === course) &&
+      (!q || t.toLowerCase().includes(ql) || y.includes(q) || d.replace(/<[^>]+>/g, '').toLowerCase().includes(ql)))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+    const groups = {};
+    items.forEach(it => { const g = gyoOf(it[1]); (groups[g] = groups[g] || []).push(it); });
+    const order = [...GYO.map(g => g[0]), 'A–Z'].filter(g => groups[g]);
+    const idx = $('#gidx', ctl); idx.innerHTML = '';
+    GYO.map(g => g[0]).forEach(g => {
+      const b = h(`<button class="btn ghost sm" ${groups[g] ? '' : 'disabled'} style="min-width:2.6em">${g}</button>`);
+      b.onclick = () => { const t = document.getElementById('g-' + g); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' }); };
+      idx.appendChild(b);
+    });
+    list.innerHTML = '';
+    if (!items.length) { list.appendChild(mascot(`「${esc(q)}」は見つからなかったよ。<br>言いかえるか、単元を「すべて」にしてみてね。`)); return; }
+    order.forEach(g => {
+      const sec = h(`<section id="g-${g}" style="display:grid;gap:10px"><h3 style="font-size:1.4rem;border-bottom:2px solid var(--ink);padding-bottom:4px">${g}</h3><dl class="gl"></dl></section>`);
+      const dl = $('dl', sec);
+      groups[g].forEach(([t, y, c, d]) => {
+        const row = h(`<div class="gl-row"><dt><span class="gl-term">${hl(t, q)}</span><span class="gl-yomi">${hl(y, q)}</span></dt>
+          <dd><div>${hl(d, q)}</div><button class="chip gl-go">${COURSE_NAME[c]} →</button></dd></div>`);
+        $('.gl-go', row).onclick = () => go(c);
+        dl.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+  }
+  draw();
+};
+
+/* ===== 使い方ガイド ===== */
+VIEWS.guide = (root) => {
+  root.appendChild(sectionHead('GUIDE', '使い方ガイド', 'この教材でできることと、おすすめの使い方。'));
+  root.appendChild(points([
+    [`単元ページ（${SITE.stations.length}つ）`, `<p>上のタブの「${SITE.stations[0].tab || SITE.stations[0].name}」〜「${SITE.stations.at(-1).tab || SITE.stations.at(-1).name}」。<br>① <b>要点</b>：その単元の大事なところ<br>② <b>実験</b>：押したり動かしたりして確かめる<br>③ <b>確認問題</b>：基本の問題で理解をチェック</p>`],
+    ['問題ドリル', '<p>全単元のオリジナル問題。「10問チャレンジ」はランダムに10問。<br>単元・むずかしさ（★）・「まちがえた問題だけ」でしぼりこめる。</p>'],
+    ['暗記カード', `<p>表に問い、裏に答え。「覚えた」「まだ」で仕分け、「まだ」だけを何周もしよう。${SITE.cardsNote || ''}</p>`],
+    ['用語集', '<p>教科書に出てくる用語を50音順に。読みがなでも説明の言葉でも検索できる。</p>'],
+  ]));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">おすすめ</span><h3>こんなときは、ここから</h3></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>こんなとき</th><th>使うページ</th></tr></thead><tbody>
+      <tr><td>授業でやったところを復習したい</td><td>その単元の「実験」→「確認問題」</td></tr>
+      <tr><td>定期テストの前に、まとめて問題を解きたい</td><td>問題ドリル（単元をしぼって「一覧で解く」）</td></tr>
+      <tr><td>覚えることがあやふや</td><td>暗記カード（「まだ」だけ）</td></tr>
+      <tr><td>前にまちがえた問題をやり直したい</td><td>問題ドリル（対象：まちがえた問題）</td></tr>
+      <tr><td>言葉の意味を忘れた</td><td>用語集で検索</td></tr>
+    </tbody></table></div></section>`));
+  root.appendChild(h(`<section class="card lab"><div class="lab-head"><span class="kind">記録</span><h3>達成率とランク</h3></div>
+    <p>右上の「達成率」は、全 ${QUESTIONS.length} 問のうち一度でも正解した問題の割合。正解を増やすとランクが「${RANKS.map(r => r[1]).join('」→「')}」と成長する。ランクの文字を押すと、次のランクまでの問題数が見られる。</p>
+    <p class="small muted">記録はこの端末のブラウザにだけ保存される。別の端末やブラウザでは引きつがれない。ブラウザの履歴やサイトデータを消すと記録も消える。</p></section>`));
+  const b = h('<div><button class="btn">ホームへ戻る →</button></div>'); $('button', b).onclick = () => go('home'); root.appendChild(b);
+};
+
+/* ===== 起動 ===== */
+// 正解の位置がかたよらないよう、選択肢の順番を入れかえる（毎回同じ順。解説の ⓪〜③ も合わせて書きかえる。数値の選択肢は小さい順のまま）
+QUESTIONS.forEach(q => {
+  if (q.fixed || q.choices.every(c => /^[−+\-]?[0-9０-９.]/.test(c.replace(/<[^>]+>/g, '')))) return;
+  let sd = 7; for (const ch of q.id + STORE_KEY) sd = (sd * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = rng(sd), idx = q.choices.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  q.choices = idx.map(i => q.choices[i]); q.ans = idx.indexOf(q.ans);
+  q.exp = q.exp.replace(/[⓪①②③④]/g, c => MARK[idx.indexOf(MARK.indexOf(c))]);
+});
+$('#rank').addEventListener('click', openRank);
+$('#xprate').addEventListener('click', openRank);
+$('#xprate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRank(); } });
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go('home'); });
+$('#guide-link').addEventListener('click', () => go('guide'));
+window.addEventListener('hashchange', () => { CUR_VIEW = (location.hash || '#home').slice(1); route(); });
+updateXP();
+route();
+</script>
+</body></html>
